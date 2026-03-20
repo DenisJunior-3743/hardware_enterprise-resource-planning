@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Hardware OS - Command Center</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "error": "#ba1a1a",
+              "inverse-primary": "#91d78a",
+              "on-primary-fixed": "#002203",
+              "tertiary-fixed-dim": "#ffb1c7",
+              "surface-container-lowest": "#ffffff",
+              "secondary": "#4c616c",
+              "surface-container-high": "#e7e8e9",
+              "surface-container-highest": "#e1e3e4",
+              "primary-fixed-dim": "#91d78a",
+              "tertiary": "#923357",
+              "surface-tint": "#2a6b2c",
+              "primary": "#206223",
+              "on-secondary": "#ffffff",
+              "tertiary-container": "#b14b6f",
+              "surface-container": "#edeeef",
+              "background": "#f8f9fa",
+              "secondary-fixed-dim": "#b4cad6",
+              "on-surface-variant": "#40493d",
+              "on-secondary-container": "#526772",
+              "error-container": "#ffdad6",
+              "surface-variant": "#e1e3e4",
+              "on-background": "#191c1d",
+              "surface-container-low": "#f3f4f5",
+              "on-primary-container": "#cbffc2",
+              "secondary-container": "#cfe6f2",
+              "on-surface": "#191c1d",
+              "inverse-on-surface": "#f0f1f2",
+              "on-error": "#ffffff",
+              "primary-fixed": "#acf4a4",
+              "on-primary-fixed-variant": "#0c5216",
+              "inverse-surface": "#2e3132",
+              "on-tertiary-fixed": "#3f001c",
+              "outline": "#707a6c",
+              "on-secondary-fixed": "#071e27",
+              "on-secondary-fixed-variant": "#354a53",
+              "on-error-container": "#93000a",
+              "secondary-fixed": "#cfe6f2",
+              "on-primary": "#ffffff",
+              "outline-variant": "#bfcaba",
+              "tertiary-fixed": "#ffd9e2",
+              "primary-container": "#3a7b3a",
+              "surface-bright": "#f8f9fa",
+              "surface": "#f8f9fa",
+              "on-tertiary-container": "#ffedf0",
+              "on-tertiary": "#ffffff",
+              "on-tertiary-fixed-variant": "#7f2448",
+              "surface-dim": "#d9dadb"
+            },
+            fontFamily: {
+              "headline": ["Inter"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+        }
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen">
+<!-- SideNavBar Execution -->
+<aside class="fixed left-0 top-0 h-full flex flex-col py-6 px-4 bg-slate-50 dark:bg-slate-900 h-screen w-64 border-r-0 z-50">
+<div class="mb-10 px-4">
+<h1 class="text-lg font-bold text-green-900 dark:text-green-100 tracking-tight">Industrial Atelier</h1>
+<p class="text-xs text-secondary uppercase tracking-widest font-semibold mt-1">Hardware ERP</p>
+</div>
+<nav class="flex-1 space-y-2">
+<!-- Dashboard Active -->
+<a class="flex items-center gap-3 bg-green-100 dark:bg-green-900/40 text-green-900 dark:text-green-100 rounded-xl px-4 py-3 shadow-sm transition-transform active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-sans text-base font-medium antialiased">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 text-slate-600 dark:text-slate-400 px-4 py-3 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span class="font-sans text-base font-medium antialiased">Inventory</span>
+</a>
+<a class="flex items-center gap-3 text-slate-600 dark:text-slate-400 px-4 py-3 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+<span class="font-sans text-base font-medium antialiased">Sales</span>
+</a>
+<a class="flex items-center gap-3 text-slate-600 dark:text-slate-400 px-4 py-3 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="local_shipping">local_shipping</span>
+<span class="font-sans text-base font-medium antialiased">Restock</span>
+</a>
+<a class="flex items-center gap-3 text-slate-600 dark:text-slate-400 px-4 py-3 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="font-sans text-base font-medium antialiased">Reports</span>
+</a>
+</nav>
+<div class="mt-auto border-t border-surface-container pt-4">
+<a class="flex items-center gap-3 text-slate-600 dark:text-slate-400 px-4 py-3 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-sans text-base font-medium antialiased">Settings</span>
+</a>
+<div class="mt-4 flex items-center gap-3 px-4">
+<div class="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center text-on-primary-fixed font-bold">SM</div>
+<div class="overflow-hidden">
+<p class="text-sm font-bold truncate text-on-surface">Store Manager</p>
+<p class="text-xs text-secondary truncate">Main Branch</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- TopNavBar Execution -->
+<header class="flex justify-between items-center w-full px-8 py-4 ml-64 max-w-[calc(100%-16rem)] bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl shadow-sm dark:shadow-none sticky top-0 z-40">
+<div class="flex items-center gap-6">
+<div class="relative group">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-outline">search</span>
+<input class="pl-10 pr-4 py-2 bg-surface-container-highest rounded-full border-none focus:ring-2 focus:ring-primary/20 w-64 text-sm transition-all" placeholder="Search Hardware OS..." type="text"/>
+</div>
+<nav class="flex gap-8">
+<a class="text-green-700 dark:text-green-400 border-b-2 border-green-700 pb-1 font-sans text-sm font-semibold uppercase tracking-wider" href="#">Live Floor</a>
+<a class="text-slate-500 dark:text-slate-400 hover:text-slate-900 font-sans text-sm font-semibold uppercase tracking-wider" href="#">Staff</a>
+<a class="text-slate-500 dark:text-slate-400 hover:text-slate-900 font-sans text-sm font-semibold uppercase tracking-wider" href="#">Support</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-slate-500 hover:bg-surface-container-low rounded-full transition-colors relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-tertiary rounded-full"></span>
+</button>
+<button class="p-2 text-slate-500 hover:bg-surface-container-low rounded-full transition-colors">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="ml-64 p-8 min-h-screen">
+<div class="max-w-7xl mx-auto">
+<!-- Page Header -->
+<header class="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div>
+<span class="text-secondary font-bold uppercase tracking-[0.2em] text-xs">Operation Dashboard</span>
+<h2 class="text-4xl font-extrabold text-on-surface tracking-tight mt-1 italic">Command Center</h2>
+</div>
+<div class="flex gap-3">
+<button class="flex items-center gap-2 px-6 py-3 bg-surface-container-high text-on-surface font-bold rounded-xl transition-all hover:bg-surface-container-highest">
+<span class="material-symbols-outlined">print</span>
+                        Daily Report
+                    </button>
+<button class="flex items-center gap-2 px-8 py-3 bg-gradient-to-br from-primary to-primary-container text-white font-bold rounded-xl shadow-lg shadow-primary/20 transition-transform active:scale-95">
+<span class="material-symbols-outlined">add_shopping_cart</span>
+                        Quick Sale
+                    </button>
+</div>
+</header>
+<!-- Navigation Tabs (Editorial UI) -->
+<div class="flex gap-1 bg-surface-container-low p-1.5 rounded-2xl mb-8 w-fit">
+<button class="px-8 py-3 rounded-xl bg-surface-container-lowest shadow-sm text-primary font-bold text-sm transition-all">Dashboard</button>
+<button class="px-8 py-3 rounded-xl text-secondary font-semibold text-sm hover:bg-surface-container-high transition-all">Inventory &amp; Pricing</button>
+<button class="px-8 py-3 rounded-xl text-secondary font-semibold text-sm hover:bg-surface-container-high transition-all">Sales &amp; Records</button>
+<button class="px-8 py-3 rounded-xl text-secondary font-semibold text-sm hover:bg-surface-container-high transition-all">Restock Management</button>
+</div>
+<!-- Dashboard Content Grid (Tab 1 Active) -->
+<div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+<!-- Primary Stats Cards (Bento Style) -->
+<div class="md:col-span-2 lg:col-span-2 bg-surface-container-lowest p-8 rounded-[2rem] border border-outline-variant/10 shadow-sm relative overflow-hidden flex flex-col justify-between h-64">
+<div class="relative z-10">
+<p class="text-secondary font-bold text-xs uppercase tracking-widest mb-2">Revenue Pulse</p>
+<h3 class="text-5xl font-black text-on-surface tracking-tighter">$12,840.00</h3>
+<p class="text-primary font-bold text-sm flex items-center gap-1 mt-2">
+<span class="material-symbols-outlined text-lg">trending_up</span>
+                            +14.2% from yesterday
+                        </p>
+</div>
+<div class="mt-4 h-12 flex items-end gap-1">
+<div class="flex-1 bg-surface-container-highest rounded-t-sm h-[40%]"></div>
+<div class="flex-1 bg-surface-container-highest rounded-t-sm h-[60%]"></div>
+<div class="flex-1 bg-surface-container-highest rounded-t-sm h-[55%]"></div>
+<div class="flex-1 bg-surface-container-highest rounded-t-sm h-[80%]"></div>
+<div class="flex-1 bg-primary rounded-t-sm h-[100%]"></div>
+</div>
+</div>
+<!-- Low Stock Alert Tile -->
+<div class="bg-tertiary-fixed p-8 rounded-[2rem] border border-outline-variant/10 shadow-sm flex flex-col justify-between h-64">
+<div>
+<p class="text-on-tertiary-fixed-variant font-bold text-xs uppercase tracking-widest mb-2">Inventory Alert</p>
+<h3 class="text-5xl font-black text-on-tertiary-fixed tracking-tighter">08</h3>
+<p class="text-on-tertiary-fixed-variant font-medium text-sm mt-1">Items below threshold</p>
+</div>
+<button class="w-full py-3 bg-white/30 backdrop-blur rounded-xl text-on-tertiary-fixed font-bold text-sm hover:bg-white/50 transition-colors">
+                        Review Restock
+                    </button>
+</div>
+<!-- Pending Orders Tile -->
+<div class="bg-secondary-fixed p-8 rounded-[2rem] border border-outline-variant/10 shadow-sm flex flex-col justify-between h-64">
+<div>
+<p class="text-on-secondary-fixed-variant font-bold text-xs uppercase tracking-widest mb-2">Work Queue</p>
+<h3 class="text-5xl font-black text-on-secondary-fixed tracking-tighter">14</h3>
+<p class="text-on-secondary-fixed-variant font-medium text-sm mt-1">Pending Pickups</p>
+</div>
+<button class="w-full py-3 bg-white/30 backdrop-blur rounded-xl text-on-secondary-fixed font-bold text-sm hover:bg-white/50 transition-colors">
+                        View Schedule
+                    </button>
+</div>
+<!-- Bottom Row Section: Recent Transactions (Editorial Style) -->
+<div class="md:col-span-3 lg:col-span-3 space-y-4">
+<div class="flex items-center justify-between mb-4">
+<h4 class="text-xl font-bold tracking-tight">Recent Activity</h4>
+<a class="text-primary font-bold text-sm underline underline-offset-4" href="#">View Full Ledger</a>
+</div>
+<div class="bg-surface-container-lowest rounded-3xl border border-outline-variant/10 overflow-hidden">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low border-b border-outline-variant/10">
+<th class="px-8 py-4 text-xs font-bold uppercase tracking-widest text-secondary">Transaction ID</th>
+<th class="px-8 py-4 text-xs font-bold uppercase tracking-widest text-secondary">Item Details</th>
+<th class="px-8 py-4 text-xs font-bold uppercase tracking-widest text-secondary">Customer</th>
+<th class="px-8 py-4 text-xs font-bold uppercase tracking-widest text-secondary">Amount</th>
+<th class="px-8 py-4 text-xs font-bold uppercase tracking-widest text-secondary text-right">Status</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-container">
+<tr class="hover:bg-surface-container-low/50 transition-colors">
+<td class="px-8 py-5 font-mono text-sm">#TX-94021</td>
+<td class="px-8 py-5">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-surface-container rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary">construction</span>
+</div>
+<div>
+<p class="font-bold text-on-surface">Galvanized Steel Pipe 2"</p>
+<p class="text-xs text-secondary">Qty: 45 units</p>
+</div>
+</div>
+</td>
+<td class="px-8 py-5 text-sm font-medium">BuildRight Construction</td>
+<td class="px-8 py-5 font-bold">$1,240.00</td>
+<td class="px-8 py-5 text-right">
+<span class="px-3 py-1 bg-primary-fixed text-on-primary-fixed text-xs font-bold rounded-full">Completed</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low/50 transition-colors">
+<td class="px-8 py-5 font-mono text-sm">#TX-94019</td>
+<td class="px-8 py-5">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-surface-container rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary">handyman</span>
+</div>
+<div>
+<p class="font-bold text-on-surface">Precision Socket Set</p>
+<p class="text-xs text-secondary">Qty: 2 units</p>
+</div>
+</div>
+</td>
+<td class="px-8 py-5 text-sm font-medium">Individual Walk-in</td>
+<td class="px-8 py-5 font-bold">$89.99</td>
+<td class="px-8 py-5 text-right">
+<span class="px-3 py-1 bg-secondary-fixed text-on-secondary-fixed text-xs font-bold rounded-full">Processing</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Secondary Actions Column -->
+<div class="lg:col-span-1 space-y-6">
+<div class="bg-surface-container-lowest p-6 rounded-3xl border border-outline-variant/10 shadow-sm">
+<h5 class="text-sm font-bold uppercase tracking-widest text-secondary mb-4">Quick Logs</h5>
+<div class="space-y-4">
+<button class="w-full flex items-center justify-between p-4 bg-surface-container-low rounded-2xl hover:bg-surface-container-high transition-colors">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">inventory</span>
+<span class="font-bold text-sm">Quick Restock</span>
+</div>
+<span class="material-symbols-outlined text-outline">chevron_right</span>
+</button>
+<button class="w-full flex items-center justify-between p-4 bg-surface-container-low rounded-2xl hover:bg-surface-container-high transition-colors">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">group_add</span>
+<span class="font-bold text-sm">Add New Client</span>
+</div>
+<span class="material-symbols-outlined text-outline">chevron_right</span>
+</button>
+</div>
+</div>
+<!-- Warehouse Visualization (Glassmorphism concept) -->
+<div class="bg-gradient-to-br from-primary-container to-primary p-6 rounded-3xl shadow-xl shadow-primary/20 relative overflow-hidden group">
+<div class="relative z-10">
+<h5 class="text-white/60 text-xs font-bold uppercase tracking-[0.2em] mb-1">Stock Health</h5>
+<p class="text-white text-xl font-bold leading-tight">Warehouse Floor <br/>Capacity: 78%</p>
+<div class="mt-6 w-full bg-white/20 h-2 rounded-full overflow-hidden">
+<div class="bg-white h-full transition-all duration-1000" style="width: 78%"></div>
+</div>
+</div>
+<span class="absolute -right-4 -bottom-4 material-symbols-outlined text-white/10 text-9xl group-hover:scale-110 transition-transform">precision_manufacturing</span>
+</div>
+</div>
+</div>
+<!-- Tab Content (Hidden - Structural placeholders for SPA feel) -->
+<div class="hidden" id="inventory-tab">
+<!-- Grid list of steel/pipes with price edit -->
+</div>
+</div>
+</main>
+<!-- Floating Action Button (FAB) Suppression check: Only on Dashboard -->
+<div class="fixed bottom-8 right-8 z-50">
+<button class="group flex items-center gap-2 h-16 pl-6 pr-8 bg-primary-container text-on-primary-container rounded-full shadow-2xl transition-all hover:scale-105 active:scale-95">
+<span class="material-symbols-outlined text-2xl" data-icon="add">add</span>
+<span class="font-bold tracking-tight">New Entry</span>
+</button>
+</div>
+</body></html>

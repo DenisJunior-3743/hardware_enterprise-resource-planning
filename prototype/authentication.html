@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Industrial Atelier ERP - Login</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-tertiary-fixed-variant": "#7f2448",
+              "on-secondary-fixed-variant": "#354a53",
+              "surface-container-highest": "#e1e3e4",
+              "primary-fixed-dim": "#91d78a",
+              "on-surface": "#191c1d",
+              "on-background": "#191c1d",
+              "background": "#f8f9fa",
+              "surface-container-lowest": "#ffffff",
+              "inverse-primary": "#91d78a",
+              "surface-variant": "#e1e3e4",
+              "error": "#ba1a1a",
+              "on-error": "#ffffff",
+              "surface": "#f8f9fa",
+              "on-secondary-fixed": "#071e27",
+              "tertiary-container": "#b14b6f",
+              "primary-container": "#3a7b3a",
+              "secondary": "#4c616c",
+              "surface-container-low": "#f3f4f5",
+              "inverse-on-surface": "#f0f1f2",
+              "on-primary-fixed": "#002203",
+              "on-surface-variant": "#40493d",
+              "secondary-fixed-dim": "#b4cad6",
+              "primary": "#206223",
+              "outline-variant": "#bfcaba",
+              "tertiary-fixed": "#ffd9e2",
+              "surface-dim": "#d9dadb",
+              "on-tertiary-container": "#ffedf0",
+              "error-container": "#ffdad6",
+              "primary-fixed": "#acf4a4",
+              "secondary-container": "#cfe6f2",
+              "outline": "#707a6c",
+              "tertiary": "#923357",
+              "on-error-container": "#93000a",
+              "surface-bright": "#f8f9fa",
+              "inverse-surface": "#2e3132",
+              "on-primary-fixed-variant": "#0c5216",
+              "on-tertiary-fixed": "#3f001c",
+              "surface-tint": "#2a6b2c",
+              "surface-container": "#edeeef",
+              "on-tertiary": "#ffffff",
+              "secondary-fixed": "#cfe6f2",
+              "on-primary": "#ffffff",
+              "on-primary-container": "#cbffc2",
+              "surface-container-high": "#e7e8e9",
+              "tertiary-fixed-dim": "#ffb1c7",
+              "on-secondary": "#ffffff",
+              "on-secondary-container": "#526772"
+            },
+            fontFamily: {
+              "headline": ["Inter"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+      body { font-family: 'Inter', sans-serif; }
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      .glass-card {
+        background: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(20px);
+      }
+      .primary-gradient {
+        background: linear-gradient(135deg, #206223 0%, #3a7b3a 100%);
+      }
+    </style>
+</head>
+<body class="bg-surface text-on-surface min-h-screen flex items-center justify-center p-6">
+<div class="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-12 overflow-hidden rounded-xl shadow-none">
+<!-- Branding Section (Asymmetric Left) -->
+<div class="hidden lg:flex lg:col-span-7 flex-col justify-between p-12 bg-surface-container-low relative overflow-hidden min-h-[700px]">
+<div class="relative z-10">
+<div class="flex items-center gap-3 mb-12">
+<div class="w-10 h-10 primary-gradient rounded-lg flex items-center justify-center text-white">
+<span class="material-symbols-outlined" data-icon="precision_manufacturing">precision_manufacturing</span>
+</div>
+<span class="text-lg font-bold text-slate-900 tracking-tighter">Industrial Atelier</span>
+</div>
+<h1 class="text-5xl font-extrabold tracking-tight text-on-surface leading-tight mb-6">
+                    Precision in every <br/>
+<span class="text-primary">hardware unit.</span>
+</h1>
+<p class="text-secondary text-lg max-w-md leading-relaxed">
+                    The professional studio for industrial logistics. Manage inventory, sales, and restocking with functional sophistication.
+                </p>
+</div>
+<!-- Inventory Status Tile (Design System Component) -->
+<div class="relative z-10 mt-auto">
+<div class="glass-card p-6 rounded-xl border border-outline-variant/15 inline-flex flex-col gap-2">
+<span class="text-secondary font-medium label-md uppercase tracking-wider">System Status</span>
+<div class="flex items-baseline gap-4">
+<span class="text-4xl font-bold tracking-tighter text-on-surface">99.8%</span>
+<span class="text-primary flex items-center gap-1 text-sm font-bold">
+<span class="material-symbols-outlined text-sm" data-icon="trending_up">trending_up</span>
+                            Optimal
+                        </span>
+</div>
+<p class="text-on-surface-variant text-sm mt-1">Live data synchronization active.</p>
+</div>
+</div>
+<!-- Background Texture -->
+<div class="absolute -right-20 -bottom-20 w-96 h-96 opacity-10 pointer-events-none">
+<img class="w-full h-full object-cover rounded-full grayscale" data-alt="Abstract blueprint and industrial gear patterns" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCDvaTnkAMndHe9PWDkdzJeyjwfK17eDPkM_-Xs4JfQJTueyP5b_N-lChKqvNKprTM3OaTaL9ng26fbham9GGbtZzz2DNN6Xe5LwEEqo6zAbVVHQY0HbOMxj26yM7XEMlYwbtBCGkFEoLK_E2AZRrccvIGOISBroq_7xNpbVItb-TAZC_AtkBkU-lsnCuWeNbsamOo7veJ081H-DQQ5Tu8WE445wuh_joK_d2xM-fSGLCZ5OwIuEWFymLqDOV6BcdIMBLKzFT3cg6_s"/>
+</div>
+</div>
+<!-- Login Form Section (Right) -->
+<div class="lg:col-span-5 bg-surface-container-lowest p-8 lg:p-16 flex flex-col justify-center">
+<div class="mb-10 lg:hidden">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 primary-gradient rounded flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-sm" data-icon="precision_manufacturing">precision_manufacturing</span>
+</div>
+<span class="text-sm font-black text-green-900 tracking-tighter uppercase">Atelier ERP</span>
+</div>
+</div>
+<div class="mb-8">
+<h2 class="text-3xl font-bold text-on-surface mb-2">Welcome Back</h2>
+<p class="text-secondary">Please enter your credentials to access the ERP</p>
+</div>
+<form class="space-y-6">
+<!-- Username Field -->
+<div class="space-y-2">
+<label class="block text-sm font-semibold text-on-surface-variant px-1" for="username">Username</label>
+<div class="relative">
+<input class="w-full h-14 bg-surface-container-highest border-none rounded-lg px-4 pt-1 text-on-surface focus:bg-surface-container-lowest focus:ring-0 focus:border-b-2 focus:border-primary transition-all duration-200" id="username" name="username" placeholder="e.g. j.atelier_admin" type="text"/>
+<span class="absolute right-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-outline" data-icon="person">person</span>
+</div>
+</div>
+<!-- Password Field -->
+<div class="space-y-2">
+<div class="flex justify-between items-center px-1">
+<label class="block text-sm font-semibold text-on-surface-variant" for="password">Password</label>
+<a class="text-xs font-bold text-primary hover:underline" href="#">Reset Password</a>
+</div>
+<div class="relative">
+<input class="w-full h-14 bg-surface-container-highest border-none rounded-lg px-4 pt-1 text-on-surface focus:bg-surface-container-lowest focus:ring-0 focus:border-b-2 focus:border-primary transition-all duration-200" id="password" name="password" placeholder="••••••••••••" type="password"/>
+<span class="absolute right-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-outline" data-icon="lock">lock</span>
+</div>
+</div>
+<!-- Login Button -->
+<button class="w-full h-14 primary-gradient text-white font-bold rounded-lg shadow-none active:scale-95 duration-150 flex items-center justify-center gap-2 group mt-8" type="submit">
+<span>Login</span>
+<span class="material-symbols-outlined group-hover:translate-x-1 transition-transform" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</form>
+<!-- Secondary Actions -->
+<div class="mt-12 pt-8 border-t border-outline-variant/15 text-center">
+<p class="text-secondary text-sm">
+                    New to the Industrial Atelier? 
+                    <a class="text-primary font-bold ml-1 hover:underline" href="#">Register</a>
+</p>
+</div>
+<!-- Footer Meta -->
+<div class="mt-auto pt-8 flex items-center justify-center gap-6 text-outline text-[11px] font-medium tracking-widest uppercase">
+<a class="hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<a class="hover:text-primary transition-colors" href="#">Terms of Use</a>
+<a class="hover:text-primary transition-colors" href="#">Help Center</a>
+</div>
+</div>
+</div>
+</body></html>

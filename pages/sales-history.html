@@ -1,0 +1,338 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DukaSoft — Sales History</title>
+  <link rel="stylesheet" href="../assets/css/style.css"/>
+</head>
+<body>
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo"><div class="sidebar-logo-icon">🔧</div><div class="sidebar-logo-text"><h1>DukaSoft</h1><span>Hardware ERP</span></div></div>
+  <nav class="sidebar-nav">
+    <div class="nav-group"><a href="dashboard.html" class="nav-parent"><span class="nav-icon">📊</span><span class="nav-label">Dashboard</span></a></div>
+    <div class="nav-group"><button class="nav-parent" type="button"><span class="nav-icon">📦</span><span class="nav-label">Inventory</span><span class="nav-chevron">›</span></button><div class="nav-children"><a href="inventory.html" class="nav-child"><span class="child-dot"></span> View All Items</a><a href="categories.html" class="nav-child"><span class="child-dot"></span> Manage Categories</a><a href="add-item.html" class="nav-child"><span class="child-dot"></span> Add New Item</a></div></div>
+    <div class="nav-group">
+      <button class="nav-parent open active" type="button"><span class="nav-icon">💰</span><span class="nav-label">Sales</span><span class="nav-chevron">›</span></button>
+      <div class="nav-children open">
+        <a href="record-sale.html" class="nav-child"><span class="child-dot"></span> Record a Sale</a>
+        <a href="sales-history.html" class="nav-child active"><span class="child-dot"></span> Sales History</a>
+      </div>
+    </div>
+    <div class="nav-group"><button class="nav-parent" type="button"><span class="nav-icon">🚚</span><span class="nav-label">Restock</span><span class="nav-chevron">›</span></button><div class="nav-children"><a href="record-restock.html" class="nav-child"><span class="child-dot"></span> Record Restock</a><a href="restock-history.html" class="nav-child"><span class="child-dot"></span> Restock History</a><a href="low-stock.html" class="nav-child"><span class="child-dot"></span> Low Stock Alerts</a></div></div>
+    <div class="nav-group"><button class="nav-parent" type="button"><span class="nav-icon">📈</span><span class="nav-label">Reports</span><span class="nav-chevron">›</span></button><div class="nav-children"><a href="reports.html?tab=sales" class="nav-child"><span class="child-dot"></span> Sales Report</a><a href="reports.html?tab=inventory" class="nav-child"><span class="child-dot"></span> Inventory Report</a><a href="reports.html?tab=restock" class="nav-child"><span class="child-dot"></span> Restock Report</a></div></div>
+  </nav>
+  <div class="sidebar-footer">
+    <a href="../index.html" class="nav-parent" onclick="return signOut(event)"><span class="nav-icon">🚪</span><span class="nav-label">Sign Out</span></a>
+    <div class="sidebar-user"><div class="sidebar-avatar" id="sidebar-avatar-initials">--</div><div class="sidebar-user-info"><p id="sidebar-username">Loading...</p><span>Administrator</span></div></div>
+  </div>
+</aside>
+
+<header class="topbar" id="topbar">
+  <div class="topbar-left"><button class="sidebar-toggle">☰</button><div class="page-breadcrumb">Sales / <strong>Sales History</strong></div></div>
+  <div class="topbar-right"><div class="topbar-search"><span class="search-icon">🔍</span><input type="text" placeholder="Search..."/></div></div>
+</header>
+
+<main class="main-content" id="main-content">
+  <div class="page-inner">
+    <div class="page-header">
+      <div class="page-header-left">
+        <span class="page-tag">Sales</span>
+        <h2>Sales History</h2>
+      </div>
+      <div class="page-header-actions">
+        <a href="record-sale.html" class="btn btn-primary">💰 Record New Sale</a>
+      </div>
+    </div>
+
+    <!-- Summary stats -->
+    <div class="stat-grid stat-grid-3" style="margin-bottom:20px;">
+      <div class="stat-card">
+        <div class="stat-card-top"><span class="stat-card-label">Today</span><div class="stat-card-icon green">💰</div></div>
+        <div class="stat-card-value" id="sh-today">UGX 0</div>
+        <div class="stat-card-sub green" id="sh-today-count">0 sales</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-top"><span class="stat-card-label">This Week</span><div class="stat-card-icon green">📅</div></div>
+        <div class="stat-card-value" id="sh-week">UGX 0</div>
+        <div class="stat-card-sub" id="sh-week-count">0 sales</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-top"><span class="stat-card-label">This Month</span><div class="stat-card-icon green">🗓</div></div>
+        <div class="stat-card-value" id="sh-month">UGX 0</div>
+        <div class="stat-card-sub" id="sh-month-count">0 sales</div>
+      </div>
+    </div>
+
+    <!-- Filters row -->
+    <div class="card" style="margin-bottom:20px;">
+      <div class="card-body" style="padding:16px 20px;">
+        <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;">
+          <div class="tabs">
+            <button class="tab-btn active" onclick="setView('daily',this)">Daily</button>
+            <button class="tab-btn" onclick="setView('weekly',this)">Weekly</button>
+            <button class="tab-btn" onclick="setView('monthly',this)">Monthly</button>
+            <button class="tab-btn" onclick="setView('all',this)">All Records</button>
+          </div>
+          <div style="display:flex;gap:8px;margin-left:auto;flex-wrap:wrap;">
+            <div>
+              <label style="font-size:0.78rem;font-weight:600;color:var(--gray-500);display:block;margin-bottom:4px;">From</label>
+              <input type="date" class="form-input" id="filter-from" style="padding:8px 12px;width:auto;" onchange="applyFilters()"/>
+            </div>
+            <div>
+              <label style="font-size:0.78rem;font-weight:600;color:var(--gray-500);display:block;margin-bottom:4px;">To</label>
+              <input type="date" class="form-input" id="filter-to" style="padding:8px 12px;width:auto;" onchange="applyFilters()"/>
+            </div>
+            <div>
+              <label style="font-size:0.78rem;font-weight:600;color:var(--gray-500);display:block;margin-bottom:4px;">Category</label>
+              <select class="form-select" id="filter-cat" style="padding:8px 12px;width:auto;" onchange="applyFilters()">
+                <option value="">All Categories</option>
+              </select>
+            </div>
+            <div style="align-self:flex-end;">
+              <button class="btn btn-outline btn-sm" onclick="resetFilters()">Reset</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="card">
+      <div class="card-header">
+        <h3>Transactions <span class="badge badge-green" id="result-count">0</span></h3>
+        <span class="text-muted" id="filter-label">Showing all</span>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Item</th>
+              <th>Category</th>
+              <th class="td-center">Qty</th>
+              <th>Customer</th>
+              <th>Payment</th>
+              <th>Date & Time</th>
+              <th class="td-right">Amount (UGX)</th>
+              <th class="td-center">Action</th>
+            </tr>
+          </thead>
+          <tbody id="sales-tbody"></tbody>
+        </table>
+      </div>
+      <div class="card-footer" style="display:flex;align-items:center;justify-content:space-between;">
+        <span class="text-muted" id="sales-pagination-info"></span>
+        <div class="pagination" id="sales-pagination"></div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<!-- Confirm Dialog -->
+<div class="modal-overlay" id="confirm-overlay">
+  <div class="modal confirm-modal">
+    <div class="modal-body" style="text-align:center;padding:32px 28px 24px;">
+      <div class="confirm-icon danger">🗑</div>
+      <h3 id="confirm-title">Delete this sale record?</h3>
+      <p id="confirm-message" class="mt-8">This will permanently remove this sale and restore stock.</p>
+    </div>
+    <div class="modal-footer" style="justify-content:center;gap:16px;padding-bottom:28px;">
+      <button class="btn btn-outline btn-lg" onclick="Modal.close('confirm-overlay')">Cancel</button>
+      <button class="btn btn-danger btn-lg" id="confirm-btn" onclick="Confirm.confirm()">Delete Record</button>
+    </div>
+  </div>
+</div>
+<div class="toast-container" id="toast-container"></div>
+
+<script src="../assets/js/app.js"></script>
+<script src="../assets/js/api.js"></script>
+<script>
+let allSales    = [];
+let filtered    = [];
+let currentView = 'daily';
+let currentPage = 1;
+const PER_PAGE  = 20;
+
+document.addEventListener('DOMContentLoaded', async () => {
+  await pageAuthGuard();
+  await loadCategoryFilter();
+  await loadSales();
+  setView('daily', document.querySelector('.tab-btn.active'));
+});
+
+async function loadCategoryFilter() {
+  const res = await Categories.list();
+  if (!res.success) return;
+  const sel = document.getElementById('filter-cat');
+  (res.data.categories || []).forEach(c =>
+    sel.innerHTML += `<option value="${esc(c.name)}">${esc(c.name)}</option>`
+  );
+}
+
+async function loadSales() {
+  const res = await Sales.list({ per_page: 500 });
+  if (!res.success) { Toast.danger('Failed to load sales.'); return; }
+  allSales = res.data.sales || [];
+
+  // Stats
+  const now        = new Date();
+  const todayStr   = now.toISOString().split('T')[0];
+  const weekAgo    = new Date(); weekAgo.setDate(weekAgo.getDate() - 7);
+  const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+
+  const todaySales = allSales.filter(s => s.sale_date && s.sale_date.substring(0, 10) === todayStr);
+  const weekSales  = allSales.filter(s => new Date(s.sale_date) >= weekAgo);
+  const monthSales = allSales.filter(s => new Date(s.sale_date) >= monthStart);
+  const sum = arr => arr.reduce((t, s) => t + (parseFloat(s.total_amount)||0), 0);
+
+  document.getElementById('sh-today').textContent       = formatUGX(sum(todaySales));
+  document.getElementById('sh-today-count').textContent = todaySales.length + ' sale' + (todaySales.length!==1?'s':'');
+  document.getElementById('sh-week').textContent        = formatUGX(sum(weekSales));
+  document.getElementById('sh-week-count').textContent  = weekSales.length + ' sales';
+  document.getElementById('sh-month').textContent       = formatUGX(sum(monthSales));
+  document.getElementById('sh-month-count').textContent = monthSales.length + ' sales';
+
+  applyFilters();
+}
+
+function setView(mode, btn) {
+  currentView = mode;
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+
+  const now  = new Date();
+  const from = document.getElementById('filter-from');
+  const to   = document.getElementById('filter-to');
+
+  if (mode === 'daily') {
+    from.value = to.value = now.toISOString().split('T')[0];
+    document.getElementById('filter-label').textContent = 'Today only';
+  } else if (mode === 'weekly') {
+    const start = new Date(); start.setDate(start.getDate() - 6);
+    from.value = start.toISOString().split('T')[0];
+    to.value   = now.toISOString().split('T')[0];
+    document.getElementById('filter-label').textContent = 'Last 7 days';
+  } else if (mode === 'monthly') {
+    from.value = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().split('T')[0];
+    to.value   = now.toISOString().split('T')[0];
+    document.getElementById('filter-label').textContent = 'This month';
+  } else {
+    from.value = ''; to.value = '';
+    document.getElementById('filter-label').textContent = 'All records';
+  }
+  applyFilters();
+}
+
+function applyFilters() {
+  const from  = document.getElementById('filter-from').value;
+  const to    = document.getElementById('filter-to').value;
+  const catId = document.getElementById('filter-cat').value;
+
+  filtered = allSales.filter(s => {
+    const d = s.sale_date ? s.sale_date.substring(0, 10) : '';
+    if (from && d < from) return false;
+    if (to   && d > to)   return false;
+    if (catId) {
+      const items = s.items || [];
+      if (!items.some(i => (i.category || '').toLowerCase() === catId.toLowerCase())) return false;
+    }
+    return true;
+  });
+  currentPage = 1;
+  renderTable();
+}
+
+function resetFilters() {
+  document.getElementById('filter-from').value = '';
+  document.getElementById('filter-to').value   = '';
+  document.getElementById('filter-cat').value  = '';
+  setView('all', null);
+  document.querySelectorAll('.tab-btn').forEach((b,i) => b.classList.toggle('active', i===3));
+}
+
+function renderTable() {
+  const total  = filtered.length;
+  const start  = (currentPage-1) * PER_PAGE;
+  const page   = filtered.slice(start, start + PER_PAGE);
+  const tbody  = document.getElementById('sales-tbody');
+
+  document.getElementById('result-count').textContent = total;
+  document.getElementById('sales-pagination-info').textContent = total > 0
+    ? `Showing ${start+1}–${Math.min(start+PER_PAGE,total)} of ${total} records` : '';
+
+  if (total === 0) {
+    tbody.innerHTML = `<tr><td colspan="9"><div class="empty-state"><div class="empty-icon">💸</div><p>No sales records for this period. <a href="record-sale.html" class="text-green">Record a sale</a></p></div></td></tr>`;
+    document.getElementById('sales-pagination').innerHTML = '';
+    return;
+  }
+
+  const pmtLabels = { cash:'Cash', mobile_money:'Mobile Money', bank:'Bank', credit:'Credit' };
+  tbody.innerHTML = page.map((s, i) => {
+    const itemNames = (s.items || []).map(li => esc(li.item_name)).join(', ') || '—';
+    const saleDate  = s.sale_date ? shortDate(s.sale_date) : '—';
+    return `<tr>
+      <td class="td-mono text-muted">${start+i+1}</td>
+      <td class="td-primary" style="max-width:200px;">${itemNames}</td>
+      <td class="text-muted">${[...new Set((s.items||[]).map(li=>li.category).filter(Boolean))].map(c=>esc(c)).join(', ')||'—'}</td>
+      <td class="td-center">${(s.items||[]).reduce((t,li)=>t+(parseInt(li.quantity)||0),0)}</td>
+      <td class="text-muted">${esc(s.customer_name||'—')}</td>
+      <td><span class="badge ${s.payment_method==='credit'?'badge-amber':'badge-green'}">${pmtLabels[s.payment_method]||s.payment_method||'Cash'}</span></td>
+      <td class="text-muted">${saleDate}</td>
+      <td class="td-right fw-700">${formatUGX(s.total_amount)}</td>
+      <td class="td-center">
+        <button class="btn btn-ghost btn-sm" onclick="confirmDeleteSale(${s.sale_id},'${esc((s.items||[]).map(li=>li.item_name).join(', ')||'').replace(/'/g,"\\'")}',${s.total_amount})"
+                style="color:var(--red-500);padding:6px 10px;" title="Delete this record">🗑</button>
+      </td>
+    </tr>`;
+  }).join('');
+
+  renderPagination(total);
+}
+
+function renderPagination(total) {
+  const pages = Math.ceil(total / PER_PAGE);
+  const el    = document.getElementById('sales-pagination');
+  if (pages <= 1) { el.innerHTML = ''; return; }
+  let html = `<button class="page-btn" onclick="goPage(${currentPage-1})" ${currentPage===1?'disabled':''}>‹</button>`;
+  for (let p=1; p<=pages; p++) {
+    html += `<button class="page-btn ${p===currentPage?'active':''}" onclick="goPage(${p})">${p}</button>`;
+    if (p > 3 && p < pages - 1 && Math.abs(p - currentPage) > 2) { html += '…'; p = pages - 2; }
+  }
+  html += `<button class="page-btn" onclick="goPage(${currentPage+1})" ${currentPage===pages?'disabled':''}>›</button>`;
+  el.innerHTML = html;
+}
+
+function goPage(p) {
+  const pages = Math.ceil(filtered.length / PER_PAGE);
+  if (p < 1 || p > pages) return;
+  currentPage = p;
+  renderTable();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function confirmDeleteSale(saleId, itemName, total) {
+  Confirm.show({
+    title:       'Delete this sale record?',
+    message:     `Sale "${itemName}" for ${formatUGX(total)} will be removed. Stock will be restored.`,
+    confirmText: 'Delete Record',
+    type:        'danger',
+    onConfirm:   () => deleteSale(saleId)
+  });
+}
+
+async function deleteSale(saleId) {
+  const res = await Sales.delete(saleId);
+  if (!res.success) { Toast.danger(res.message || 'Failed to delete sale.'); return; }
+  Toast.success('Sale record deleted. Stock restored.');
+  await loadSales();
+}
+
+function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+</script>
+</body>
+</html>
+
+
+

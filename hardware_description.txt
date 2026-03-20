@@ -1,0 +1,38 @@
+
+WEB APPLICATION FOR HARDWARE RECORDS KEEPING AND TRACKING SYTEM
+
+This project aims at doing something inline with ERP but contextualized to a hardware. The system should be able to allow data entry, and records viewing.
+Since hardware involves a lot of items, we can allow the user categorize these items by creating a category, then registering items under each category.
+
+FUNCTIONAL REQUIREMENTS
+•	The system should allow for authentication where user provides user name and password, cater for registration just in case account doesn’t exist and also option to reset password.
+•	The system should allow the user to register category, then items under that particular category. So that we can easily group items like steel, Pipes etc.
+•	The system should allow setting and updating prices. If this is good, we can just use one screen where items are viewed, then display the prices and we can edit from there, if it’s good that way instead of having redundant screens
+•	The system should also allow to enter the restock, can also allow the user to enter and edit the restock level but we can make it default to 20 for all items.
+•	The system should allow viewing for all the data stored in it, and in the same view screen we should be able to perform all the CRUD operations, like items on the left and the CRUD icons appear on the right. We fetch all items stored and records.
+•	The display for sales we can have options to just view sales history even up to a year, then the default should be daily sales, weekly and monthly. We can have this cumulative per day.
+•	The system should visualize statistics for all operations like sales and restock daily, weekly and monthly. We can implement both line graphs and bar graphs.
+•	The system should allow for report generation filtered by dates, and items just in case.
+•	All views should be filtered by date, item category or just a single item or selected items
+•	The system should logout the user after long time of inactivity
+
+UI DESIGN
+As per now, the system is meant to be used by only one person and it’s the business owner who will be entering records and viewing, so all the operations are handled by a single person. But we shall have roles for admin as well and as per now they can have equal privileges.
+Since its for a single user, we want after the authentication, the user lands straight to the dashboard. It should have ha side bar and the side bar should be having parent and child buttons for example Sales Management can be a parent button and child buttons can be Record Sales, View Sales etc , and can be so for all other operations. The child buttons should appear indented under the parent and should hide and unhide when other options are selected for a clear view.
+
+The side bar can be hidden and unhidden to widen our area of view.
+Color: We shall use light green and white 
+
+	CAUTION
+•	The interface should be intuitive, aesthetic and nice looking. It should be simple to use by age bracket of above 40, so ensure buttons are large enough. 
+•	Should implement error prevention and error recovery mechanisms like over prompting the user to confirm whether they really wanna take a certain risky action, then implementing undo for certain risky operations like recording sales or delete
+•	Interface should be interactive enough
+•	Interface should implement the principles of HCI like affordance, constraints, natural mapping, signifiers, usability, efficiency, effectiveness among others.
+•	The interface should be both mobile and desktop friendly since our user will overly be using a phone
+TECHNOLOGIES
+•	UI – HTML5, JS, jQuery, Bootstrap, Custom CSS 
+•	Back end – PHP, JS, AJAX
+•	Storage – MySQL with Xampp
+•	Hosting – Infinity free , will at first use free tier, so avoid complex queries for the database, what’s hard we implement it in PHP.
+CAUTION: Make the system modular enough by separating concerns, we have separate PHP, HTML, JS, CSS where necessary except for security issues.
+

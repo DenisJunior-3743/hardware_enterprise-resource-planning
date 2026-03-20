@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Industrial Atelier ERP - Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-tertiary-fixed-variant": "#7f2448",
+              "on-secondary-fixed-variant": "#354a53",
+              "surface-container-highest": "#e1e3e4",
+              "primary-fixed-dim": "#91d78a",
+              "on-surface": "#191c1d",
+              "on-background": "#191c1d",
+              "background": "#f8f9fa",
+              "surface-container-lowest": "#ffffff",
+              "inverse-primary": "#91d78a",
+              "surface-variant": "#e1e3e4",
+              "error": "#ba1a1a",
+              "on-error": "#ffffff",
+              "surface": "#f8f9fa",
+              "on-secondary-fixed": "#071e27",
+              "tertiary-container": "#b14b6f",
+              "primary-container": "#3a7b3a",
+              "secondary": "#4c616c",
+              "surface-container-low": "#f3f4f5",
+              "inverse-on-surface": "#f0f1f2",
+              "on-primary-fixed": "#002203",
+              "on-surface-variant": "#40493d",
+              "secondary-fixed-dim": "#b4cad6",
+              "primary": "#206223",
+              "outline-variant": "#bfcaba",
+              "tertiary-fixed": "#ffd9e2",
+              "surface-dim": "#d9dadb",
+              "on-tertiary-container": "#ffedf0",
+              "error-container": "#ffdad6",
+              "primary-fixed": "#acf4a4",
+              "secondary-fixed": "#cfe6f2",
+              "on-primary": "#ffffff",
+              "on-primary-container": "#cbffc2",
+              "surface-container-high": "#e7e8e9",
+              "tertiary-fixed-dim": "#ffb1c7",
+              "on-secondary": "#ffffff",
+              "on-secondary-container": "#526772"
+            },
+            fontFamily: {
+              "headline": ["Inter"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+      body { font-family: 'Inter', sans-serif; }
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      .glass-card {
+        background: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(20px);
+      }
+      .primary-gradient {
+        background: linear-gradient(135deg, #206223 0%, #3a7b3a 100%);
+      }
+    </style>
+</head>
+<body class="bg-surface text-on-surface">
+<!-- SideNavBar (Authority: JSON) -->
+<aside class="h-screen w-64 fixed left-0 top-0 bg-slate-100 dark:bg-slate-950 flex flex-col h-full py-4 border-r-0 z-50">
+<div class="px-6 mb-8">
+<h1 class="text-lg font-bold text-slate-900 dark:text-slate-100">Industrial Atelier</h1>
+<p class="text-xs font-medium text-slate-500 tracking-wider">Hardware ERP</p>
+</div>
+<nav class="flex-1 space-y-1">
+<!-- Active Tab: Dashboard -->
+<a class="flex items-center gap-3 bg-green-200 dark:bg-green-900/40 text-green-900 dark:text-green-100 rounded-lg px-4 py-3 mx-2 active:translate-x-1 duration-200 font-sans text-base font-semibold" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-3 text-slate-600 dark:text-slate-400 px-4 py-3 mx-2 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-lg transition-all active:translate-x-1 duration-200 font-sans text-base font-semibold" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span>Inventory</span>
+</a>
+<a class="flex items-center gap-3 text-slate-600 dark:text-slate-400 px-4 py-3 mx-2 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-lg transition-all active:translate-x-1 duration-200 font-sans text-base font-semibold" href="#">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+<span>Sales Management</span>
+</a>
+<a class="flex items-center gap-3 text-slate-600 dark:text-slate-400 px-4 py-3 mx-2 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-lg transition-all active:translate-x-1 duration-200 font-sans text-base font-semibold" href="#">
+<span class="material-symbols-outlined" data-icon="moped">moped</span>
+<span>Restock Management</span>
+</a>
+<a class="flex items-center gap-3 text-slate-600 dark:text-slate-400 px-4 py-3 mx-2 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-lg transition-all active:translate-x-1 duration-200 font-sans text-base font-semibold" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span>Reports</span>
+</a>
+</nav>
+<div class="mt-auto pt-4 border-t border-slate-200 dark:border-slate-800">
+<a class="flex items-center gap-3 text-slate-600 dark:text-slate-400 px-4 py-3 mx-2 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-lg transition-all font-sans text-base font-semibold" href="#">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+<span>Help Center</span>
+</a>
+<a class="flex items-center gap-3 text-slate-600 dark:text-slate-400 px-4 py-3 mx-2 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-lg transition-all font-sans text-base font-semibold" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span>Sign Out</span>
+</a>
+</div>
+</aside>
+<!-- Main Canvas -->
+<main class="ml-64 min-h-screen">
+<!-- TopAppBar (Authority: JSON) -->
+<header class="flex items-center justify-between px-6 w-full sticky top-0 z-40 bg-slate-50 dark:bg-slate-900 h-16 shadow-none">
+<div class="flex items-center gap-8">
+<div class="relative group">
+<span class="absolute inset-y-0 left-3 flex items-center text-slate-400 group-focus-within:text-primary transition-colors">
+<span class="material-symbols-outlined">search</span>
+</span>
+<input class="bg-surface-container-highest border-none rounded-xl pl-10 pr-4 py-2 w-64 focus:ring-0 focus:bg-surface-container-lowest transition-all text-sm" placeholder="Search Atelier Inventory..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-slate-500 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors rounded-full relative">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-tertiary rounded-full"></span>
+</button>
+<button class="p-2 text-slate-500 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors rounded-full">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<div class="h-8 w-8 rounded-full bg-primary-fixed-dim overflow-hidden ml-2">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="Close up professional portrait of a store manager" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD8LD-m198tKExvbUVTAJiqJX31x6P9lgvO2ugR2dPdor_7p0lztvpxFg8X5hWiNuhWE0LVTKU5npQe4dWXwaO2g47PrH1oqIZcbyTkA02URiFO--2qN433TpqDVnnDOiqz5e0ym3ylJ-r9YpDuyHxNh2o5ph5bIrM2owz6A_YRl39xurdkdN0JUJL9sQ21oLhe7e0l6p6eUZ4gItTbp2kMF8zgOABa6_xw15OtWeY7yO-7U3cQ6YrbOPMKa52euTcgmcrVEO01c63V"/>
+</div>
+</div>
+</header>
+<!-- Content Body -->
+<div class="p-8 max-w-7xl mx-auto">
+<!-- Header Section -->
+<div class="flex items-end justify-between mb-10">
+<div>
+<span class="text-secondary label-md uppercase font-bold tracking-widest text-xs">Overview</span>
+<h2 class="text-4xl font-black text-on-surface tracking-tighter mt-1">Dashboard</h2>
+</div>
+<div class="flex gap-4">
+<button class="flex items-center gap-2 px-6 py-3 bg-surface-container-high text-primary font-bold rounded-xl transition-all active:scale-95">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">add</span>
+<span>Add Item</span>
+</button>
+<button class="flex items-center gap-2 px-8 py-3 primary-gradient text-on-primary font-bold rounded-xl shadow-lg shadow-primary/20 transition-all active:scale-95">
+<span class="material-symbols-outlined">point_of_sale</span>
+<span>Quick Sale</span>
+</button>
+</div>
+</div>
+<!-- Bento Grid Dashboard -->
+<div class="grid grid-cols-12 gap-6">
+<!-- Main Metric: Daily Sales -->
+<div class="col-span-12 lg:col-span-8 bg-surface-container-lowest glass-card rounded-xl p-8 flex flex-col justify-between h-80 relative overflow-hidden">
+<div class="relative z-10">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">trending_up</span>
+<h3 class="font-bold text-on-surface-variant uppercase tracking-wider text-sm">Total Sales Today</h3>
+</div>
+<p class="text-7xl font-black tracking-tighter text-on-surface">$14,290.50</p>
+<div class="mt-4 flex items-center gap-2">
+<span class="px-2 py-1 bg-primary-fixed text-on-primary-fixed text-xs font-bold rounded-lg">+12.4%</span>
+<span class="text-on-surface-variant text-sm">vs. yesterday cumulative</span>
+</div>
+</div>
+<!-- Abstract Visualization -->
+<div class="absolute bottom-0 right-0 w-2/3 h-full opacity-10 pointer-events-none">
+<svg class="w-full h-full" viewbox="0 0 400 200">
+<path class="text-primary" d="M0 150 Q 50 120 100 140 T 200 80 T 300 100 T 400 40 L 400 200 L 0 200 Z" fill="currentColor"></path>
+</svg>
+</div>
+</div>
+<!-- Secondary Metric: Low Stock Tiles -->
+<div class="col-span-12 lg:col-span-4 flex flex-col gap-6">
+<div class="bg-surface-container-lowest glass-card rounded-xl p-6 flex-1 flex flex-col justify-center">
+<div class="flex justify-between items-start mb-4">
+<div class="w-12 h-12 rounded-xl bg-tertiary-fixed flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">warning</span>
+</div>
+<span class="text-xs font-bold text-tertiary uppercase">Low Stock Alerts</span>
+</div>
+<p class="text-5xl font-black text-on-surface">18</p>
+<p class="text-sm text-on-surface-variant mt-2 font-medium">Items currently below 20 units</p>
+</div>
+<div class="bg-surface-container-lowest glass-card rounded-xl p-6 flex-1 flex flex-col justify-center border-l-4 border-primary">
+<div class="flex justify-between items-start mb-4">
+<div class="w-12 h-12 rounded-xl bg-primary-fixed flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">receipt_long</span>
+</div>
+<span class="text-xs font-bold text-primary uppercase">Orders Pending</span>
+</div>
+<p class="text-5xl font-black text-on-surface">04</p>
+<p class="text-sm text-on-surface-variant mt-2 font-medium">Processing for shipping</p>
+</div>
+</div>
+<!-- Recent Transactions Table -->
+<div class="col-span-12 lg:col-span-12 bg-surface-container-lowest rounded-xl overflow-hidden">
+<div class="px-8 py-6 flex items-center justify-between border-b border-surface-container-high">
+<h3 class="font-bold text-lg text-on-surface">Recent Transactions</h3>
+<button class="text-primary font-bold text-sm hover:underline">View All Ledger</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead class="bg-surface-container-low">
+<tr>
+<th class="px-8 py-4 text-xs font-bold text-secondary uppercase tracking-widest">Transaction ID</th>
+<th class="px-8 py-4 text-xs font-bold text-secondary uppercase tracking-widest">Item Description</th>
+<th class="px-8 py-4 text-xs font-bold text-secondary uppercase tracking-widest">Customer</th>
+<th class="px-8 py-4 text-xs font-bold text-secondary uppercase tracking-widest">Date</th>
+<th class="px-8 py-4 text-xs font-bold text-secondary uppercase tracking-widest text-right">Amount</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-container-low">
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-8 py-6 font-mono text-xs text-on-surface-variant">#TXN-90234</td>
+<td class="px-8 py-6">
+<div class="font-bold text-on-surface">Precision Steel Caliper (150mm)</div>
+<div class="text-xs text-on-surface-variant">Industrial Hardware / Tools</div>
+</td>
+<td class="px-8 py-6 text-on-surface-variant font-medium">McLean Construction Ltd.</td>
+<td class="px-8 py-6 text-on-surface-variant font-medium">Oct 24, 10:32 AM</td>
+<td class="px-8 py-6 text-right font-black text-on-surface">$1,245.00</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-8 py-6 font-mono text-xs text-on-surface-variant">#TXN-90235</td>
+<td class="px-8 py-6">
+<div class="font-bold text-on-surface">Grade 8 Structural Bolts (Bulk)</div>
+<div class="text-xs text-on-surface-variant">Fasteners / Heavy Duty</div>
+</td>
+<td class="px-8 py-6 text-on-surface-variant font-medium">Private Sale</td>
+<td class="px-8 py-6 text-on-surface-variant font-medium">Oct 24, 11:15 AM</td>
+<td class="px-8 py-6 text-right font-black text-on-surface">$450.25</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-8 py-6 font-mono text-xs text-on-surface-variant">#TXN-90236</td>
+<td class="px-8 py-6">
+<div class="font-bold text-on-surface">High-Torque Impact Driver v2</div>
+<div class="text-xs text-on-surface-variant">Power Tools / Cordless</div>
+</td>
+<td class="px-8 py-6 text-on-surface-variant font-medium">BuildRight Systems</td>
+<td class="px-8 py-6 text-on-surface-variant font-medium">Oct 24, 01:45 PM</td>
+<td class="px-8 py-6 text-right font-black text-on-surface">$2,890.00</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Bottom Low Stock Detailed Bento Item -->
+<div class="col-span-12 grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="col-span-1 bg-surface-container-lowest p-6 rounded-xl flex items-center gap-4">
+<div class="h-16 w-16 rounded-lg bg-surface-container-highest flex-shrink-0 overflow-hidden">
+<img alt="Hex Bolt" class="w-full h-full object-cover" data-alt="Close up of steel industrial bolts" src="https://lh3.googleusercontent.com/aida-public/AB6AXuADZ1GJFk57VvZSgyZoLM0rZnyNVRMVSYODUsY1dkL3uGqVGDrGRXT9gK6a4LLf7UD-IQUyVSy09LnAm_SwRmq0DXTITglzwz49aDV81-0uLZerpo3-_eTv8S4q-qdufvJSQ3fD2IBuXQT7nUVwXXowvZ4wXA_u1KG8KXul7kJUWz5etQclBz3awWJshsXGyBu8DV9mpAXIt5pF0fT6PX2jJLywLnxxa81IkeMHUd-lAI_rVJyQ5s_Bgubx8zXLcZ-QT2rKvTEIg7tW"/>
+</div>
+<div>
+<p class="font-bold text-sm text-on-surface">M12 Hex Bolts</p>
+<p class="text-xs text-tertiary font-bold">Qty: 12 remaining</p>
+<div class="w-full bg-surface-container-high h-1 rounded-full mt-2">
+<div class="bg-tertiary h-1 w-[30%] rounded-full"></div>
+</div>
+</div>
+</div>
+<div class="col-span-1 bg-surface-container-lowest p-6 rounded-xl flex items-center gap-4">
+<div class="h-16 w-16 rounded-lg bg-surface-container-highest flex-shrink-0 overflow-hidden">
+<img alt="Plywood" class="w-full h-full object-cover" data-alt="Stacked premium wood sheets" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC1ijNPB82hIzZPG_xYiAupoGP7F5R8lx8MovnTPeL12mz0dSDAPR2e9KQx6NOQtDwSCPzRAVlMLHYBKQ8KTCpnU01pbZtJmDCQpLUKcJSylX4PD3bvMf_UgLqKq8Y_AEPN8maFwsO0Xlj9q8cRQY--3M2rPd0j1ZpVBeFZ2n9ATSkWUXhDQs4GhdYoXqga2bTaWtxFjqWyFVM5qrTBUkSKofi66qjrfFn_WkYWzg8ku33lfeOao7Qq4scTsF6a_3PMTMKGm40LPseF"/>
+</div>
+<div>
+<p class="font-bold text-sm text-on-surface">Birch Plywood 18mm</p>
+<p class="text-xs text-tertiary font-bold">Qty: 08 remaining</p>
+<div class="w-full bg-surface-container-high h-1 rounded-full mt-2">
+<div class="bg-tertiary h-1 w-[20%] rounded-full"></div>
+</div>
+</div>
+</div>
+<div class="col-span-1 bg-surface-container-lowest p-6 rounded-xl flex items-center gap-4">
+<div class="h-16 w-16 rounded-lg bg-surface-container-highest flex-shrink-0 overflow-hidden">
+<img alt="Drill" class="w-full h-full object-cover" data-alt="A yellow industrial power drill" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB8CvvP0Rq92KKWJisjolflqXp3coUUtSpV0ZpktPO4nlBrhm1t4w3tvu3ZaIS7lEyXP1qzbZtWFzMmbbKvSjZTyFmMfrliMRUP1asE31KndSl7r72DuAbiiPO_0mwYqgHuYaFGvRS9_RK--Iqk2OUKcCQHQGjQmAL4DHcLOTsHxi69iCokectLY2djJsSjegimrQvAFZpsq4aOdtGj1NT_ckj1mYNXLFI3AejSDjqEk8x6TQDgWcoWh1_QT5juEmrzCoFccIJl9Zmb"/>
+</div>
+<div>
+<p class="font-bold text-sm text-on-surface">X-Line Drill Set</p>
+<p class="text-xs text-tertiary font-bold">Qty: 04 remaining</p>
+<div class="w-full bg-surface-container-high h-1 rounded-full mt-2">
+<div class="bg-tertiary h-1 w-[10%] rounded-full"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

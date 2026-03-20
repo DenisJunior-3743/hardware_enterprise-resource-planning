@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Reports &amp; Analytics - Industrial Atelier ERP</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+        }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-tertiary-container": "#ffedf0",
+              "error-container": "#ffdad6",
+              "surface-dim": "#d9dadb",
+              "tertiary-fixed-dim": "#ffb1c7",
+              "surface-tint": "#2a6b2c",
+              "surface-container-high": "#e7e8e9",
+              "on-background": "#191c1d",
+              "outline": "#707a6c",
+              "on-secondary": "#ffffff",
+              "on-primary-fixed-variant": "#0c5216",
+              "surface-container-low": "#f3f4f5",
+              "inverse-surface": "#2e3132",
+              "outline-variant": "#bfcaba",
+              "tertiary-container": "#b14b6f",
+              "on-error-container": "#93000a",
+              "on-primary": "#ffffff",
+              "on-tertiary": "#ffffff",
+              "error": "#ba1a1a",
+              "tertiary": "#923357",
+              "surface-container-lowest": "#ffffff",
+              "on-tertiary-fixed-variant": "#7f2448",
+              "primary-fixed-dim": "#91d78a",
+              "inverse-on-surface": "#f0f1f2",
+              "inverse-primary": "#91d78a",
+              "on-secondary-fixed": "#071e27",
+              "on-primary-fixed": "#002203",
+              "surface-container": "#edeeef",
+              "primary-fixed": "#acf4a4",
+              "on-error": "#ffffff",
+              "background": "#f8f9fa",
+              "secondary-fixed-dim": "#b4cad6",
+              "surface": "#f8f9fa",
+              "primary-container": "#3a7b3a",
+              "on-tertiary-fixed": "#3f001c",
+              "on-surface": "#191c1d",
+              "on-secondary-fixed-variant": "#354a53",
+              "secondary": "#4c616c",
+              "surface-container-highest": "#e1e3e4",
+              "on-secondary-container": "#526772",
+              "surface-bright": "#f8f9fa",
+              "primary": "#206223",
+              "on-primary-container": "#cbffc2",
+              "tertiary-fixed": "#ffd9e2",
+              "on-surface-variant": "#40493d",
+              "secondary-fixed": "#cfe6f2",
+              "secondary-container": "#cfe6f2",
+              "surface-variant": "#e1e3e4"
+            },
+            fontFamily: {
+              "headline": ["Inter"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+</head>
+<body class="bg-surface text-on-surface antialiased">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-6 h-16 w-full bg-white/80 dark:bg-slate-900/80 backdrop-blur-md shadow-sm dark:shadow-none">
+<div class="flex items-center gap-4">
+<span class="text-xl font-bold text-green-900 dark:text-green-100 tracking-tighter">Industrial Atelier ERP</span>
+</div>
+<div class="flex-1 max-w-xl mx-8 hidden md:block">
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-3 text-outline">search</span>
+<input class="w-full bg-surface-container-highest border-none rounded-xl py-2 pl-10 pr-4 focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition-all" placeholder="Search analytics, SKU, or orders..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 rounded-full hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors active:scale-95 duration-150">
+<span class="material-symbols-outlined text-slate-600">notifications</span>
+</button>
+<button class="p-2 rounded-full hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors active:scale-95 duration-150">
+<span class="material-symbols-outlined text-slate-600">settings</span>
+</button>
+<div class="h-8 w-8 rounded-full bg-primary-container flex items-center justify-center overflow-hidden border border-outline-variant">
+<img alt="User profile avatar" data-alt="User profile avatar icon" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCuBCy3CBD5PXQWSFpW1sjWITGefwTO9--U6X6gNxuPkZQP9NTneqHEs8872f0mG5tDh58383tN9hjRCMUOZyKbIw6qK87OwNnIYyUwg6Xd6ziBdeaCjq4fR0gSg7HbQKfvO6wZ39ILBlOSXRvLiPQ2KkHPDspHMavRsQgV4qR7KWG4NoJx36s2uWkm-j667P0Gzg_prT28j8P0PtBngqlpqHwkHjFG9pBykA49_kdGyB1JOWkCRCGn4pxIgRs1q-NjwhiHivykdbwC"/>
+</div>
+</div>
+</header>
+<!-- SideNavBar -->
+<aside class="fixed left-0 h-full w-64 z-40 flex flex-col pt-20 pb-4 h-screen bg-slate-50 dark:bg-slate-950 border-r border-slate-200 dark:border-slate-800 hidden md:flex">
+<nav class="flex flex-col gap-1 px-2">
+<a class="text-slate-600 dark:text-slate-400 mx-2 px-4 py-3 flex items-center gap-3 hover:bg-slate-200 dark:hover:bg-slate-800 transition-all active:opacity-80" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-sm font-medium tracking-wide">Dashboard</span>
+</a>
+<a class="text-slate-600 dark:text-slate-400 mx-2 px-4 py-3 flex items-center gap-3 hover:bg-slate-200 dark:hover:bg-slate-800 transition-all active:opacity-80" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="text-sm font-medium tracking-wide">Inventory</span>
+</a>
+<a class="text-slate-600 dark:text-slate-400 mx-2 px-4 py-3 flex items-center gap-3 hover:bg-slate-200 dark:hover:bg-slate-800 transition-all active:opacity-80" href="#">
+<span class="material-symbols-outlined">shopping_cart</span>
+<span class="text-sm font-medium tracking-wide">Orders</span>
+</a>
+<!-- Active State: Reports -->
+<a class="bg-green-100 dark:bg-green-900/30 text-green-900 dark:text-green-100 rounded-lg mx-2 px-4 py-3 flex items-center gap-3 active:opacity-80" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">analytics</span>
+<span class="text-sm font-medium tracking-wide">Reports</span>
+</a>
+<a class="text-slate-600 dark:text-slate-400 mx-2 px-4 py-3 flex items-center gap-3 hover:bg-slate-200 dark:hover:bg-slate-800 transition-all active:opacity-80" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-sm font-medium tracking-wide">Settings</span>
+</a>
+</nav>
+<div class="mt-auto px-6 py-4 border-t border-outline-variant/20">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-primary flex items-center justify-center text-on-primary font-black">A</div>
+<div>
+<p class="text-sm font-bold text-on-surface">Atelier ERP</p>
+<p class="text-xs text-secondary">Hardware Logistics</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="md:ml-64 pt-20 px-6 pb-12 min-h-screen">
+<!-- Header Section -->
+<header class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
+<div>
+<nav class="flex items-center gap-2 text-label-md uppercase text-secondary font-bold tracking-widest mb-1">
+<span>Analytics</span>
+<span class="material-symbols-outlined text-[12px]">chevron_right</span>
+<span class="text-primary">Performance Overview</span>
+</nav>
+<h1 class="text-4xl font-extrabold text-on-surface tracking-tight">Reports &amp; Analytics</h1>
+</div>
+<div class="flex items-center gap-3">
+<button class="flex items-center gap-2 px-6 h-12 rounded-xl bg-surface-container-high text-primary font-bold hover:bg-surface-container-highest transition-all active:scale-95">
+<span class="material-symbols-outlined">download</span>
+                    Download CSV
+                </button>
+<button class="flex items-center gap-2 px-8 h-12 rounded-xl bg-gradient-to-br from-primary to-primary-container text-on-primary font-bold shadow-lg shadow-primary/20 hover:opacity-90 transition-all active:scale-95">
+<span class="material-symbols-outlined">auto_graph</span>
+                    Generate Report
+                </button>
+</div>
+</header>
+<!-- Filters Section (Bento Style) -->
+<section class="grid grid-cols-1 lg:grid-cols-4 gap-4 mb-8">
+<div class="lg:col-span-3 bg-surface-container-lowest p-6 rounded-2xl flex flex-wrap items-center gap-6">
+<div class="flex-1 min-w-[300px]">
+<p class="text-label-md font-bold text-secondary uppercase mb-3 ml-1">Date Range</p>
+<div class="flex bg-surface-container-low p-1 rounded-xl">
+<button class="flex-1 py-2 text-sm font-bold rounded-lg bg-surface-container-lowest text-primary shadow-sm">Daily</button>
+<button class="flex-1 py-2 text-sm font-medium rounded-lg text-secondary hover:text-on-surface transition-colors">Weekly</button>
+<button class="flex-1 py-2 text-sm font-medium rounded-lg text-secondary hover:text-on-surface transition-colors">Monthly</button>
+<button class="flex-1 py-2 text-sm font-medium rounded-lg text-secondary hover:text-on-surface transition-colors">Custom</button>
+</div>
+</div>
+<div class="w-full md:w-64">
+<p class="text-label-md font-bold text-secondary uppercase mb-3 ml-1">Category</p>
+<div class="relative">
+<select class="w-full h-11 bg-surface-container-low border-none rounded-xl px-4 text-sm font-semibold appearance-none focus:ring-2 focus:ring-primary">
+<option>All Categories</option>
+<option>Steel Girders</option>
+<option>Copper Pipes</option>
+<option>Industrial Fasteners</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-2.5 pointer-events-none text-secondary">expand_more</span>
+</div>
+</div>
+</div>
+<div class="bg-primary text-on-primary p-6 rounded-2xl flex flex-col justify-center">
+<p class="text-label-md font-bold text-on-primary/60 uppercase mb-1">Status</p>
+<h3 class="text-xl font-bold flex items-center gap-2">
+<span class="w-3 h-3 bg-primary-fixed rounded-full animate-pulse"></span>
+                    Live Data Stream
+                </h3>
+<p class="text-sm opacity-80 mt-2">Last updated 2 mins ago</p>
+</div>
+</section>
+<!-- Key Metrics Cards (The Inventory Status Tiles) -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+<div class="bg-surface-container-lowest p-8 rounded-2xl shadow-sm border border-outline-variant/5">
+<div class="flex justify-between items-start mb-4">
+<div class="p-3 bg-green-50 rounded-xl">
+<span class="material-symbols-outlined text-primary text-3xl">payments</span>
+</div>
+<span class="flex items-center gap-1 text-primary font-bold text-sm bg-primary-fixed/30 px-2 py-1 rounded-lg">
+<span class="material-symbols-outlined text-sm">trending_up</span> 12%
+                    </span>
+</div>
+<p class="text-secondary font-medium mb-1">Total Revenue</p>
+<h2 class="text-4xl font-extrabold tracking-tight">€412,890</h2>
+</div>
+<div class="bg-surface-container-lowest p-8 rounded-2xl shadow-sm border border-outline-variant/5">
+<div class="flex justify-between items-start mb-4">
+<div class="p-3 bg-blue-50 rounded-xl">
+<span class="material-symbols-outlined text-blue-600 text-3xl">shopping_cart_checkout</span>
+</div>
+<span class="flex items-center gap-1 text-primary font-bold text-sm bg-primary-fixed/30 px-2 py-1 rounded-lg">
+<span class="material-symbols-outlined text-sm">trending_up</span> 8.4%
+                    </span>
+</div>
+<p class="text-secondary font-medium mb-1">Total Sales Count</p>
+<h2 class="text-4xl font-extrabold tracking-tight">1,204</h2>
+</div>
+<div class="bg-surface-container-lowest p-8 rounded-2xl shadow-sm border border-outline-variant/5">
+<div class="flex justify-between items-start mb-4">
+<div class="p-3 bg-amber-50 rounded-xl">
+<span class="material-symbols-outlined text-amber-600 text-3xl">package_2</span>
+</div>
+<span class="flex items-center gap-1 text-tertiary font-bold text-sm bg-tertiary-fixed/30 px-2 py-1 rounded-lg">
+<span class="material-symbols-outlined text-sm">trending_down</span> 2.1%
+                    </span>
+</div>
+<p class="text-secondary font-medium mb-1">Restock Volume</p>
+<h2 class="text-4xl font-extrabold tracking-tight">85,420 <span class="text-lg font-medium text-secondary">Units</span></h2>
+</div>
+</section>
+<!-- Charts Section (Asymmetric Grid) -->
+<section class="grid grid-cols-1 lg:grid-cols-5 gap-6 mb-8">
+<!-- Line Chart: Sales Trends -->
+<div class="lg:col-span-3 bg-surface-container-lowest p-8 rounded-3xl border border-outline-variant/5">
+<div class="flex justify-between items-center mb-10">
+<div>
+<h3 class="text-xl font-bold">Sales Trends Over Time</h3>
+<p class="text-sm text-secondary">Revenue growth trajectory for current fiscal period</p>
+</div>
+<div class="flex gap-2">
+<div class="flex items-center gap-2 text-sm text-secondary font-medium px-3 py-1 bg-surface-container-low rounded-lg">
+<span class="w-3 h-3 rounded-full bg-primary"></span> Revenue
+                        </div>
+</div>
+</div>
+<!-- Visual placeholder for a sophisticated graph -->
+<div class="relative h-64 w-full flex items-end gap-1">
+<div class="flex-1 bg-gradient-to-t from-primary/20 to-primary/5 rounded-t-lg" style="height: 40%"></div>
+<div class="flex-1 bg-gradient-to-t from-primary/20 to-primary/5 rounded-t-lg" style="height: 55%"></div>
+<div class="flex-1 bg-gradient-to-t from-primary/20 to-primary/5 rounded-t-lg" style="height: 45%"></div>
+<div class="flex-1 bg-gradient-to-t from-primary/20 to-primary/5 rounded-t-lg" style="height: 70%"></div>
+<div class="flex-1 bg-gradient-to-t from-primary/20 to-primary/5 rounded-t-lg" style="height: 65%"></div>
+<div class="flex-1 bg-gradient-to-t from-primary/20 to-primary/5 rounded-t-lg" style="height: 90%"></div>
+<div class="flex-1 bg-gradient-to-t from-primary/20 to-primary/5 rounded-t-lg" style="height: 85%"></div>
+<div class="flex-1 bg-gradient-to-t from-primary/20 to-primary/5 rounded-t-lg" style="height: 100%"></div>
+<!-- Curved Line Overlay (Simplified SVG) -->
+<svg class="absolute inset-0 w-full h-full overflow-visible" preserveaspectratio="none">
+<path d="M0 160 Q 50 140, 100 100 T 200 120 T 300 60 T 400 80 T 500 20 T 600 0" fill="none" stroke="#206223" stroke-linecap="round" stroke-width="3"></path>
+</svg>
+</div>
+<div class="flex justify-between mt-4 text-xs font-bold text-secondary uppercase tracking-widest">
+<span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+</div>
+</div>
+<!-- Bar Chart: Stock Levels -->
+<div class="lg:col-span-2 bg-surface-container-lowest p-8 rounded-3xl border border-outline-variant/5 flex flex-col">
+<h3 class="text-xl font-bold mb-1">Stock Levels by Category</h3>
+<p class="text-sm text-secondary mb-8">Capacity distribution across main inventories</p>
+<div class="flex-1 flex flex-col justify-around">
+<div class="space-y-2">
+<div class="flex justify-between text-sm font-bold">
+<span>Steel Girders</span>
+<span>82%</span>
+</div>
+<div class="w-full bg-surface-container-low h-3 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[82%] rounded-full"></div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between text-sm font-bold">
+<span>Pipes &amp; Valves</span>
+<span>45%</span>
+</div>
+<div class="w-full bg-surface-container-low h-3 rounded-full overflow-hidden">
+<div class="bg-primary-container h-full w-[45%] rounded-full"></div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between text-sm font-bold">
+<span>Machinery Parts</span>
+<span>94%</span>
+</div>
+<div class="w-full bg-surface-container-low h-3 rounded-full overflow-hidden">
+<div class="bg-tertiary h-full w-[94%] rounded-full"></div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between text-sm font-bold">
+<span>Raw Aggregates</span>
+<span>28%</span>
+</div>
+<div class="w-full bg-surface-container-low h-3 rounded-full overflow-hidden">
+<div class="bg-secondary h-full w-[28%] rounded-full"></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Detailed Report Table (The No-Divider Mandate applied with Zebra) -->
+<section class="bg-surface-container-lowest rounded-3xl overflow-hidden shadow-sm border border-outline-variant/5">
+<div class="p-8 flex justify-between items-center">
+<h3 class="text-2xl font-bold tracking-tight">Detailed Report</h3>
+<div class="flex items-center gap-2">
+<button class="p-2 hover:bg-surface-container-low rounded-lg text-secondary"><span class="material-symbols-outlined">filter_list</span></button>
+<button class="p-2 hover:bg-surface-container-low rounded-lg text-secondary"><span class="material-symbols-outlined">more_vert</span></button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead>
+<tr class="text-label-md uppercase font-bold text-secondary tracking-widest bg-surface-container-low">
+<th class="px-8 py-4">Date</th>
+<th class="px-8 py-4">Item Name</th>
+<th class="px-8 py-4">Category</th>
+<th class="px-8 py-4">Amount</th>
+<th class="px-8 py-4 text-right">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-transparent">
+<tr class="bg-surface-container-lowest hover:bg-primary/5 transition-colors">
+<td class="px-8 py-6 font-medium">Oct 24, 2023</td>
+<td class="px-8 py-6 font-bold text-on-surface">HEB 300 Structural Beam</td>
+<td class="px-8 py-6"><span class="px-3 py-1 bg-surface-container rounded-full text-xs font-bold text-secondary">STEEL</span></td>
+<td class="px-8 py-6 font-bold">€12,450.00</td>
+<td class="px-8 py-6 text-right">
+<button class="text-primary font-bold hover:underline flex items-center justify-end gap-1 ml-auto">
+<span class="material-symbols-outlined text-sm">export_notes</span> Export
+                                </button>
+</td>
+</tr>
+<tr class="bg-surface-container-low hover:bg-primary/5 transition-colors">
+<td class="px-8 py-6 font-medium">Oct 23, 2023</td>
+<td class="px-8 py-6 font-bold text-on-surface">Copper Tubing 22mm x 3m</td>
+<td class="px-8 py-6"><span class="px-3 py-1 bg-surface-container rounded-full text-xs font-bold text-secondary">PIPES</span></td>
+<td class="px-8 py-6 font-bold">€4,820.50</td>
+<td class="px-8 py-6 text-right">
+<button class="text-primary font-bold hover:underline flex items-center justify-end gap-1 ml-auto">
+<span class="material-symbols-outlined text-sm">export_notes</span> Export
+                                </button>
+</td>
+</tr>
+<tr class="bg-surface-container-lowest hover:bg-primary/5 transition-colors">
+<td class="px-8 py-6 font-medium">Oct 23, 2023</td>
+<td class="px-8 py-6 font-bold text-on-surface">Industrial CNC Lathe Parts</td>
+<td class="px-8 py-6"><span class="px-3 py-1 bg-surface-container rounded-full text-xs font-bold text-secondary">MACHINERY</span></td>
+<td class="px-8 py-6 font-bold">€25,900.00</td>
+<td class="px-8 py-6 text-right">
+<button class="text-primary font-bold hover:underline flex items-center justify-end gap-1 ml-auto">
+<span class="material-symbols-outlined text-sm">export_notes</span> Export
+                                </button>
+</td>
+</tr>
+<tr class="bg-surface-container-low hover:bg-primary/5 transition-colors">
+<td class="px-8 py-6 font-medium">Oct 22, 2023</td>
+<td class="px-8 py-6 font-bold text-on-surface">Grade 8.8 Bolt Assortment</td>
+<td class="px-8 py-6"><span class="px-3 py-1 bg-surface-container rounded-full text-xs font-bold text-secondary">FASTENERS</span></td>
+<td class="px-8 py-6 font-bold">€1,140.00</td>
+<td class="px-8 py-6 text-right">
+<button class="text-primary font-bold hover:underline flex items-center justify-end gap-1 ml-auto">
+<span class="material-symbols-outlined text-sm">export_notes</span> Export
+                                </button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="p-8 bg-surface-container-low flex justify-between items-center">
+<span class="text-sm text-secondary font-medium">Showing 4 of 124 transactions</span>
+<div class="flex gap-2">
+<button class="w-10 h-10 rounded-xl bg-surface-container-lowest flex items-center justify-center border border-outline-variant/10 hover:bg-surface-container-high transition-all">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button class="w-10 h-10 rounded-xl bg-primary text-on-primary flex items-center justify-center transition-all">1</button>
+<button class="w-10 h-10 rounded-xl bg-surface-container-lowest flex items-center justify-center border border-outline-variant/10 hover:bg-surface-container-high transition-all">2</button>
+<button class="w-10 h-10 rounded-xl bg-surface-container-lowest flex items-center justify-center border border-outline-variant/10 hover:bg-surface-container-high transition-all">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</div>
+</section>
+</main>
+</body></html>

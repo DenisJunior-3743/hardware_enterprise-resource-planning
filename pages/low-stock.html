@@ -1,0 +1,321 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DukaSoft — Low Stock Alerts</title>
+  <link rel="stylesheet" href="../assets/css/style.css"/>
+  <style>
+    .alert-card {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--gray-200);
+      padding: 18px 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      transition: box-shadow 0.15s;
+    }
+    .alert-card:hover { box-shadow: var(--shadow-md); }
+    .alert-card.critical { border-left: 4px solid var(--red-500); }
+    .alert-card.low      { border-left: 4px solid var(--amber-500); }
+    .alert-icon {
+      width: 48px; height: 48px; border-radius: var(--radius-lg);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.25rem; flex-shrink: 0;
+    }
+    .alert-icon.critical { background: var(--red-100); }
+    .alert-icon.low      { background: var(--amber-100); }
+    .alert-info { flex: 1; }
+    .alert-name { font-weight: 700; font-size: 0.95rem; color: var(--gray-900); }
+    .alert-cat  { font-size: 0.78rem; color: var(--gray-400); margin-top: 2px; }
+    .alert-stock { text-align: right; }
+    .alert-qty  { font-size: 1.5rem; font-weight: 800; line-height: 1; }
+    .alert-qty.critical { color: var(--red-500); }
+    .alert-qty.low      { color: var(--amber-500); }
+    .alert-min  { font-size: 0.78rem; color: var(--gray-400); }
+    .alert-actions { display: flex; gap: 8px; flex-shrink: 0; }
+    .alert-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 700px) { .alert-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo"><div class="sidebar-logo-icon">🔧</div><div class="sidebar-logo-text"><h1>DukaSoft</h1><span>Hardware ERP</span></div></div>
+  <nav class="sidebar-nav">
+    <div class="nav-group"><a href="dashboard.html" class="nav-parent"><span class="nav-icon">📊</span><span class="nav-label">Dashboard</span></a></div>
+    <div class="nav-group"><button class="nav-parent" type="button"><span class="nav-icon">📦</span><span class="nav-label">Inventory</span><span class="nav-chevron">›</span></button><div class="nav-children"><a href="inventory.html" class="nav-child"><span class="child-dot"></span> View All Items</a><a href="categories.html" class="nav-child"><span class="child-dot"></span> Manage Categories</a><a href="add-item.html" class="nav-child"><span class="child-dot"></span> Add New Item</a></div></div>
+    <div class="nav-group"><button class="nav-parent" type="button"><span class="nav-icon">💰</span><span class="nav-label">Sales</span><span class="nav-chevron">›</span></button><div class="nav-children"><a href="record-sale.html" class="nav-child"><span class="child-dot"></span> Record a Sale</a><a href="sales-history.html" class="nav-child"><span class="child-dot"></span> Sales History</a></div></div>
+    <div class="nav-group">
+      <button class="nav-parent open active" type="button"><span class="nav-icon">🚚</span><span class="nav-label">Restock</span><span class="nav-chevron">›</span></button>
+      <div class="nav-children open">
+        <a href="record-restock.html" class="nav-child"><span class="child-dot"></span> Record Restock</a>
+        <a href="restock-history.html" class="nav-child"><span class="child-dot"></span> Restock History</a>
+        <a href="low-stock.html" class="nav-child active"><span class="child-dot"></span> Low Stock Alerts</a>
+      </div>
+    </div>
+    <div class="nav-group"><button class="nav-parent" type="button"><span class="nav-icon">📈</span><span class="nav-label">Reports</span><span class="nav-chevron">›</span></button><div class="nav-children"><a href="reports.html?tab=sales" class="nav-child"><span class="child-dot"></span> Sales Report</a><a href="reports.html?tab=inventory" class="nav-child"><span class="child-dot"></span> Inventory Report</a><a href="reports.html?tab=restock" class="nav-child"><span class="child-dot"></span> Restock Report</a></div></div>
+  </nav>
+  <div class="sidebar-footer">
+    <a href="../index.html" class="nav-parent" onclick="return signOut(event)"><span class="nav-icon">🚪</span><span class="nav-label">Sign Out</span></a>
+    <div class="sidebar-user"><div class="sidebar-avatar" id="sidebar-avatar-initials">--</div><div class="sidebar-user-info"><p id="sidebar-username">Loading...</p><span>Administrator</span></div></div>
+  </div>
+</aside>
+
+<header class="topbar" id="topbar">
+  <div class="topbar-left"><button class="sidebar-toggle">☰</button><div class="page-breadcrumb">Restock / <strong>Low Stock Alerts</strong></div></div>
+  <div class="topbar-right"><div class="topbar-search"><span class="search-icon">🔍</span><input type="text" placeholder="Search items..." oninput="filterAlerts(this.value)"/></div></div>
+</header>
+
+<main class="main-content" id="main-content">
+  <div class="page-inner">
+    <div class="page-header">
+      <div class="page-header-left">
+        <span class="page-tag">Restock</span>
+        <h2>Low Stock Alerts</h2>
+      </div>
+      <div class="page-header-actions">
+        <a href="record-restock.html" class="btn btn-primary">🚚 Record Restock</a>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stat-grid stat-grid-3" style="margin-bottom:24px;">
+      <div class="stat-card">
+        <div class="stat-card-top"><span class="stat-card-label">Critical (0 stock)</span><div class="stat-card-icon red">🚫</div></div>
+        <div class="stat-card-value red-val" id="ls-critical">0</div>
+        <div class="stat-card-sub red">Out of stock completely</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-top"><span class="stat-card-label">Low Stock</span><div class="stat-card-icon amber">⚠</div></div>
+        <div class="stat-card-value amber-val" id="ls-low">0</div>
+        <div class="stat-card-sub text-amber">Below restock minimum</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-top"><span class="stat-card-label">All OK</span><div class="stat-card-icon green">✅</div></div>
+        <div class="stat-card-value" id="ls-ok">0</div>
+        <div class="stat-card-sub green">Items well stocked</div>
+      </div>
+    </div>
+
+    <!-- Filter tabs -->
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
+      <div class="tabs">
+        <button class="tab-btn active" onclick="setFilter('all',this)">All Alerts</button>
+        <button class="tab-btn" onclick="setFilter('critical',this)">Critical (0 stock)</button>
+        <button class="tab-btn" onclick="setFilter('low',this)">Low Stock</button>
+      </div>
+      <select class="form-select" id="cat-filter" style="padding:8px 14px;width:auto;margin-left:auto;" onchange="filterAlerts('')">
+        <option value="">All Categories</option>
+      </select>
+    </div>
+
+    <!-- Alert cards -->
+    <div class="alert-grid" id="alerts-grid"></div>
+    <div id="alerts-empty" class="empty-state" style="display:none;">
+      <div class="empty-icon">✅</div>
+      <p id="alerts-empty-msg">All items are well stocked! No alerts at this time.</p>
+    </div>
+
+  </div>
+</main>
+
+<!-- Quick Restock Modal -->
+<div class="modal-overlay" id="quick-restock-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Quick Restock</h3>
+      <button class="modal-close" onclick="Modal.close('quick-restock-modal')">✕</button>
+    </div>
+    <div class="modal-body" style="display:flex;flex-direction:column;gap:16px;">
+      <div style="background:var(--amber-100);border-radius:var(--radius-lg);padding:14px 16px;">
+        <div style="font-weight:700;font-size:0.9rem;color:var(--amber-700);" id="qr-item-name">Item Name</div>
+        <div style="font-size:0.8rem;color:var(--amber-700);margin-top:4px;" id="qr-item-info">Current stock: 0</div>
+      </div>
+      <input type="hidden" id="qr-item-idx"/>
+      <div class="form-group">
+        <label class="form-label">Quantity to Add <span class="req">*</span></label>
+        <input class="form-input" type="number" id="qr-qty" min="1" placeholder="e.g. 50" style="font-size:1.1rem;"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Supplier (optional)</label>
+        <input class="form-input" type="text" id="qr-supplier" placeholder="e.g. Nile Hardware Suppliers"/>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline btn-lg" onclick="Modal.close('quick-restock-modal')">Cancel</button>
+      <button class="btn btn-primary btn-lg" onclick="saveQuickRestock()">✅ Add Stock</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast-container" id="toast-container"></div>
+
+<script src="../assets/js/app.js"></script>
+<script src="../assets/js/api.js"></script>
+<script>
+let allItems      = [];
+let activeFilter  = 'all';
+let _quickItem    = null;
+
+document.addEventListener('DOMContentLoaded', async () => {
+  await pageAuthGuard();
+  await loadCatFilter();
+  await loadAlerts();
+});
+
+async function loadCatFilter() {
+  const res = await Categories.list();
+  if (!res.success) return;
+  const sel = document.getElementById('cat-filter');
+  (res.data.categories || []).forEach(c =>
+    sel.innerHTML += `<option value="${c.category_id}">${esc(c.name)}</option>`
+  );
+}
+
+async function loadAlerts() {
+  const res = await Items.list({ low_stock: '1', per_page: 200 });
+  if (!res.success) { Toast.danger('Failed to load inventory.'); return; }
+  allItems = res.data.items || [];
+
+  const critical = allItems.filter(i => parseInt(i.stock_quantity) === 0);
+  const low      = allItems.filter(i => parseInt(i.stock_quantity) > 0 && parseInt(i.stock_quantity) < (parseInt(i.restock_level)||20));
+  const ok       = allItems.filter(i => parseInt(i.stock_quantity) >= (parseInt(i.restock_level)||20));
+
+  document.getElementById('ls-critical').textContent = critical.length;
+  document.getElementById('ls-low').textContent      = low.length;
+  document.getElementById('ls-ok').textContent       = ok.length;
+
+  filterAlerts('');
+}
+
+function setFilter(f, btn) {
+  activeFilter = f;
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  filterAlerts('');
+}
+
+function filterAlerts(q) {
+  const catFilter = document.getElementById('cat-filter').value;
+  let items = allItems.filter(i => {
+    const qty = parseInt(i.stock_quantity) || 0;
+    const min = parseInt(i.restock_level) || 20;
+    if (activeFilter === 'critical') return qty === 0;
+    if (activeFilter === 'low')      return qty > 0 && qty < min;
+    return qty < min;
+  });
+
+  if (catFilter) items = items.filter(i => String(i.category_id) === String(catFilter));
+  if (q) items = items.filter(i => (i.name||'').toLowerCase().includes(q.toLowerCase()));
+
+  items.sort((a, b) => {
+    const aqty = parseInt(a.stock_quantity) || 0;
+    const bqty = parseInt(b.stock_quantity) || 0;
+    if (aqty === 0 && bqty > 0) return -1;
+    if (bqty === 0 && aqty > 0) return 1;
+    return aqty - bqty;
+  });
+
+  renderAlerts(items);
+}
+
+function renderAlerts(items) {
+  const grid  = document.getElementById('alerts-grid');
+  const empty = document.getElementById('alerts-empty');
+
+  if (items.length === 0) {
+    grid.innerHTML = '';
+    empty.style.display = 'block';
+    const msg = activeFilter === 'critical' ? 'No items are completely out of stock.'
+      : activeFilter === 'low' ? 'No items are in the low stock zone right now.'
+      : 'All items are well stocked! No alerts at this time.';
+    document.getElementById('alerts-empty-msg').textContent = msg;
+    return;
+  }
+  empty.style.display = 'none';
+
+  grid.innerHTML = items.map(item => {
+    const qty    = parseInt(item.stock_quantity) || 0;
+    const min    = parseInt(item.restock_level) || 20;
+    const isCrit = qty === 0;
+    const pct    = isCrit ? 0 : Math.min(100, Math.round((qty / (min * 2)) * 100));
+    const barColor = isCrit ? 'red' : 'amber';
+    const level  = isCrit ? 'critical' : 'low';
+    const needed = Math.max(0, min - qty);
+    const encoded = JSON.stringify(item).replace(/'/g, "&#39;").replace(/"/g, '&quot;');
+
+    return `<div class="alert-card ${level}">
+      <div class="alert-icon ${level}">${isCrit ? '🚫' : '⚠'}</div>
+      <div class="alert-info">
+        <div class="alert-name">${esc(item.name)}</div>
+        <div class="alert-cat">${esc(item.category_name||'Uncategorised')}</div>
+        <div style="margin-top:8px;">
+          <div class="stock-bar-label">
+            <span></span>
+            <span class="text-muted" style="font-size:0.75rem;">Need ~${needed} to reach min</span>
+          </div>
+          <div class="progress-bar" style="margin-top:4px;"><div class="progress-fill ${barColor}" style="width:${pct}%"></div></div>
+        </div>
+      </div>
+      <div class="alert-stock">
+        <div class="alert-qty ${level}">${qty}</div>
+        <div class="alert-min">Min: ${min}</div>
+      </div>
+      <div class="alert-actions">
+        <button class="btn btn-primary btn-sm" onclick='openQuickRestock(${JSON.stringify(item).replace(/'/g,"&#39;")})' title="Quick restock">+ Restock</button>
+        <button class="btn btn-outline btn-sm" onclick="window.location='inventory.html'" title="View in inventory">✏</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function openQuickRestock(item) {
+  _quickItem = item;
+  const min  = parseInt(item.restock_level) || 20;
+  const qty  = parseInt(item.stock_quantity) || 0;
+  document.getElementById('qr-item-idx').value        = item.item_id;
+  document.getElementById('qr-item-name').textContent = item.name;
+  document.getElementById('qr-item-info').textContent = `Current stock: ${qty} | Minimum: ${min} | Suggested restock: ${Math.max(min - qty, min)}`;
+  document.getElementById('qr-qty').value             = Math.max(min - qty, min);
+  document.getElementById('qr-supplier').value        = '';
+  Modal.open('quick-restock-modal');
+}
+
+async function saveQuickRestock() {
+  if (!_quickItem) return;
+  const qty = parseInt(document.getElementById('qr-qty').value);
+  if (!qty || qty < 1) { Toast.danger('Enter a valid quantity.'); return; }
+
+  const supplier = document.getElementById('qr-supplier').value.trim() || 'Quick restock';
+  const payload  = {
+    supplier,
+    po_number:    '',
+    notes:        'Quick restock from Low Stock Alerts page',
+    restock_date: new Date().toISOString().split('T')[0],
+    items: [{
+      item_id:   _quickItem.item_id,
+      item_name: _quickItem.name,
+      category:  _quickItem.category_name || '',
+      quantity:  qty,
+      new_price: 0
+    }]
+  };
+
+  const res = await Restock.create(payload);
+  if (!res.success) { Toast.danger(res.message || 'Failed to save restock.'); return; }
+
+  Modal.close('quick-restock-modal');
+  Toast.success(`+${qty} units added to "${_quickItem.name}"!`);
+  _quickItem = null;
+  await loadAlerts();
+  await refreshLowStockBadge();
+}
+
+function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+</script>
+</body>
+</html>
+
+
+

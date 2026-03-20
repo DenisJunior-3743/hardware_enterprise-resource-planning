@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Industrial Atelier ERP - Inventory Management</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-tertiary-fixed-variant": "#7f2448",
+              "on-secondary-fixed-variant": "#354a53",
+              "surface-container-highest": "#e1e3e4",
+              "primary-fixed-dim": "#91d78a",
+              "on-surface": "#191c1d",
+              "on-background": "#191c1d",
+              "background": "#f8f9fa",
+              "surface-container-lowest": "#ffffff",
+              "inverse-primary": "#91d78a",
+              "surface-variant": "#e1e3e4",
+              "error": "#ba1a1a",
+              "on-error": "#ffffff",
+              "surface": "#f8f9fa",
+              "on-secondary-fixed": "#071e27",
+              "tertiary-container": "#b14b6f",
+              "primary-container": "#3a7b3a",
+              "secondary": "#4c616c",
+              "surface-container-low": "#f3f4f5",
+              "inverse-on-surface": "#f0f1f2",
+              "on-primary-fixed": "#002203",
+              "on-surface-variant": "#40493d",
+              "secondary-fixed-dim": "#b4cad6",
+              "primary": "#206223",
+              "outline-variant": "#bfcaba",
+              "tertiary-fixed": "#ffd9e2",
+              "surface-dim": "#d9dadb",
+              "on-tertiary-container": "#ffedf0",
+              "error-container": "#ffdad6",
+              "primary-fixed": "#acf4a4",
+              "secondary-container": "#cfe6f2",
+              "outline": "#707a6c",
+              "tertiary": "#923357",
+              "on-error-container": "#93000a",
+              "surface-bright": "#f8f9fa",
+              "inverse-surface": "#2e3132",
+              "on-primary-fixed-variant": "#0c5216",
+              "on-tertiary-fixed": "#3f001c",
+              "surface-tint": "#2a6b2c",
+              "surface-container": "#edeeef",
+              "on-tertiary": "#ffffff",
+              "secondary-fixed": "#cfe6f2",
+              "on-primary": "#ffffff",
+              "on-primary-container": "#cbffc2",
+              "surface-container-high": "#e7e8e9",
+              "tertiary-fixed-dim": "#ffb1c7",
+              "on-secondary": "#ffffff",
+              "on-secondary-container": "#526772"
+            },
+            fontFamily: {
+              "headline": ["Inter"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #bfcaba; border-radius: 10px; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface flex min-h-screen">
+<!-- SideNavBar (Authority: JSON) -->
+<aside class="h-screen w-64 fixed left-0 top-0 bg-slate-100 dark:bg-slate-950 flex flex-col py-4 border-r-0 z-50">
+<div class="px-6 mb-8">
+<h1 class="text-lg font-bold text-slate-900 dark:text-slate-100">Industrial Atelier</h1>
+<p class="text-xs font-medium text-slate-500 uppercase tracking-widest">Hardware ERP</p>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 text-slate-600 dark:text-slate-400 px-4 py-3 mx-2 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-lg transition-all active:translate-x-1 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-sans text-base font-semibold">Dashboard</span>
+</a>
+<!-- Inventory is active -->
+<a class="flex items-center gap-3 bg-green-200 dark:bg-green-900/40 text-green-900 dark:text-green-100 rounded-lg px-4 py-3 mx-2 transition-all active:translate-x-1 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span class="font-sans text-base font-semibold">Inventory</span>
+</a>
+<a class="flex items-center gap-3 text-slate-600 dark:text-slate-400 px-4 py-3 mx-2 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-lg transition-all active:translate-x-1 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+<span class="font-sans text-base font-semibold">Sales Management</span>
+</a>
+<a class="flex items-center gap-3 text-slate-600 dark:text-slate-400 px-4 py-3 mx-2 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-lg transition-all active:translate-x-1 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="moped">moped</span>
+<span class="font-sans text-base font-semibold">Restock Management</span>
+</a>
+<a class="flex items-center gap-3 text-slate-600 dark:text-slate-400 px-4 py-3 mx-2 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-lg transition-all active:translate-x-1 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="font-sans text-base font-semibold">Reports</span>
+</a>
+</nav>
+<div class="mt-auto border-t border-slate-200 dark:border-slate-800 pt-4">
+<a class="flex items-center gap-3 text-slate-600 dark:text-slate-400 px-4 py-3 mx-2 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+<span class="font-sans text-base font-semibold">Help Center</span>
+</a>
+<a class="flex items-center gap-3 text-slate-600 dark:text-slate-400 px-4 py-3 mx-2 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span class="font-sans text-base font-semibold">Sign Out</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 ml-64 flex flex-col min-h-screen">
+<!-- TopAppBar (Authority: JSON) -->
+<header class="flex items-center justify-between px-6 w-full sticky top-0 z-40 bg-slate-50 dark:bg-slate-900 h-16 border-b-0">
+<div class="flex items-center gap-4 flex-1">
+<div class="relative w-full max-w-md">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+<input class="w-full bg-surface-container-highest border-none rounded-lg pl-10 pr-4 py-2 focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition-all text-sm" placeholder="Search inventory..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-slate-500 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-full transition-colors active:scale-95">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="p-2 text-slate-500 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-full transition-colors active:scale-95">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<div class="h-8 w-8 rounded-full bg-primary-container overflow-hidden ml-2">
+<img alt="User Profile" class="h-full w-full object-cover" data-alt="User profile avatar illustration" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDOC-rJapok5Go8MuRITLjS33CAymyuqqKpsnxG1Kw6yfwFnZGOPM17B0FoNVaadhao2ntCt5t7O0pq5QEccwBo0oDNBbh8iEDwDMb-WIM3ezoFmt_jP-O_KV8b0bfPOTkEAHRZX98-TTb0oQ4pJz0LfKHjgZoG2t4X6eu_8-MwQ0Mk-NJOunTWfFT4ttnTZCsYp2B4eH8gjPw8olD1l5rFTJbnWZpekfO_aHnpXtMEtASdFs-5n48piWEIFymyWrO8knNl5YIVTJuX"/>
+</div>
+</div>
+</header>
+<!-- Main Workspace -->
+<div class="p-8 space-y-8 flex-1">
+<!-- Hero Header Section -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div>
+<span class="text-secondary font-bold text-xs uppercase tracking-[0.2em] mb-2 block">Workshop Inventory</span>
+<h2 class="text-4xl font-extrabold text-on-surface tracking-tight">Inventory Management</h2>
+</div>
+<div class="flex items-center gap-3">
+<button class="flex items-center gap-2 px-6 py-3 bg-surface-container-high text-primary font-bold rounded-lg hover:bg-surface-container-highest transition-all active:scale-95">
+<span class="material-symbols-outlined text-xl">category</span>
+                        Add Category
+                    </button>
+<button class="flex items-center gap-2 px-6 py-3 bg-gradient-to-br from-primary to-primary-container text-on-primary font-bold rounded-lg shadow-sm hover:shadow-md transition-all active:scale-95">
+<span class="material-symbols-outlined text-xl">add_box</span>
+                        Add Item
+                    </button>
+</div>
+</div>
+<!-- Dashboard Quick Stats (Bento Fragment) -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/10">
+<p class="text-xs font-bold text-secondary uppercase tracking-wider mb-1">Total SKU</p>
+<p class="text-3xl font-black text-on-surface">1,284</p>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/10">
+<p class="text-xs font-bold text-secondary uppercase tracking-wider mb-1">Low Stock</p>
+<p class="text-3xl font-black text-tertiary">24</p>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/10">
+<p class="text-xs font-bold text-secondary uppercase tracking-wider mb-1">Inventory Value</p>
+<p class="text-3xl font-black text-on-surface">$248.5k</p>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/10">
+<p class="text-xs font-bold text-secondary uppercase tracking-wider mb-1">Active Categories</p>
+<p class="text-3xl font-black text-on-surface">18</p>
+</div>
+</div>
+<!-- Integrated Inventory View (Split Layout) -->
+<div class="flex flex-col lg:flex-row gap-6 h-[calc(100vh-420px)] min-h-[500px]">
+<!-- Left Column: Categories List -->
+<aside class="w-full lg:w-72 flex flex-col gap-4">
+<div class="flex items-center justify-between px-2">
+<h3 class="font-bold text-sm text-secondary uppercase tracking-widest">Categories</h3>
+<button class="text-primary hover:bg-primary/10 p-1 rounded transition-colors">
+<span class="material-symbols-outlined text-sm">tune</span>
+</button>
+</div>
+<div class="flex-1 bg-surface-container-low rounded-xl p-2 space-y-1 overflow-y-auto custom-scrollbar">
+<button class="w-full text-left px-4 py-3 rounded-lg bg-surface-container-lowest shadow-sm flex items-center justify-between group transition-all">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">widgets</span>
+<span class="font-bold text-on-surface">All Items</span>
+</div>
+<span class="text-xs font-bold text-slate-400 group-hover:text-primary">1284</span>
+</button>
+<button class="w-full text-left px-4 py-3 rounded-lg hover:bg-surface-container-high flex items-center justify-between group transition-all">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-slate-400">precision_manufacturing</span>
+<span class="font-medium text-slate-600">Steel Plates</span>
+</div>
+<span class="text-xs font-bold text-slate-400">142</span>
+</button>
+<button class="w-full text-left px-4 py-3 rounded-lg hover:bg-surface-container-high flex items-center justify-between group transition-all">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-slate-400">architecture</span>
+<span class="font-medium text-slate-600">Pipes &amp; Tubing</span>
+</div>
+<span class="text-xs font-bold text-slate-400">389</span>
+</button>
+<button class="w-full text-left px-4 py-3 rounded-lg hover:bg-surface-container-high flex items-center justify-between group transition-all">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-slate-400">build</span>
+<span class="font-medium text-slate-600">Fasteners</span>
+</div>
+<span class="text-xs font-bold text-slate-400">512</span>
+</button>
+<button class="w-full text-left px-4 py-3 rounded-lg hover:bg-surface-container-high flex items-center justify-between group transition-all">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-slate-400">electrical_services</span>
+<span class="font-medium text-slate-600">Electrical</span>
+</div>
+<span class="text-xs font-bold text-slate-400">94</span>
+</button>
+<button class="w-full text-left px-4 py-3 rounded-lg hover:bg-surface-container-high flex items-center justify-between group transition-all">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-slate-400">format_paint</span>
+<span class="font-medium text-slate-600">Coatings</span>
+</div>
+<span class="text-xs font-bold text-slate-400">147</span>
+</button>
+</div>
+</aside>
+<!-- Right Column: Data Table -->
+<div class="flex-1 flex flex-col bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden border border-outline-variant/10">
+<!-- Table Controls -->
+<div class="p-4 flex flex-col sm:flex-row items-center justify-between gap-4 bg-surface-container-low/50">
+<div class="flex items-center gap-2">
+<div class="bg-surface-container-highest px-3 py-1.5 rounded-lg flex items-center gap-2 text-sm">
+<span class="material-symbols-outlined text-sm text-slate-500">calendar_today</span>
+<span class="font-medium">Jan 20, 2024 - Jan 27, 2024</span>
+<span class="material-symbols-outlined text-sm text-slate-400">keyboard_arrow_down</span>
+</div>
+<div class="bg-surface-container-highest px-3 py-1.5 rounded-lg flex items-center gap-2 text-sm">
+<span class="font-medium">All Warehouses</span>
+<span class="material-symbols-outlined text-sm text-slate-400">keyboard_arrow_down</span>
+</div>
+</div>
+<div class="flex items-center gap-2 text-slate-500">
+<span class="text-xs font-bold uppercase tracking-wider">Sort By:</span>
+<select class="bg-transparent border-none text-sm font-bold text-primary focus:ring-0 cursor-pointer">
+<option>Recently Added</option>
+<option>Stock (Low to High)</option>
+<option>Price (High to Low)</option>
+</select>
+</div>
+</div>
+<!-- Table Header -->
+<div class="grid grid-cols-12 gap-4 px-6 py-4 bg-surface-container-low border-b border-outline-variant/5 text-xs font-bold text-secondary uppercase tracking-[0.1em]">
+<div class="col-span-5">Item Name</div>
+<div class="col-span-2 text-right">Price</div>
+<div class="col-span-3 text-center">Stock Level</div>
+<div class="col-span-2 text-right">Actions</div>
+</div>
+<!-- Table Body -->
+<div class="flex-1 overflow-y-auto custom-scrollbar">
+<!-- Row 1 -->
+<div class="grid grid-cols-12 gap-4 px-6 py-5 items-center hover:bg-surface-container-low transition-colors group">
+<div class="col-span-5 flex items-center gap-3">
+<div class="w-10 h-10 rounded bg-surface-container-highest flex items-center justify-center overflow-hidden">
+<img class="object-cover w-full h-full" data-alt="Close up of steel structural beam" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBXxTQ-XcsgnpG0Jy7TQlOxGUt03XQ-Xf5XdUXLyBjllSE2T5ZVQlqY2nITNqCK9JiyN33kY91msAgxuj-1z2PrFXxN6Soy8rm9zlPm5Mbmb4lb7YFeQSOYULjoH0m5VwpAxuA8dP0NV3YEWsSlzwfLKG16--akfO-CGp0bXM_34PjiCyGd71yyQsa7buMr3HScC0_zx33mK34ZqLsyOP5CpCc3CAsmXRjYVIFbKKcaQ_sOAxLuptzx1-8fOXOil-sRLQFe4uCMmq4y"/>
+</div>
+<div>
+<p class="font-bold text-on-surface">Galvanized H-Beam 200mm</p>
+<p class="text-xs text-slate-400">SKU: ST-GB-200-A</p>
+</div>
+</div>
+<div class="col-span-2 text-right relative group/price">
+<input class="w-full text-right bg-transparent border-none focus:bg-surface-container-highest rounded px-2 py-1 font-bold text-primary focus:ring-0" type="text" value="$142.50"/>
+<span class="material-symbols-outlined text-[10px] absolute -right-2 top-2 opacity-0 group-hover/price:opacity-100 text-primary">edit</span>
+</div>
+<div class="col-span-3">
+<div class="flex flex-col gap-1.5 px-4">
+<div class="flex justify-between text-[10px] font-black uppercase">
+<span class="text-on-surface">42 Units</span>
+<span class="text-slate-400">Min: 20</span>
+</div>
+<div class="w-full h-1.5 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary" style="width: 65%;"></div>
+</div>
+</div>
+</div>
+<div class="col-span-2 flex justify-end gap-2">
+<button class="p-2 rounded-lg hover:bg-primary-container/10 text-primary transition-all">
+<span class="material-symbols-outlined" style="font-variation-settings: 'opsz' 20;">edit</span>
+</button>
+<button class="p-2 rounded-lg hover:bg-tertiary/10 text-tertiary transition-all">
+<span class="material-symbols-outlined" style="font-variation-settings: 'opsz' 20;">delete</span>
+</button>
+</div>
+</div>
+<!-- Row 2 -->
+<div class="grid grid-cols-12 gap-4 px-6 py-5 items-center bg-surface-container-low/20 hover:bg-surface-container-low transition-colors group">
+<div class="col-span-5 flex items-center gap-3">
+<div class="w-10 h-10 rounded bg-surface-container-highest flex items-center justify-center overflow-hidden">
+<img class="object-cover w-full h-full" data-alt="Industrial copper piping pile" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAiCzN7gjMuOC3Fnv4nEaFbKDQ84jYe2AH-MqvQhYNDCkmuIdmEqj4gfWptr33S1ba5uWvLC90AQnjRaTyKqY9awUiAkvlYi98cv6RdbZ58nyvtsANKnszHTRZkI1Hb52mpsxUcKOtub2tUNr_fccIennsj4I_Yg80-F3oioonMXEm52eSVd0n1iQccVpyxqz8loUPwweQSpNosNkY5W7dP3v6LB5D0Xs1vlepSFoSr1-VaFW0_aWIbNUUJLK2WDmm88CzhGZFhqbqp"/>
+</div>
+<div>
+<p class="font-bold text-on-surface">Seamless Copper Pipe 15mm</p>
+<p class="text-xs text-slate-400">SKU: CU-PP-015-S</p>
+</div>
+</div>
+<div class="col-span-2 text-right relative group/price">
+<input class="w-full text-right bg-transparent border-none focus:bg-surface-container-highest rounded px-2 py-1 font-bold text-primary focus:ring-0" type="text" value="$28.15"/>
+<span class="material-symbols-outlined text-[10px] absolute -right-2 top-2 opacity-0 group-hover/price:opacity-100 text-primary">edit</span>
+</div>
+<div class="col-span-3">
+<div class="flex flex-col gap-1.5 px-4">
+<div class="flex justify-between text-[10px] font-black uppercase">
+<span class="text-tertiary">8 Units</span>
+<span class="text-slate-400">Min: 15</span>
+</div>
+<div class="w-full h-1.5 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-tertiary" style="width: 15%;"></div>
+</div>
+</div>
+</div>
+<div class="col-span-2 flex justify-end gap-2">
+<button class="p-2 rounded-lg hover:bg-primary-container/10 text-primary transition-all">
+<span class="material-symbols-outlined" style="font-variation-settings: 'opsz' 20;">edit</span>
+</button>
+<button class="p-2 rounded-lg hover:bg-tertiary/10 text-tertiary transition-all">
+<span class="material-symbols-outlined" style="font-variation-settings: 'opsz' 20;">delete</span>
+</button>
+</div>
+</div>
+<!-- Row 3 -->
+<div class="grid grid-cols-12 gap-4 px-6 py-5 items-center hover:bg-surface-container-low transition-colors group">
+<div class="col-span-5 flex items-center gap-3">
+<div class="w-10 h-10 rounded bg-surface-container-highest flex items-center justify-center overflow-hidden">
+<img class="object-cover w-full h-full" data-alt="Steel bolts and nuts macro" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBDfQzLWIvisOOiTUU-eaNdtRc6AA2K2RXQqcDfx8V_gUrsHFfV5nXrfvO8EWx-2yAaG4Jy2vhhXhuFn3MNn4K3VKuzGN56mleG_EO38ELOnasbtI7C0xjE9QhJKZxVjML1QMO7c48aIc56TLJcgF551EjsohR_avhPqJ8nLk7L9vQ-vivAyO21xFXm9ap6XTo9cAqrwitqLhiMPJG5onS_hXkoICnu7Xe87D1oB_aecxfruszDrcTlaBGew5R0Fmydmdhgp_iZFDpz"/>
+</div>
+<div>
+<p class="font-bold text-on-surface">Hex Bolt Grade 8 M12x50</p>
+<p class="text-xs text-slate-400">SKU: FS-HB-M12-50</p>
+</div>
+</div>
+<div class="col-span-2 text-right relative group/price">
+<input class="w-full text-right bg-transparent border-none focus:bg-surface-container-highest rounded px-2 py-1 font-bold text-primary focus:ring-0" type="text" value="$1.12"/>
+<span class="material-symbols-outlined text-[10px] absolute -right-2 top-2 opacity-0 group-hover/price:opacity-100 text-primary">edit</span>
+</div>
+<div class="col-span-3">
+<div class="flex flex-col gap-1.5 px-4">
+<div class="flex justify-between text-[10px] font-black uppercase">
+<span class="text-on-surface">1,240 Units</span>
+<span class="text-slate-400">Min: 500</span>
+</div>
+<div class="w-full h-1.5 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary" style="width: 90%;"></div>
+</div>
+</div>
+</div>
+<div class="col-span-2 flex justify-end gap-2">
+<button class="p-2 rounded-lg hover:bg-primary-container/10 text-primary transition-all">
+<span class="material-symbols-outlined" style="font-variation-settings: 'opsz' 20;">edit</span>
+</button>
+<button class="p-2 rounded-lg hover:bg-tertiary/10 text-tertiary transition-all">
+<span class="material-symbols-outlined" style="font-variation-settings: 'opsz' 20;">delete</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Pagination Footer -->
+<div class="px-6 py-4 border-t border-outline-variant/10 flex items-center justify-between">
+<span class="text-xs font-medium text-slate-500">Showing 1 to 10 of 1,284 items</span>
+<div class="flex items-center gap-1">
+<button class="p-1 rounded hover:bg-surface-container-high transition-colors text-slate-400">
+<span class="material-symbols-outlined">first_page</span>
+</button>
+<button class="p-1 rounded hover:bg-surface-container-high transition-colors text-slate-400">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button class="px-3 py-1 bg-primary text-on-primary text-xs font-bold rounded">1</button>
+<button class="px-3 py-1 hover:bg-surface-container-high text-xs font-bold rounded">2</button>
+<button class="px-3 py-1 hover:bg-surface-container-high text-xs font-bold rounded">3</button>
+<button class="p-1 rounded hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-slate-600">chevron_right</span>
+</button>
+<button class="p-1 rounded hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-slate-600">last_page</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

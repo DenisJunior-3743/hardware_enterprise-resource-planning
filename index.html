@@ -1,0 +1,503 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DukaSoft — Hardware ERP | Sign In</title>
+  <link rel="stylesheet" href="assets/css/style.css"/>
+  <style>
+    /* Auth-specific overrides */
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--gray-50);
+      padding: 20px;
+    }
+
+    .auth-shell {
+      width: 100%;
+      max-width: 980px;
+      min-height: 600px;
+      background: var(--white);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-lg);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      overflow: hidden;
+    }
+
+    /* Left panel */
+    .auth-left {
+      background: var(--green-700);
+      padding: 48px 44px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+    }
+    .auth-left::before {
+      content: '';
+      position: absolute;
+      bottom: -80px; right: -80px;
+      width: 300px; height: 300px;
+      background: rgba(255,255,255,0.04);
+      border-radius: 50%;
+    }
+    .auth-left::after {
+      content: '';
+      position: absolute;
+      top: -60px; left: -60px;
+      width: 200px; height: 200px;
+      background: rgba(255,255,255,0.04);
+      border-radius: 50%;
+    }
+    .auth-left-logo {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      position: relative; z-index: 1;
+    }
+    .auth-left-logo-icon {
+      width: 48px; height: 48px;
+      background: rgba(255,255,255,0.15);
+      border-radius: var(--radius-lg);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem;
+    }
+    .auth-left-logo-text h1 {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--white);
+      line-height: 1;
+    }
+    .auth-left-logo-text span {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.6);
+      font-weight: 500;
+    }
+
+    .auth-left-hero { position: relative; z-index: 1; }
+    .auth-left-hero h2 {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--white);
+      line-height: 1.25;
+      margin-bottom: 14px;
+    }
+    .auth-left-hero p {
+      color: rgba(255,255,255,0.7);
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    .auth-left-features {
+      position: relative; z-index: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .auth-feature-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 999px;
+      padding: 8px 16px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: rgba(255,255,255,0.85);
+    }
+    .auth-feature-pill span { font-size: 1rem; }
+
+    /* Right panel */
+    .auth-right {
+      padding: 44px 48px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .auth-panel { display: none; }
+    .auth-panel.active { display: block; }
+
+    .auth-alt-link {
+      text-align: center;
+      font-size: 0.875rem;
+      color: var(--gray-500);
+      margin-top: 14px;
+    }
+    .link-btn {
+      background: none;
+      border: none;
+      padding: 0;
+      font-family: var(--font);
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: var(--green-700);
+      cursor: pointer;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+    .link-btn:hover { color: var(--green-800); }
+
+    .auth-panel h3 {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--gray-900);
+      margin-bottom: 4px;
+    }
+    .auth-panel .sub {
+      font-size: 0.9rem;
+      color: var(--gray-400);
+      margin-bottom: 28px;
+    }
+
+    .input-group { position: relative; }
+    .input-group .input-icon {
+      position: absolute;
+      right: 14px; top: 50%;
+      transform: translateY(-50%);
+      font-size: 1rem;
+      color: var(--gray-400);
+      cursor: pointer;
+    }
+    .input-group .form-input { padding-right: 44px; }
+
+    .auth-submit {
+      width: 100%;
+      margin-top: 8px;
+      font-size: 1rem;
+    }
+
+    .auth-divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 20px 0;
+      color: var(--gray-300);
+      font-size: 0.8rem;
+    }
+    .auth-divider::before,
+    .auth-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--gray-200);
+    }
+
+    .form-space { display: flex; flex-direction: column; gap: 18px; }
+
+    @media (max-width: 700px) {
+      .auth-shell { grid-template-columns: 1fr; }
+      .auth-left { display: none; }
+      .auth-right { padding: 32px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="auth-shell">
+
+  <!-- Left Branding Panel -->
+  <div class="auth-left">
+    <div class="auth-left-logo">
+      <div class="auth-left-logo-icon">🔧</div>
+      <div class="auth-left-logo-text">
+        <h1>DukaSoft</h1>
+        <span>Hardware ERP System</span>
+      </div>
+    </div>
+
+    <div class="auth-left-hero">
+      <h2>Manage your<br/>hardware shop<br/>with ease.</h2>
+      <p>Track inventory, record sales, manage restocks and generate reports — all in one place, built for Uganda.</p>
+    </div>
+
+    <div class="auth-left-features">
+      <div class="auth-feature-pill"><span>📦</span> Inventory tracking by category</div>
+      <div class="auth-feature-pill"><span>💰</span> Sales records in UGX</div>
+      <div class="auth-feature-pill"><span>🚚</span> Restock management</div>
+      <div class="auth-feature-pill"><span>📈</span> Daily / weekly / monthly reports</div>
+    </div>
+  </div>
+
+  <!-- Right Auth Panel -->
+  <div class="auth-right">
+
+    <!-- ── SIGN IN PANEL ── -->
+    <div class="auth-panel active" id="panel-login">
+      <h3>Welcome back 👋</h3>
+      <p class="sub">Enter your credentials to access the system</p>
+      <form class="form-space" id="login-form" onsubmit="handleLogin(event)">
+        <div class="form-group">
+          <label class="form-label" for="login-username">Username <span class="req">*</span></label>
+          <div class="input-group">
+            <input class="form-input" type="text" id="login-username" name="username"
+                   placeholder="e.g. nakato_admin" required autocomplete="username"/>
+            <span class="input-icon">👤</span>
+          </div>
+          <span class="form-error">Please enter your username.</span>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="login-password">Password <span class="req">*</span></label>
+          <div class="input-group">
+            <input class="form-input" type="password" id="login-password" name="password"
+                   placeholder="••••••••" required autocomplete="current-password"/>
+            <span class="input-icon" onclick="togglePass('login-password', this)" title="Show/hide">👁</span>
+          </div>
+          <span class="form-error">Please enter your password.</span>
+        </div>
+        <button type="submit" class="btn btn-primary btn-lg auth-submit">
+          Sign In →
+        </button>
+        <div class="auth-alt-link">
+          <button type="button" class="link-btn" onclick="switchTab('reset')">Forgot Password?</button>
+        </div>
+      </form>
+      <div class="auth-divider">or</div>
+      <div class="auth-alt-link">
+        No account? <button type="button" class="link-btn" onclick="switchTab('register')">Create One</button>
+      </div>
+    </div>
+
+    <!-- ── FORGOT PASSWORD / RESET PANEL ── -->
+    <div class="auth-panel" id="panel-reset">
+      <h3>Reset Password</h3>
+      <p class="sub">Enter your username and phone number to reset your password</p>
+      <form class="form-space" id="reset-form" onsubmit="handleReset(event)">
+        <div class="form-group">
+          <label class="form-label" for="reset-username">Username <span class="req">*</span></label>
+          <input class="form-input" type="text" id="reset-username" placeholder="Your username" required/>
+          <span class="form-error">Please enter your username.</span>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="reset-phone">Phone Number <span class="req">*</span></label>
+          <input class="form-input" type="tel" id="reset-phone" placeholder="e.g. 0701 234567" required/>
+          <span class="form-error">Please enter your phone number.</span>
+        </div>
+        <div class="form-group" id="reset-new-pass-group" style="display:none;">
+          <label class="form-label" for="reset-new-pass">New Password <span class="req">*</span></label>
+          <div class="input-group">
+            <input class="form-input" type="password" id="reset-new-pass" placeholder="New password" minlength="6"/>
+            <span class="input-icon" onclick="togglePass('reset-new-pass', this)">👁</span>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-lg auth-submit" id="reset-btn">
+          Verify & Reset →
+        </button>
+      </form>
+      <div class="auth-alt-link" style="margin-top:16px;">
+        <button type="button" class="link-btn" onclick="switchTab('login')">← Back to Sign In</button>
+      </div>
+    </div>
+
+    <!-- ── REGISTER PANEL ── -->
+    <div class="auth-panel" id="panel-register">
+      <h3>Create Account</h3>
+      <p class="sub">Set up your hardware shop account</p>
+      <form class="form-space" id="register-form" onsubmit="handleRegister(event)">
+        <div class="form-group">
+          <label class="form-label" for="reg-fullname">Full Name <span class="req">*</span></label>
+          <input class="form-input" type="text" id="reg-fullname" placeholder="e.g. Nakato Prossy"
+                 required autocomplete="name"/>
+          <span class="form-error">Full name is required.</span>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="reg-phone">Phone Number <span class="req">*</span></label>
+          <input class="form-input" type="tel" id="reg-phone" placeholder="e.g. 0701 234567"
+                 required autocomplete="tel"/>
+          <span class="form-error">Phone number is required.</span>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="reg-username">Username <span class="req">*</span></label>
+          <input class="form-input" type="text" id="reg-username" placeholder="e.g. nakato_shop"
+                 required autocomplete="username"/>
+          <span class="form-error">Username is required.</span>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="reg-password">Password <span class="req">*</span></label>
+          <div class="input-group">
+            <input class="form-input" type="password" id="reg-password" placeholder="Min. 6 characters"
+                   required minlength="6"/>
+            <span class="input-icon" onclick="togglePass('reg-password', this)">👁</span>
+          </div>
+          <span class="form-error">Password is required (min 6 chars).</span>
+        </div>
+        <button type="submit" class="btn btn-primary btn-lg auth-submit">
+          Create Account →
+        </button>
+      </form>
+      <div class="auth-alt-link" style="margin-top:16px;">
+        Already have an account? <button type="button" class="link-btn" onclick="switchTab('login')">Sign In</button>
+      </div>
+    </div>
+
+  </div><!-- /auth-right -->
+</div><!-- /auth-shell -->
+
+<div class="toast-container" id="toast-container"></div>
+
+<script src="assets/js/app.js"></script>
+<script>
+  /* ── Panel switching ── */
+  function switchTab(tab) {
+    document.querySelectorAll('.auth-panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('panel-' + tab).classList.add('active');
+  }
+
+  /* ── Toggle password visibility ── */
+  function togglePass(inputId, icon) {
+    const input = document.getElementById(inputId);
+    if (!input) return;
+    if (input.type === 'password') {
+      input.type = 'text';
+      icon.textContent = '🔒';
+    } else {
+      input.type = 'password';
+      icon.textContent = '👁';
+    }
+  }
+
+  /* ── Login handler ── */
+  async function handleLogin(e) {
+    e.preventDefault();
+    const form = e.target;
+    if (!validateForm(form)) return;
+
+    const username = document.getElementById('login-username').value.trim();
+    const password = document.getElementById('login-password').value;
+    const btn      = form.querySelector('[type=submit]');
+    btn.disabled   = true;
+
+    try {
+      const res = await fetch('api/auth/login.php', {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+        body: JSON.stringify({ username, password }),
+      });
+      const json = await res.json();
+      if (!json.success) {
+        Toast.danger(json.message || 'Incorrect username or password.');
+        btn.disabled = false;
+        return;
+      }
+      Toast.success('Signing you in…');
+      setTimeout(() => { window.location.href = 'pages/dashboard.html'; }, 700);
+    } catch (_) {
+      Toast.danger('Could not connect to the server. Check your connection.');
+      btn.disabled = false;
+    }
+  }
+
+  /* ── Register handler ── */
+  async function handleRegister(e) {
+    e.preventDefault();
+    const form     = e.target;
+    if (!validateForm(form)) return;
+
+    const fullname = document.getElementById('reg-fullname').value.trim();
+    const phone    = document.getElementById('reg-phone').value.trim();
+    const username = document.getElementById('reg-username').value.trim();
+    const password = document.getElementById('reg-password').value;
+    const btn      = form.querySelector('[type=submit]');
+    btn.disabled   = true;
+
+    try {
+      const res = await fetch('api/auth/register.php', {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+        body: JSON.stringify({ username, password, full_name: fullname, phone }),
+      });
+      const json = await res.json();
+      if (!json.success) {
+        Toast.danger(json.message || 'Registration failed.');
+        btn.disabled = false;
+        return;
+      }
+      Toast.success('Account created! Signing you in…');
+      setTimeout(() => { window.location.href = 'pages/dashboard.html'; }, 900);
+    } catch (_) {
+      Toast.danger('Could not connect to the server.');
+      btn.disabled = false;
+    }
+  }
+
+  /* ── Reset handler (password reset via API) ── */
+  let resetVerified = false;
+  async function handleReset(e) {
+    e.preventDefault();
+    const form = e.target;
+    if (!validateForm(form)) return;
+
+    if (!resetVerified) {
+      // Step 1: verify identity (username + phone check — handled by the server)
+      const username = document.getElementById('reset-username').value.trim();
+      const phone    = document.getElementById('reset-phone').value.trim();
+
+      try {
+        const res  = await fetch('api/auth/reset_verify.php', {
+          method: 'POST',
+          credentials: 'same-origin',
+          headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+          body: JSON.stringify({ username, phone }),
+        });
+        const json = await res.json();
+        if (!json.success) {
+          Toast.danger(json.message || 'Account not found.');
+          return;
+        }
+      } catch (_) {
+        Toast.danger('Could not connect to the server.');
+        return;
+      }
+
+      resetVerified = true;
+      document.getElementById('reset-new-pass-group').style.display = 'block';
+      document.getElementById('reset-btn').textContent = 'Set New Password →';
+      Toast.info('Verified! Now enter your new password.');
+    } else {
+      const newPass  = document.getElementById('reset-new-pass').value;
+      if (!newPass || newPass.length < 6) {
+        Toast.danger('Password must be at least 6 characters.');
+        return;
+      }
+      const username = document.getElementById('reset-username').value.trim();
+
+      try {
+        const res  = await fetch('api/auth/reset_password.php', {
+          method: 'POST',
+          credentials: 'same-origin',
+          headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+          body: JSON.stringify({ username, password: newPass }),
+        });
+        const json = await res.json();
+        if (!json.success) {
+          Toast.danger(json.message || 'Reset failed.');
+          return;
+        }
+        Toast.success('Password reset successful! You can now sign in.');
+        resetVerified = false;
+        setTimeout(() => switchTab('login'), 1200);
+      } catch (_) {
+        Toast.danger('Could not connect to the server.');
+      }
+    }
+  }
+
+  /* ── If already logged in (session exists), skip login page ── */
+  (async () => {
+    try {
+      const res  = await fetch('api/auth/check.php', { credentials: 'same-origin' });
+      const json = await res.json();
+      if (json.success) window.location.href = 'pages/dashboard.html';
+    } catch (_) { /* not logged in, stay on page */ }
+  })();
+</script>
+</body>
+</html>
+

@@ -1,0 +1,197 @@
+﻿<!-- ============================================================
+     DUKASOFT HARDWARE ERP — Shared Layout Partial
+     Paste this block into every authenticated page body.
+     ============================================================ -->
+
+<!-- Inactivity Warning Banner -->
+<div id="inactivity-warning">
+  ⚠ Your session will expire in 1 minute due to inactivity. Move your mouse or tap to stay logged in.
+</div>
+
+<!-- Sidebar Backdrop (mobile) -->
+<div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+
+<!-- ── SIDEBAR ─────────────────────────────────────────────── -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="sidebar-logo-icon">🔧</div>
+    <div class="sidebar-logo-text">
+      <h1>DukaSoft</h1>
+      <span>Hardware ERP</span>
+    </div>
+  </div>
+
+  <nav class="sidebar-nav" id="sidebar-nav">
+
+    <!-- Dashboard -->
+    <div class="nav-group">
+      <a href="dashboard.html" class="nav-parent">
+        <span class="nav-icon">📊</span>
+        <span class="nav-label">Dashboard</span>
+      </a>
+    </div>
+
+    <!-- Inventory -->
+    <div class="nav-group">
+      <button class="nav-parent" type="button">
+        <span class="nav-icon">📦</span>
+        <span class="nav-label">Inventory</span>
+        <span class="nav-chevron">›</span>
+      </button>
+      <div class="nav-children">
+        <a href="inventory.html" class="nav-child">
+          <span class="child-dot"></span> View All Items
+        </a>
+        <a href="categories.html" class="nav-child">
+          <span class="child-dot"></span> Manage Categories
+        </a>
+        <a href="add-item.html" class="nav-child">
+          <span class="child-dot"></span> Add New Item
+        </a>
+      </div>
+    </div>
+
+    <!-- Sales -->
+    <div class="nav-group">
+      <button class="nav-parent" type="button">
+        <span class="nav-icon">💰</span>
+        <span class="nav-label">Sales</span>
+        <span class="nav-chevron">›</span>
+      </button>
+      <div class="nav-children">
+        <a href="record-sale.html" class="nav-child">
+          <span class="child-dot"></span> Record a Sale
+        </a>
+        <a href="sales-history.html" class="nav-child">
+          <span class="child-dot"></span> Sales History
+        </a>
+      </div>
+    </div>
+
+    <!-- Restock -->
+    <div class="nav-group">
+      <button class="nav-parent" type="button">
+        <span class="nav-icon">🚚</span>
+        <span class="nav-label">Restock</span>
+        <span class="nav-chevron">›</span>
+      </button>
+      <div class="nav-children">
+        <a href="record-restock.html" class="nav-child">
+          <span class="child-dot"></span> Record Restock
+        </a>
+        <a href="restock-history.html" class="nav-child">
+          <span class="child-dot"></span> Restock History
+        </a>
+        <a href="low-stock.html" class="nav-child">
+          <span class="child-dot"></span> Low Stock Alerts
+        </a>
+      </div>
+    </div>
+
+    <!-- Reports -->
+    <div class="nav-group">
+      <button class="nav-parent" type="button">
+        <span class="nav-icon">📈</span>
+        <span class="nav-label">Reports</span>
+        <span class="nav-chevron">›</span>
+      </button>
+      <div class="nav-children">
+        <a href="reports.html?tab=sales" class="nav-child">
+          <span class="child-dot"></span> Sales Report
+        </a>
+        <a href="reports.html?tab=inventory" class="nav-child">
+          <span class="child-dot"></span> Inventory Report
+        </a>
+        <a href="reports.html?tab=restock" class="nav-child">
+          <span class="child-dot"></span> Restock Report
+        </a>
+      </div>
+    </div>
+
+  </nav>
+
+  <div class="sidebar-footer">
+    <a href="settings.html" class="nav-parent">
+      <span class="nav-icon">⚙</span>
+      <span class="nav-label">Settings</span>
+    </a>
+    <a href="../index.html" class="nav-parent" onclick="return confirmLogout()">
+      <span class="nav-icon">🚪</span>
+      <span class="nav-label">Sign Out</span>
+    </a>
+    <div class="sidebar-user">
+      <div class="sidebar-avatar" id="sidebar-avatar-initials">BW</div>
+      <div class="sidebar-user-info">
+        <p id="sidebar-username">Business Owner</p>
+        <span>Administrator</span>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- ── TOPBAR ───────────────────────────────────────────── -->
+<header class="topbar" id="topbar">
+  <div class="topbar-left">
+    <button class="sidebar-toggle" title="Toggle menu">☰</button>
+    <div class="page-breadcrumb">
+      <span id="breadcrumb-parent">DukaSoft</span> /
+      <strong id="breadcrumb-current">Dashboard</strong>
+    </div>
+  </div>
+  <div class="topbar-right">
+    <div class="topbar-search">
+      <span class="search-icon">🔍</span>
+      <input type="text" placeholder="Search items..." id="global-search" autocomplete="off"/>
+    </div>
+    <button class="notif-btn" title="Notifications" onclick="window.location='low-stock.html'">
+      🔔
+      <span class="notif-badge" id="notif-badge"></span>
+    </button>
+  </div>
+</header>
+
+<!-- ── CONFIRM DIALOG (shared) ────────────────────────────── -->
+<div class="modal-overlay" id="confirm-overlay">
+  <div class="modal confirm-modal">
+    <div class="modal-body" style="text-align:center; padding: 32px 28px 24px;">
+      <div class="confirm-icon danger" id="confirm-icon">🗑</div>
+      <h3 id="confirm-title">Are you sure?</h3>
+      <p id="confirm-message" class="mt-8">This action cannot be undone.</p>
+    </div>
+    <div class="modal-footer" style="justify-content:center; gap:16px; padding-bottom:28px;">
+      <button class="btn btn-outline btn-lg" onclick="Modal.close('confirm-overlay')">Cancel</button>
+      <button class="btn btn-danger btn-lg" id="confirm-btn" onclick="Confirm.confirm()">Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── TOAST CONTAINER ─────────────────────────────────────── -->
+<div class="toast-container" id="toast-container"></div>
+
+<script>
+function confirmLogout() {
+  return confirm('Are you sure you want to sign out?');
+}
+
+// Highlight active nav link
+document.addEventListener('DOMContentLoaded', () => {
+  const page = window.location.pathname.split('/').pop() || 'dashboard.html';
+  document.querySelectorAll('.nav-child, .nav-parent').forEach(link => {
+    const href = link.getAttribute('href');
+    if (href && href === page) {
+      link.classList.add('active');
+    }
+  });
+  // Load username from localStorage
+  const uname = localStorage.getItem('erp_username');
+  if (uname) {
+    const el = document.getElementById('sidebar-username');
+    const av = document.getElementById('sidebar-avatar-initials');
+    if (el) el.textContent = uname;
+    if (av) av.textContent = uname.substring(0,2).toUpperCase();
+  }
+});
+</script>
+
+
+
