@@ -1,11 +1,12 @@
 ﻿<!-- ============================================================
-     DUKASOFT HARDWARE ERP — Shared Layout Partial
+     DUKASOFT HARDWARE ERP — Shared Layout Partial (Redesigned)
      Paste this block into every authenticated page body.
      ============================================================ -->
 
 <!-- Inactivity Warning Banner -->
-<div id="inactivity-warning">
-  ⚠ Your session will expire in 1 minute due to inactivity. Move your mouse or tap to stay logged in.
+<div id="inactivity-warning" style="display:flex;align-items:center;justify-content:center;gap:8px;">
+  <i class="bi bi-exclamation-triangle-fill"></i>
+  Your session will expire in 1 minute due to inactivity. Move your mouse or tap to stay logged in.
 </div>
 
 <!-- Sidebar Backdrop (mobile) -->
@@ -14,7 +15,7 @@
 <!-- ── SIDEBAR ─────────────────────────────────────────────── -->
 <aside class="sidebar" id="sidebar">
   <div class="sidebar-logo">
-    <div class="sidebar-logo-icon">🔧</div>
+    <div class="sidebar-logo-icon"><i class="bi bi-tools"></i></div>
     <div class="sidebar-logo-text">
       <h1>DukaSoft</h1>
       <span>Hardware ERP</span>
@@ -23,10 +24,12 @@
 
   <nav class="sidebar-nav" id="sidebar-nav">
 
+    <div class="nav-section-label">Main</div>
+
     <!-- Dashboard -->
     <div class="nav-group">
       <a href="dashboard.html" class="nav-parent">
-        <span class="nav-icon">📊</span>
+        <span class="nav-icon"><i class="bi bi-grid-1x2"></i></span>
         <span class="nav-label">Dashboard</span>
       </a>
     </div>
@@ -34,9 +37,9 @@
     <!-- Inventory -->
     <div class="nav-group">
       <button class="nav-parent" type="button">
-        <span class="nav-icon">📦</span>
+        <span class="nav-icon"><i class="bi bi-box-seam"></i></span>
         <span class="nav-label">Inventory</span>
-        <span class="nav-chevron">›</span>
+        <i class="nav-chevron bi bi-chevron-right"></i>
       </button>
       <div class="nav-children">
         <a href="inventory.html" class="nav-child">
@@ -51,12 +54,14 @@
       </div>
     </div>
 
+    <div class="nav-section-label">Transactions</div>
+
     <!-- Sales -->
     <div class="nav-group">
       <button class="nav-parent" type="button">
-        <span class="nav-icon">💰</span>
+        <span class="nav-icon"><i class="bi bi-receipt"></i></span>
         <span class="nav-label">Sales</span>
-        <span class="nav-chevron">›</span>
+        <i class="nav-chevron bi bi-chevron-right"></i>
       </button>
       <div class="nav-children">
         <a href="record-sale.html" class="nav-child">
@@ -71,9 +76,9 @@
     <!-- Restock -->
     <div class="nav-group">
       <button class="nav-parent" type="button">
-        <span class="nav-icon">🚚</span>
+        <span class="nav-icon"><i class="bi bi-truck"></i></span>
         <span class="nav-label">Restock</span>
-        <span class="nav-chevron">›</span>
+        <i class="nav-chevron bi bi-chevron-right"></i>
       </button>
       <div class="nav-children">
         <a href="record-restock.html" class="nav-child">
@@ -88,12 +93,14 @@
       </div>
     </div>
 
+    <div class="nav-section-label">Analytics</div>
+
     <!-- Reports -->
     <div class="nav-group">
       <button class="nav-parent" type="button">
-        <span class="nav-icon">📈</span>
+        <span class="nav-icon"><i class="bi bi-bar-chart-line"></i></span>
         <span class="nav-label">Reports</span>
-        <span class="nav-chevron">›</span>
+        <i class="nav-chevron bi bi-chevron-right"></i>
       </button>
       <div class="nav-children">
         <a href="reports.html?tab=sales" class="nav-child">
@@ -111,12 +118,8 @@
   </nav>
 
   <div class="sidebar-footer">
-    <a href="settings.html" class="nav-parent">
-      <span class="nav-icon">⚙</span>
-      <span class="nav-label">Settings</span>
-    </a>
     <a href="../index.html" class="nav-parent" onclick="return confirmLogout()">
-      <span class="nav-icon">🚪</span>
+      <span class="nav-icon"><i class="bi bi-box-arrow-left"></i></span>
       <span class="nav-label">Sign Out</span>
     </a>
     <div class="sidebar-user">
@@ -132,20 +135,28 @@
 <!-- ── TOPBAR ───────────────────────────────────────────── -->
 <header class="topbar" id="topbar">
   <div class="topbar-left">
-    <button class="sidebar-toggle" title="Toggle menu">☰</button>
+    <button class="sidebar-toggle" title="Toggle menu">
+      <i class="bi bi-list"></i>
+    </button>
     <div class="page-breadcrumb">
-      <span id="breadcrumb-parent">DukaSoft</span> /
+      <span id="breadcrumb-parent">DukaSoft</span>
+      <span class="bc-sep"><i class="bi bi-chevron-right"></i></span>
       <strong id="breadcrumb-current">Dashboard</strong>
     </div>
   </div>
   <div class="topbar-right">
     <div class="topbar-search">
-      <span class="search-icon">🔍</span>
+      <span class="search-icon"><i class="bi bi-search"></i></span>
       <input type="text" placeholder="Search items..." id="global-search" autocomplete="off"/>
     </div>
-    <button class="notif-btn" title="Notifications" onclick="window.location='low-stock.html'">
-      🔔
+    <button class="notif-btn" title="Low stock alerts" onclick="window.location='low-stock.html'">
+      <i class="bi bi-bell"></i>
       <span class="notif-badge" id="notif-badge"></span>
+    </button>
+    <div class="sidebar-divider" style="height:24px;width:1px;background:var(--gray-150);margin:0 4px;"></div>
+    <button class="topbar-user-btn" style="border:none;cursor:default;">
+      <div class="topbar-user-avatar" id="topbar-avatar">BW</div>
+      <span class="topbar-user-name" id="topbar-username">Admin</span>
     </button>
   </div>
 </header>
@@ -153,14 +164,20 @@
 <!-- ── CONFIRM DIALOG (shared) ────────────────────────────── -->
 <div class="modal-overlay" id="confirm-overlay">
   <div class="modal confirm-modal">
-    <div class="modal-body" style="text-align:center; padding: 32px 28px 24px;">
-      <div class="confirm-icon danger" id="confirm-icon">🗑</div>
+    <div class="modal-body" style="text-align:center; padding: 32px 28px 20px;">
+      <div class="confirm-icon danger" id="confirm-icon">
+        <i class="bi bi-trash3"></i>
+      </div>
       <h3 id="confirm-title">Are you sure?</h3>
       <p id="confirm-message" class="mt-8">This action cannot be undone.</p>
     </div>
-    <div class="modal-footer" style="justify-content:center; gap:16px; padding-bottom:28px;">
-      <button class="btn btn-outline btn-lg" onclick="Modal.close('confirm-overlay')">Cancel</button>
-      <button class="btn btn-danger btn-lg" id="confirm-btn" onclick="Confirm.confirm()">Delete</button>
+    <div class="modal-footer" style="justify-content:center; gap:12px; padding-bottom:28px;">
+      <button class="btn btn-outline btn-lg" onclick="Modal.close('confirm-overlay')">
+        <i class="bi bi-x-lg"></i> Cancel
+      </button>
+      <button class="btn btn-danger btn-lg" id="confirm-btn" onclick="Confirm.confirm()">
+        <i class="bi bi-trash3"></i> Delete
+      </button>
     </div>
   </div>
 </div>
@@ -173,25 +190,82 @@ function confirmLogout() {
   return confirm('Are you sure you want to sign out?');
 }
 
-// Highlight active nav link
 document.addEventListener('DOMContentLoaded', () => {
   const page = window.location.pathname.split('/').pop() || 'dashboard.html';
-  document.querySelectorAll('.nav-child, .nav-parent').forEach(link => {
+
+  // Open parent nav group for active child
+  document.querySelectorAll('.nav-child').forEach(link => {
     const href = link.getAttribute('href');
-    if (href && href === page) {
+    if (href && (href === page || href.split('?')[0] === page)) {
       link.classList.add('active');
+      const children = link.closest('.nav-children');
+      if (children) {
+        children.classList.add('open');
+        const parent = children.previousElementSibling;
+        if (parent) parent.classList.add('open', 'active');
+      }
     }
   });
-  // Load username from localStorage
+  document.querySelectorAll('.nav-parent').forEach(link => {
+    const href = link.getAttribute('href');
+    if (href && href === page) link.classList.add('active');
+  });
+
+  // Load username
   const uname = localStorage.getItem('erp_username');
   if (uname) {
-    const el = document.getElementById('sidebar-username');
-    const av = document.getElementById('sidebar-avatar-initials');
-    if (el) el.textContent = uname;
-    if (av) av.textContent = uname.substring(0,2).toUpperCase();
+    const initials = uname.substring(0,2).toUpperCase();
+    const el   = document.getElementById('sidebar-username');
+    const av   = document.getElementById('sidebar-avatar-initials');
+    const tav  = document.getElementById('topbar-avatar');
+    const tunm = document.getElementById('topbar-username');
+    if (el)   el.textContent  = uname;
+    if (av)   av.textContent  = initials;
+    if (tav)  tav.textContent = initials;
+    if (tunm) tunm.textContent = uname;
   }
+
+  // Sidebar toggle
+  const sidebar  = document.getElementById('sidebar');
+  const topbar   = document.getElementById('topbar');
+  const main     = document.getElementById('main-content');
+  const backdrop = document.getElementById('sidebar-backdrop');
+
+  document.querySelectorAll('.sidebar-toggle').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const isMobile = window.innerWidth <= 768;
+      if (isMobile) {
+        sidebar.classList.toggle('mobile-open');
+        backdrop.classList.toggle('open');
+      } else {
+        sidebar.classList.toggle('collapsed');
+        topbar.classList.toggle('sidebar-collapsed');
+        if (main) main.classList.toggle('sidebar-collapsed');
+      }
+    });
+  });
+
+  backdrop.addEventListener('click', () => {
+    sidebar.classList.remove('mobile-open');
+    backdrop.classList.remove('open');
+  });
+
+  // Accordion nav
+  document.querySelectorAll('.nav-parent[type=button]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const children = btn.nextElementSibling;
+      if (!children) return;
+      const isOpen = children.classList.contains('open');
+      // close all
+      document.querySelectorAll('.nav-children.open').forEach(c => {
+        c.classList.remove('open');
+        c.previousElementSibling?.classList.remove('open');
+      });
+      if (!isOpen) {
+        children.classList.add('open');
+        btn.classList.add('open');
+      }
+    });
+  });
 });
 </script>
-
-
-
