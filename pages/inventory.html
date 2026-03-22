@@ -103,6 +103,31 @@
     }
     .price-input:hover { background: var(--green-50); border-color: var(--green-200); }
     .price-input:focus { background: var(--white); border-color: var(--green-400); outline: none; }
+    .price-editor {
+      display: inline-flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 6px;
+    }
+    .price-save-btn {
+      min-width: 34px;
+      height: 34px;
+      border: 1px solid var(--green-200);
+      background: var(--green-50);
+      color: var(--green-700);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-weight: 700;
+      transition: all 0.15s;
+    }
+    .price-save-btn:hover {
+      background: var(--green-100);
+      border-color: var(--green-400);
+    }
+    .price-hint {
+      font-size: 0.78rem;
+      color: var(--gray-400);
+    }
 
     .action-btn {
       width: 36px; height: 36px;
@@ -237,6 +262,7 @@
           </div>
           <div style="display:flex;align-items:center;gap:10px;">
             <span class="text-muted" id="item-count-label">0 items</span>
+            <span class="price-hint">Click price, then save or press Enter</span>
             <select class="form-select" id="sort-by" style="width:auto;padding:8px 12px;font-size:0.875rem;" onchange="filterItems()">
               <option value="name">Sort: Name A–Z</option>
               <option value="qty-asc">Stock: Low → High</option>
@@ -445,10 +471,15 @@ function renderTable() {
       </td>
       <td><span class="badge badge-gray">${esc(item.category_name||'—')}</span></td>
       <td class="td-right">
-        <input type="text" class="price-input"
-               value="${parseInt(item.price||0).toLocaleString('en-UG')}"
-               onblur="updatePrice(${item.item_id}, this.value)"
-               title="Click to edit price"/>
+        <div class="price-editor">
+          <input type="text" class="price-input"
+                 id="price-input-${item.item_id}"
+                 value="${parseInt(item.price||0).toLocaleString('en-UG')}"
+                 onfocus="this.select()"
+                 onkeydown="handlePriceKey(event, ${item.item_id})"
+                 title="Edit current item price"/>
+          <button class="price-save-btn" onclick="savePriceEdit(${item.item_id})" title="Save price">✓</button>
+        </div>
       </td>
       <td class="td-center" style="min-width:140px;">
         <div class="stock-bar-wrap">
@@ -495,13 +526,37 @@ function goPage(p) {
 
 async function updatePrice(itemId, val) {
   const num = parseFloat(String(val).replace(/,/g,''));
-  if (isNaN(num) || num < 0) { Toast.danger('Invalid price.'); await loadInventory(); return; }
+  if (isNaN(num) || num < 0) { Toast.danger('Invalid price.'); await loadInventory(); return false; }
   const res = await Items.updatePrice(itemId, num);
-  if (!res.success) { Toast.danger(res.message || 'Failed to update price.'); await loadInventory(); return; }
+  if (!res.success) { Toast.danger(res.message || 'Failed to update price.'); await loadInventory(); return false; }
   // Update local copy
   const item = allItems.find(i => i.item_id == itemId);
   if (item) item.price = num;
+  const input = document.getElementById(`price-input-${itemId}`);
+  if (input) input.value = num.toLocaleString('en-UG');
   Toast.success('Price updated to UGX ' + num.toLocaleString('en-UG'));
+  return true;
+}
+
+function handlePriceKey(event, itemId) {
+  if (event.key === 'Enter') {
+    event.preventDefault();
+    savePriceEdit(itemId);
+    return;
+  }
+  if (event.key === 'Escape') {
+    const item = allItems.find(i => i.item_id == itemId);
+    if (!item) return;
+    event.preventDefault();
+    event.target.value = parseFloat(item.price || 0).toLocaleString('en-UG');
+    event.target.blur();
+  }
+}
+
+async function savePriceEdit(itemId) {
+  const input = document.getElementById(`price-input-${itemId}`);
+  if (!input) return;
+  await updatePrice(itemId, input.value);
 }
 
 function openEdit(itemId) {
