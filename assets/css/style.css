@@ -150,6 +150,10 @@ p  { font-size: 0.9375rem; color: var(--gray-500); line-height: 1.65; }
   flex-shrink: 0;
   box-shadow: 0 4px 12px rgba(60,189,94,0.35);
 }
+.sidebar-logo-icon i {
+  font-size: 1.3rem;
+  line-height: 1;
+}
 .sidebar-logo-text h1 {
   font-size: 1rem;
   font-weight: 800;
@@ -225,6 +229,10 @@ p  { font-size: 0.9375rem; color: var(--gray-500); line-height: 1.65; }
   flex-shrink: 0;
   color: var(--sidebar-text-dim);
   transition: color var(--transition-fast);
+}
+.nav-icon i {
+  font-size: 1.1rem;
+  line-height: 1;
 }
 .nav-parent:hover .nav-icon,
 .nav-parent.active .nav-icon { color: var(--sidebar-accent); }
