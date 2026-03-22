@@ -3,108 +3,337 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>DukaSoft — Record Sale</title>
+  <title>Mbogo Hardware — Record Sale</title>
   <link rel="stylesheet" href="../assets/css/style.css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
   <style>
-    .sale-layout { display: grid; grid-template-columns: 1fr 380px; gap: 24px; align-items: start; }
-    .item-search-results {
-      position: absolute; top: 100%; left: 0; right: 0; z-index: 50;
-      background: var(--white); border: 1.5px solid var(--green-400);
-      border-radius: var(--radius-md); box-shadow: var(--shadow-md);
-      max-height: 260px; overflow-y: auto; margin-top: 4px;
-    }
-    .item-result {
-      padding: 12px 16px; cursor: pointer; display: flex;
-      align-items: center; justify-content: space-between;
-      border-bottom: 1px solid var(--gray-100); transition: background 0.1s;
-    }
-    .item-result:last-child { border-bottom: none; }
-    .item-result:hover { background: var(--green-50); }
-    .item-result-name { font-weight: 600; font-size: 0.9rem; }
-    .item-result-cat  { font-size: 0.78rem; color: var(--gray-400); }
-    .item-result-price { font-weight: 700; color: var(--green-700); font-size: 0.9rem; white-space: nowrap; }
-    .item-result-stock { font-size: 0.75rem; text-align: right; }
+    :root{--spring:cubic-bezier(.22,1,.36,1);--bounce:cubic-bezier(.34,1.56,.64,1);--ease:cubic-bezier(.4,0,.2,1);--outfit:'Outfit',var(--font-display),sans-serif;--mono:'JetBrains Mono',monospace}
 
-    .sale-item-row {
-      display: flex; align-items: center; gap: 10px;
-      padding: 12px 16px; border-bottom: 1px solid var(--gray-100);
-    }
-    .sale-item-row:last-child { border-bottom: none; }
-    .sale-item-name { flex: 1; font-weight: 600; font-size: 0.9rem; }
-    .sale-item-qty {
-      width: 70px; padding: 7px 10px; text-align: center;
-      border: 1.5px solid var(--gray-200); border-radius: var(--radius-md);
-      font-family: var(--font); font-size: 0.9rem; font-weight: 700;
-    }
-    .sale-item-qty:focus { border-color: var(--green-400); outline: none; }
-    .sale-item-total { font-weight: 700; color: var(--green-700); min-width: 100px; text-align: right; font-size: 0.9rem; }
-    .remove-btn { color: var(--red-500); background: none; border: none; cursor: pointer; font-size: 1rem; padding: 4px; border-radius: var(--radius-sm); }
-    .remove-btn:hover { background: var(--red-50); }
+    /* ██ GREEN TOPBAR — identical to dashboard ██ */
+    .topbar{background:linear-gradient(135deg,var(--green-800) 0%,var(--green-900) 100%)!important;border-bottom:none!important;box-shadow:0 2px 16px rgba(0,0,0,.22)!important;padding:0 24px!important}
+    .topbar-brand{display:flex;align-items:center;gap:14px}
+    .sidebar-toggle{color:rgba(255,255,255,.7)!important;border-radius:var(--radius-md);transition:background .15s,color .15s,transform .2s var(--bounce)!important}
+    .sidebar-toggle:hover{background:rgba(255,255,255,.1)!important;color:#fff!important;transform:scale(1.08)!important}
+    .topbar-divider{width:1px;height:28px;background:rgba(255,255,255,.15);flex-shrink:0}
+    .topbar-logo-icon{width:36px;height:36px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.18);border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;color:#fff;font-size:1rem;flex-shrink:0;transition:background .2s,transform .25s var(--bounce)}
+    .topbar-logo-icon:hover{background:rgba(255,255,255,.22);transform:rotate(-8deg) scale(1.1)}
+    .topbar-brand-text{display:flex;flex-direction:column;gap:1px}
+    .topbar-brand-name{font-family:var(--outfit);font-size:.95rem;font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1}
+    .topbar-brand-sub{font-size:.6rem;font-weight:600;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:.12em}
+    .page-breadcrumb{font-size:.8rem;color:rgba(255,255,255,.5)!important}
+    .page-breadcrumb strong{color:rgba(255,255,255,.9)!important}
+    .page-breadcrumb .bc-sep{color:rgba(255,255,255,.3)!important}
+    .topbar-right{gap:6px!important}
+    .topbar-clock-pill{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.12);border-radius:999px;padding:5px 12px;font-family:var(--mono);font-size:.7rem;color:rgba(255,255,255,.7);white-space:nowrap;transition:background .2s}
+    .topbar-clock-pill:hover{background:rgba(255,255,255,.14)}
+    .topbar-clock-pill i{color:rgba(255,255,255,.5);font-size:.72rem}
+    .topbar-search input{background:rgba(255,255,255,.1)!important;border-color:rgba(255,255,255,.15)!important;color:#fff!important;width:200px!important}
+    .topbar-search input::placeholder{color:rgba(255,255,255,.45)!important}
+    .topbar-search input:focus{background:rgba(255,255,255,.17)!important;border-color:rgba(255,255,255,.35)!important;box-shadow:0 0 0 3px rgba(255,255,255,.1)!important;width:240px!important}
+    .topbar-search .search-icon{color:rgba(255,255,255,.5)!important}
+    .notif-btn{color:rgba(255,255,255,.7)!important;transition:background .15s,color .15s,transform .2s var(--bounce)!important}
+    .notif-btn:hover{background:rgba(255,255,255,.1)!important;color:#fff!important;transform:scale(1.1)!important}
+    .topbar-user-pill{display:flex;align-items:center;gap:9px;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.14);border-radius:999px;padding:4px 14px 4px 4px;cursor:default;transition:background .2s,transform .25s var(--bounce)}
+    .topbar-user-pill:hover{background:rgba(255,255,255,.15);transform:scale(1.02)}
+    .topbar-avatar-circle{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--green-400),var(--green-600));border:2px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:800;color:#fff;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+    .topbar-user-info{display:flex;flex-direction:column;gap:1px}
+    .topbar-user-name{font-family:var(--outfit);font-size:.8rem;font-weight:700;color:rgba(255,255,255,.9);line-height:1}
+    .topbar-user-role{font-size:.6rem;font-weight:600;color:rgba(255,255,255,.42);text-transform:uppercase;letter-spacing:.1em}
+    .topbar-greeting-chip{display:flex;align-items:center;gap:5px;font-size:.72rem;font-weight:600;color:rgba(255,255,255,.55);padding:4px 8px;border-radius:999px;background:rgba(255,255,255,.07);white-space:nowrap}
+    .topbar-greeting-chip i{color:var(--green-300);font-size:.78rem}
+    /* ██ END TOPBAR ██ */
 
-    .receipt-section { background: var(--gray-50); border-radius: var(--radius-lg); padding: 20px; }
-    .receipt-row { display: flex; justify-content: space-between; padding: 6px 0; font-size: 0.9rem; }
-    .receipt-total { font-size: 1.2rem; font-weight: 800; color: var(--gray-900); }
+    /* PAGE ENTRANCE */
+    .main-content{animation:mainIn .55s var(--spring) both}
+    @keyframes mainIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+    .page-header   {animation:rowUp .5s var(--spring) .05s both}
+    .sale-layout   {animation:rowUp .5s var(--spring) .12s both}
+    .dash-footer   {animation:rowUp .5s var(--spring) .20s both}
+    @keyframes rowUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
 
-    @media (max-width: 900px) { .sale-layout { grid-template-columns: 1fr; } }
+    /* PAGE HEADER */
+    .page-header-left .page-tag{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.14em;color:var(--green-600);display:flex;align-items:center;gap:5px;margin-bottom:5px}
+    .page-header-left h2{font-family:var(--outfit);font-size:1.75rem;font-weight:800;color:var(--gray-900);letter-spacing:-.03em;line-height:1}
+    .page-header-left p{font-size:.84rem;color:var(--gray-400);margin-top:4px}
+
+    /* LAYOUT */
+    .sale-layout{display:grid;grid-template-columns:1fr 340px;gap:20px;align-items:start}
+    @media(max-width:900px){.sale-layout{grid-template-columns:1fr}}
+
+    /* CARD HOVER + ACCENT BAR */
+    .card{transition:box-shadow .25s var(--ease),transform .25s var(--bounce)!important}
+    .card:hover{box-shadow:0 10px 34px rgba(0,0,0,.09)!important;transform:translateY(-2px)!important}
+    .card-accent-bar{height:3px;background:linear-gradient(90deg,var(--green-300),var(--green-500),var(--green-800));background-size:200% 100%;animation:gradShift 4s linear infinite}
+    @keyframes gradShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+
+    /* RECEIPT CARD — green accent bar */
+    .receipt-accent{height:3px;background:linear-gradient(90deg,var(--green-400),var(--green-600),var(--green-900));background-size:200% 100%;animation:gradShift 4s linear infinite}
+
+    /* FORM FIELDS */
+    .form-label{font-weight:700;font-size:.8rem;color:var(--gray-700);margin-bottom:5px;display:flex;align-items:center;gap:5px}
+    .form-label i{color:var(--green-500);font-size:.82rem}
+    .form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--green-400)!important;box-shadow:0 0 0 3px rgba(60,189,94,.12)!important}
+    .form-hint{font-size:.74rem;color:var(--gray-400);margin-top:4px;display:flex;align-items:center;gap:4px}
+    .form-hint i{color:var(--green-400);font-size:.72rem}
+
+    /* ITEM SEARCH DROPDOWN */
+    .item-search-results{
+      position:absolute;top:calc(100% + 4px);left:0;right:0;z-index:200;
+      background:var(--white);border:1px solid var(--gray-200);
+      border-radius:var(--radius-lg);box-shadow:0 12px 36px rgba(0,0,0,.13);
+      overflow:hidden;max-height:300px;overflow-y:auto;
+    }
+    .item-result{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:11px 16px;cursor:pointer;gap:12px;
+      border-bottom:1px solid var(--gray-100);
+      transition:background .12s,transform .15s;
+    }
+    .item-result:last-child{border-bottom:none}
+    .item-result:hover{background:var(--green-50);transform:translateX(3px)}
+    .item-result-name{font-weight:700;font-size:.875rem;color:var(--gray-900)}
+    .item-result-cat{font-size:.73rem;color:var(--gray-400);margin-top:2px;display:flex;align-items:center;gap:4px}
+    .item-result-price{font-family:var(--outfit);font-size:.85rem;font-weight:700;color:var(--green-600);text-align:right}
+    .item-result-stock{font-size:.72rem;font-weight:700;text-align:right;margin-top:2px;display:flex;align-items:center;gap:3px;justify-content:flex-end}
+
+    /* SALE ITEM ROWS */
+    .sale-item-row{
+      display:flex;align-items:center;gap:12px;
+      padding:13px 18px;border-bottom:1px solid var(--gray-100);
+      transition:background .15s;
+      animation:rowIn .3s var(--spring) both;
+    }
+    @keyframes rowIn{from{opacity:0;transform:translateX(-12px)}to{opacity:1;transform:translateX(0)}}
+    .sale-item-row:last-child{border-bottom:none}
+    .sale-item-row:hover{background:var(--green-50)}
+
+    .si-icon{
+      width:36px;height:36px;border-radius:var(--radius-md);
+      background:var(--green-100);color:var(--green-700);
+      display:flex;align-items:center;justify-content:center;
+      font-size:.88rem;flex-shrink:0;
+      transition:transform .25s var(--bounce);
+    }
+    .sale-item-row:hover .si-icon{transform:scale(1.12) rotate(-6deg)}
+
+    .si-body{flex:1;min-width:0}
+    .si-name{font-weight:700;font-size:.875rem;color:var(--gray-900);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .si-meta{font-size:.72rem;color:var(--gray-400);margin-top:2px;display:flex;align-items:center;gap:5px}
+
+    /* qty input */
+    .si-qty{
+      width:60px;text-align:center;
+      font-family:var(--outfit);font-weight:700;font-size:.95rem;
+      border:1.5px solid var(--gray-200);border-radius:var(--radius-md);
+      padding:5px 4px;transition:border-color .2s,box-shadow .2s;
+      flex-shrink:0;background:var(--white);
+    }
+    .si-qty:focus{border-color:var(--green-400);box-shadow:0 0 0 3px rgba(60,189,94,.12);outline:none}
+
+    .si-total{
+      font-family:var(--outfit);font-size:.95rem;font-weight:800;
+      color:var(--green-600);letter-spacing:-.02em;
+      white-space:nowrap;min-width:90px;text-align:right;
+      flex-shrink:0;
+      transition:transform .2s var(--bounce);
+    }
+    .sale-item-row:hover .si-total{transform:scale(1.05)}
+
+    .si-del{
+      width:30px;height:30px;border-radius:var(--radius-md);
+      border:none;background:none;cursor:pointer;
+      color:var(--red-400);font-size:.82rem;
+      display:flex;align-items:center;justify-content:center;
+      transition:background .14s,color .14s,transform .2s var(--bounce);flex-shrink:0;
+    }
+    .si-del:hover{background:var(--red-50);color:var(--red-600);transform:scale(1.2) rotate(8deg)}
+    .si-del:active{transform:scale(.9)!important}
+
+    /* RECEIPT SUMMARY */
+    .receipt-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--gray-100)}
+    .receipt-row:last-child{border-bottom:none}
+    .receipt-label{font-size:.8rem;color:var(--gray-500);display:flex;align-items:center;gap:5px}
+    .receipt-label i{color:var(--green-500);font-size:.8rem}
+    .receipt-val{font-family:var(--outfit);font-weight:700;color:var(--gray-900)}
+    .receipt-total-row{
+      display:flex;justify-content:space-between;align-items:center;
+      padding:14px 0 0;margin-top:4px;
+      border-top:2px solid var(--green-100);
+    }
+    .receipt-total-label{font-weight:800;font-size:.9rem;color:var(--gray-700)}
+    .receipt-total-val{
+      font-family:var(--outfit);font-size:1.5rem;font-weight:800;
+      color:var(--green-700);letter-spacing:-.03em;
+      transition:transform .3s var(--bounce);
+    }
+
+    /* PAYMENT METHOD SELECT — highlight active */
+    .payment-option-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px}
+    .pmt-opt{
+      display:flex;align-items:center;gap:8px;
+      padding:10px 12px;border-radius:var(--radius-md);
+      border:1.5px solid var(--gray-200);cursor:pointer;
+      transition:border-color .2s,background .2s,transform .2s var(--bounce);
+      font-size:.78rem;font-weight:700;color:var(--gray-600);
+    }
+    .pmt-opt:hover{border-color:var(--green-300);background:var(--green-50);transform:translateY(-2px)}
+    .pmt-opt.selected{border-color:var(--green-500);background:var(--green-50);color:var(--green-700)}
+    .pmt-opt i{font-size:1rem;flex-shrink:0}
+    .pmt-opt.selected i{color:var(--green-600)}
+
+    /* CONFIRM / RECORD BUTTON */
+    .btn{transition:transform .22s var(--bounce),box-shadow .22s var(--ease),background .15s,border-color .15s,color .15s}
+    .btn:hover:not(:disabled){transform:translateY(-2px)}
+    .btn:active{transform:scale(.97)!important}
+    .btn-primary{position:relative;overflow:hidden}
+    .btn-primary::after{content:'';position:absolute;inset:0;left:-100%;width:50%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.2),transparent);transition:left .5s var(--ease)}
+    .btn-primary:hover::after{left:160%}
+    .btn-primary:hover{box-shadow:0 8px 24px rgba(26,138,58,.42)!important}
+    .btn-outline:hover{background:var(--green-50)!important;border-color:var(--green-400)!important;color:var(--green-700)!important}
+
+    /* MODAL PREVIEW ROW */
+    .modal-preview-row{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:9px 0;border-bottom:1px solid var(--gray-100);font-size:.875rem;gap:12px;
+      animation:rowIn .25s var(--spring) both;
+    }
+    .modal-preview-row:last-child{border-bottom:none}
+    .modal-preview-row:nth-child(1){animation-delay:.03s}
+    .modal-preview-row:nth-child(2){animation-delay:.06s}
+    .modal-preview-row:nth-child(3){animation-delay:.09s}
+
+    /* MODAL */
+    .modal{animation:modalBounce .3s var(--bounce) both}
+    @keyframes modalBounce{from{opacity:0;transform:scale(.88) translateY(20px)}to{opacity:1;transform:scale(1) translateY(0)}}
+
+    /* EMPTY STATE */
+    .empty-state{padding:48px 20px;text-align:center;color:var(--gray-400)}
+    .empty-icon-wrap{width:64px;height:64px;border-radius:50%;background:var(--gray-100);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:1.6rem;color:var(--gray-400);animation:emptyFloat 3s ease infinite}
+    @keyframes emptyFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+
+    /* FOOTER — 64px same as dashboard */
+    .dash-footer{margin-top:40px}
+    .footer-main{background:linear-gradient(135deg,var(--green-800) 0%,var(--green-900) 100%);border-radius:var(--radius-xl);height:64px;padding:0 24px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+    .footer-copy{font-size:.73rem;color:rgba(255,255,255,.5);display:flex;align-items:center;gap:10px;flex-wrap:nowrap}
+    .footer-copy strong{color:rgba(255,255,255,.75);font-weight:700}
+    .footer-copy-sep{width:3px;height:3px;border-radius:50%;background:rgba(255,255,255,.3);flex-shrink:0}
+    .footer-copy i{color:var(--green-400);font-size:.78rem;flex-shrink:0}
+    .footer-tagline{font-size:.7rem;color:rgba(255,255,255,.3);font-style:italic;white-space:nowrap;flex-shrink:0}
+
+    /* RESPONSIVE */
+    @media(max-width:768px){.topbar-clock-pill,.topbar-greeting-chip,.topbar-user-info{display:none}.topbar-search input{width:160px!important}.payment-option-row{grid-template-columns:1fr}}
+    @media(max-width:600px){.topbar-search{display:none}.footer-main{height:auto;padding:14px 20px;flex-direction:column;text-align:center}.footer-tagline{display:none}}
   </style>
 </head>
 <body>
+<div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+
+<!-- SIDEBAR -->
 <aside class="sidebar" id="sidebar">
-  <div class="sidebar-logo"><div class="sidebar-logo-icon">🔧</div><div class="sidebar-logo-text"><h1>DukaSoft</h1><span>Hardware ERP</span></div></div>
+  <div class="sidebar-logo">
+    <div class="sidebar-logo-icon"><i class="bi bi-tools"></i></div>
+    <div class="sidebar-logo-text"><h1>Mbogo Hardware</h1><span>ERP System</span></div>
+  </div>
   <nav class="sidebar-nav">
-    <div class="nav-group"><a href="dashboard.html" class="nav-parent"><span class="nav-icon">📊</span><span class="nav-label">Dashboard</span></a></div>
-    <div class="nav-group"><button class="nav-parent" type="button"><span class="nav-icon">📦</span><span class="nav-label">Inventory</span><span class="nav-chevron">›</span></button><div class="nav-children"><a href="inventory.html" class="nav-child"><span class="child-dot"></span> View All Items</a><a href="categories.html" class="nav-child"><span class="child-dot"></span> Manage Categories</a><a href="add-item.html" class="nav-child"><span class="child-dot"></span> Add New Item</a></div></div>
+    <div class="nav-section-label">Main</div>
+    <div class="nav-group"><a href="dashboard.html" class="nav-parent"><span class="nav-icon"><i class="bi bi-grid-1x2"></i></span><span class="nav-label">Dashboard</span></a></div>
+    <div class="nav-group"><button class="nav-parent" type="button"><span class="nav-icon"><i class="bi bi-box-seam"></i></span><span class="nav-label">Inventory</span><i class="nav-chevron bi bi-chevron-right"></i></button><div class="nav-children"><a href="inventory.html" class="nav-child"><span class="child-dot"></span> View All Items</a><a href="categories.html" class="nav-child"><span class="child-dot"></span> Manage Categories</a><a href="add-item.html" class="nav-child"><span class="child-dot"></span> Add New Item</a></div></div>
+    <div class="nav-section-label">Transactions</div>
     <div class="nav-group">
-      <button class="nav-parent open active" type="button"><span class="nav-icon">💰</span><span class="nav-label">Sales</span><span class="nav-chevron">›</span></button>
+      <button class="nav-parent open active" type="button"><span class="nav-icon"><i class="bi bi-receipt"></i></span><span class="nav-label">Sales</span><i class="nav-chevron bi bi-chevron-right"></i></button>
       <div class="nav-children open">
         <a href="record-sale.html" class="nav-child active"><span class="child-dot"></span> Record a Sale</a>
         <a href="sales-history.html" class="nav-child"><span class="child-dot"></span> Sales History</a>
       </div>
     </div>
-    <div class="nav-group"><button class="nav-parent" type="button"><span class="nav-icon">🚚</span><span class="nav-label">Restock</span><span class="nav-chevron">›</span></button><div class="nav-children"><a href="record-restock.html" class="nav-child"><span class="child-dot"></span> Record Restock</a><a href="restock-history.html" class="nav-child"><span class="child-dot"></span> Restock History</a><a href="low-stock.html" class="nav-child"><span class="child-dot"></span> Low Stock Alerts</a></div></div>
-    <div class="nav-group"><button class="nav-parent" type="button"><span class="nav-icon">📈</span><span class="nav-label">Reports</span><span class="nav-chevron">›</span></button><div class="nav-children"><a href="reports.html?tab=sales" class="nav-child"><span class="child-dot"></span> Sales Report</a><a href="reports.html?tab=inventory" class="nav-child"><span class="child-dot"></span> Inventory Report</a><a href="reports.html?tab=restock" class="nav-child"><span class="child-dot"></span> Restock Report</a></div></div>
+    <div class="nav-group"><button class="nav-parent" type="button"><span class="nav-icon"><i class="bi bi-truck"></i></span><span class="nav-label">Restock</span><i class="nav-chevron bi bi-chevron-right"></i></button><div class="nav-children"><a href="record-restock.html" class="nav-child"><span class="child-dot"></span> Record Restock</a><a href="restock-history.html" class="nav-child"><span class="child-dot"></span> Restock History</a><a href="low-stock.html" class="nav-child"><span class="child-dot"></span> Low Stock Alerts</a></div></div>
+    <div class="nav-section-label">Analytics</div>
+    <div class="nav-group"><button class="nav-parent" type="button"><span class="nav-icon"><i class="bi bi-bar-chart-line"></i></span><span class="nav-label">Reports</span><i class="nav-chevron bi bi-chevron-right"></i></button><div class="nav-children"><a href="reports.html?tab=sales" class="nav-child"><span class="child-dot"></span> Sales Report</a><a href="reports.html?tab=inventory" class="nav-child"><span class="child-dot"></span> Inventory Report</a><a href="reports.html?tab=restock" class="nav-child"><span class="child-dot"></span> Restock Report</a></div></div>
   </nav>
   <div class="sidebar-footer">
-    <a href="../index.html" class="nav-parent" onclick="return signOut(event)"><span class="nav-icon">🚪</span><span class="nav-label">Sign Out</span></a>
+    <a href="../index.html" class="nav-parent" onclick="return signOut(event)"><span class="nav-icon"><i class="bi bi-box-arrow-left"></i></span><span class="nav-label">Sign Out</span></a>
     <div class="sidebar-user"><div class="sidebar-avatar" id="sidebar-avatar-initials">--</div><div class="sidebar-user-info"><p id="sidebar-username">Loading...</p><span>Administrator</span></div></div>
   </div>
 </aside>
 
+<!-- ██ GREEN TOPBAR — identical to dashboard ██ -->
 <header class="topbar" id="topbar">
-  <div class="topbar-left"><button class="sidebar-toggle">☰</button><div class="page-breadcrumb">Sales / <strong>Record Sale</strong></div></div>
-  <div class="topbar-right"><div class="topbar-search"><span class="search-icon">🔍</span><input type="text" placeholder="Search items..."/></div><button class="notif-btn" onclick="window.location='low-stock.html'">🔔<span class="notif-badge" id="notif-badge"></span></button></div>
+  <div class="topbar-left" style="gap:10px;">
+    <button class="sidebar-toggle"><i class="bi bi-list"></i></button>
+    <div class="topbar-divider"></div>
+    <div class="topbar-brand">
+      <div class="topbar-logo-icon"><i class="bi bi-tools"></i></div>
+      <div class="topbar-brand-text">
+        <span class="topbar-brand-name">Mbogo Hardware</span>
+        <span class="topbar-brand-sub">ERP &middot; Nabiswera</span>
+      </div>
+    </div>
+    <div class="topbar-divider"></div>
+    <div class="page-breadcrumb">
+      Sales
+      <span class="bc-sep"><i class="bi bi-chevron-right"></i></span>
+      <strong>Record Sale</strong>
+    </div>
+  </div>
+  <div class="topbar-right">
+    <div class="topbar-greeting-chip"><i class="bi bi-stars"></i><span id="topbar-greeting">Good morning</span></div>
+    <div class="topbar-clock-pill"><i class="bi bi-clock"></i><span id="clock-time">—</span></div>
+    <div class="topbar-search"><span class="search-icon"><i class="bi bi-search"></i></span><input type="text" placeholder="Search items..." autocomplete="off"/></div>
+    <button class="notif-btn" onclick="window.location='low-stock.html'" title="Low stock alerts"><i class="bi bi-bell"></i><span class="notif-badge" id="notif-badge"></span></button>
+    <div class="topbar-user-pill">
+      <div class="topbar-avatar-circle" id="topbar-avatar">--</div>
+      <div class="topbar-user-info"><span class="topbar-user-name" id="topbar-username">Loading</span><span class="topbar-user-role">Admin</span></div>
+    </div>
+  </div>
 </header>
+<!-- ██ END TOPBAR ██ -->
 
 <main class="main-content" id="main-content">
   <div class="page-inner">
-    <div class="page-header">
+
+    <!-- PAGE HEADER -->
+    <div class="page-header" style="margin-bottom:24px;">
       <div class="page-header-left">
-        <span class="page-tag">Sales</span>
+        <span class="page-tag"><i class="bi bi-receipt"></i> Sales</span>
         <h2>Record a Sale</h2>
+        <p>Add items to the cart, set payment method, and confirm.</p>
       </div>
       <div class="page-header-actions">
-        <a href="sales-history.html" class="btn btn-outline">📋 View Sales History</a>
+        <a href="sales-history.html" class="btn btn-primary">
+          <i class="bi bi-clock-history"></i> Sales History
+        </a>
       </div>
     </div>
 
     <div class="sale-layout">
 
-      <!-- Left: Item selection -->
+      <!-- ═══ LEFT COLUMN ═══ -->
       <div style="display:flex;flex-direction:column;gap:20px;">
-        <div class="card">
-          <div class="card-header"><h3>Search & Add Items</h3></div>
-          <div class="card-body">
+
+        <!-- SEARCH CARD -->
+        <div class="card" style="overflow:hidden;">
+          <div class="card-accent-bar"></div>
+          <div class="card-header">
+            <h3 style="display:flex;align-items:center;gap:8px;">
+              <i class="bi bi-search" style="color:var(--green-600);"></i>
+              Search &amp; Add Items
+            </h3>
+          </div>
+          <div class="card-body" style="padding:20px;">
             <div style="display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;">
-              <div class="form-group" style="flex:0 0 200px;margin-bottom:0;">
-                <label class="form-label">Category</label>
+              <div class="form-group" style="flex:0 0 180px;margin-bottom:0;">
+                <label class="form-label"><i class="bi bi-folder2"></i> Category</label>
                 <select class="form-select" id="sale-cat-filter" onchange="onCategoryChange()">
                   <option value="">All Categories</option>
                 </select>
               </div>
               <div class="form-group" style="flex:1;min-width:200px;margin-bottom:0;position:relative;">
-                <label class="form-label">Item Name</label>
+                <label class="form-label"><i class="bi bi-box-seam"></i> Item Name</label>
                 <input class="form-input" type="text" id="item-search-input"
-                       placeholder="Search or pick an item..."
+                       placeholder="Type to search for an item…"
                        oninput="searchItems(this.value)"
                        onfocus="searchItems(this.value)"
                        autocomplete="off"/>
@@ -114,300 +343,381 @@
           </div>
         </div>
 
-        <!-- Selected items -->
-        <div class="card">
+        <!-- CART CARD -->
+        <div class="card" style="overflow:hidden;">
+          <div class="card-accent-bar"></div>
           <div class="card-header">
-            <h3>Items in this Sale <span id="item-count-badge" class="badge badge-green" style="margin-left:8px;">0</span></h3>
-            <button class="btn btn-ghost btn-sm" onclick="clearItems()" style="color:var(--red-500);">Clear All</button>
+            <h3 style="display:flex;align-items:center;gap:8px;">
+              <i class="bi bi-cart3" style="color:var(--green-600);"></i>
+              Cart
+              <span class="badge badge-green" id="item-count-badge">0</span>
+            </h3>
+            <button class="btn btn-ghost btn-sm" onclick="clearItems()" style="color:var(--red-500);gap:5px;">
+              <i class="bi bi-trash3"></i> Clear All
+            </button>
           </div>
           <div id="sale-items-list">
-            <div class="empty-state" id="no-items-msg">
-              <div class="empty-icon">🛒</div>
-              <p>Search and add items above to start a sale.</p>
+            <div id="no-items-msg" class="empty-state">
+              <div class="empty-icon-wrap"><i class="bi bi-cart3"></i></div>
+              <h4 style="font-size:.95rem;font-weight:700;color:var(--gray-600);margin-bottom:4px;">Cart is empty</h4>
+              <p style="font-size:.83rem;">Search and add items above to start recording a sale.</p>
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- Right: Sale summary & confirm -->
+      </div>
+      <!-- ═══ END LEFT ═══ -->
+
+      <!-- ═══ RIGHT COLUMN ═══ -->
       <div style="display:flex;flex-direction:column;gap:20px;">
-        <div class="card">
-          <div class="card-header"><h3>Sale Details</h3></div>
-          <div class="card-body" style="display:flex;flex-direction:column;gap:18px;">
-            <div class="form-group">
-              <label class="form-label">Customer Name (optional)</label>
-              <input class="form-input" type="text" id="customer-name" placeholder="e.g. Mukasa John or Walk-in"/>
+
+        <!-- SALE DETAILS CARD -->
+        <div class="card" style="overflow:hidden;">
+          <div class="card-accent-bar"></div>
+          <div class="card-header">
+            <h3 style="display:flex;align-items:center;gap:8px;">
+              <i class="bi bi-person-lines-fill" style="color:var(--green-600);"></i>
+              Sale Details
+            </h3>
+          </div>
+          <div class="card-body" style="display:flex;flex-direction:column;gap:14px;">
+
+            <div class="form-group" style="margin-bottom:0;">
+              <label class="form-label"><i class="bi bi-person"></i> Customer Name <span style="color:var(--gray-400);font-weight:500;">(optional)</span></label>
+              <input class="form-input" type="text" id="customer-name"
+                     placeholder="e.g. Mukasa John or Walk-in"/>
             </div>
-            <div class="form-group">
-              <label class="form-label">Payment Method</label>
-              <select class="form-select" id="payment-method">
-                <option value="">— Not specified —</option>
-                <option value="cash">Cash</option>
-                <option value="mobile_money">Mobile Money (MTN/Airtel)</option>
-                <option value="bank">Bank Transfer</option>
-                <option value="credit">Credit / Pay Later</option>
-              </select>
+
+            <!-- Payment method — visual tiles -->
+            <div class="form-group" style="margin-bottom:0;">
+              <label class="form-label"><i class="bi bi-credit-card"></i> Payment Method</label>
+              <div class="payment-option-row" id="payment-options">
+                <div class="pmt-opt selected" data-val="cash" onclick="selectPayment(this,'cash')">
+                  <i class="bi bi-cash-stack"></i> Cash
+                </div>
+                <div class="pmt-opt" data-val="mobile_money" onclick="selectPayment(this,'mobile_money')">
+                  <i class="bi bi-phone"></i> Mobile Money
+                </div>
+                <div class="pmt-opt" data-val="bank" onclick="selectPayment(this,'bank')">
+                  <i class="bi bi-bank"></i> Bank Transfer
+                </div>
+                <div class="pmt-opt" data-val="credit" onclick="selectPayment(this,'credit')">
+                  <i class="bi bi-hourglass-split"></i> Credit / Pay Later
+                </div>
+              </div>
+              <input type="hidden" id="payment-method" value="cash"/>
             </div>
-            <div class="form-group">
-              <label class="form-label">Notes (optional)</label>
-              <textarea class="form-textarea" id="sale-notes" rows="2" placeholder="Any special notes about this sale..."></textarea>
+
+            <div class="form-group" style="margin-bottom:0;">
+              <label class="form-label"><i class="bi bi-chat-text"></i> Notes <span style="color:var(--gray-400);font-weight:500;">(optional)</span></label>
+              <textarea class="form-textarea" id="sale-notes" rows="2"
+                        placeholder="Any notes about this sale…"
+                        style="resize:vertical;"></textarea>
             </div>
           </div>
         </div>
 
-        <!-- Receipt summary -->
-        <div class="card">
-          <div class="card-header"><h3>Receipt Summary</h3></div>
-          <div class="card-body">
-            <div class="receipt-section">
-              <div class="receipt-row"><span class="text-muted">Subtotal</span><span id="summary-subtotal" class="fw-700">UGX 0</span></div>
-              <div class="divider"></div>
-              <div class="receipt-row"><span class="fw-700">TOTAL</span><span id="summary-total" class="receipt-total text-green">UGX 0</span></div>
+        <!-- RECEIPT SUMMARY CARD -->
+        <div class="card" style="overflow:hidden;">
+          <div class="receipt-accent"></div>
+          <div class="card-header">
+            <h3 style="display:flex;align-items:center;gap:8px;">
+              <i class="bi bi-receipt" style="color:var(--green-600);"></i>
+              Receipt Summary
+            </h3>
+          </div>
+          <div class="card-body" style="padding:18px 20px;">
+
+            <div style="margin-bottom:16px;">
+              <div class="receipt-row">
+                <span class="receipt-label"><i class="bi bi-cart3"></i> Items</span>
+                <span class="receipt-val" id="summary-item-count">0 items</span>
+              </div>
+              <div class="receipt-row">
+                <span class="receipt-label"><i class="bi bi-calculator"></i> Subtotal</span>
+                <span class="receipt-val" id="summary-subtotal">UGX 0</span>
+              </div>
             </div>
-            <button class="btn btn-primary btn-lg" style="width:100%;margin-top:16px;font-size:1rem;" onclick="confirmSale()">
-              ✅ Confirm & Record Sale
+
+            <div class="receipt-total-row">
+              <span class="receipt-total-label">TOTAL</span>
+              <span class="receipt-total-val" id="summary-total">UGX 0</span>
+            </div>
+
+            <button class="btn btn-primary btn-lg"
+                    style="width:100%;margin-top:18px;justify-content:center;"
+                    onclick="confirmSale()">
+              <i class="bi bi-check-circle"></i> Confirm &amp; Record Sale
             </button>
-            <button class="btn btn-outline" style="width:100%;margin-top:8px;" onclick="clearItems()">
-              🔄 Start Over
+            <button class="btn btn-outline"
+                    style="width:100%;margin-top:8px;justify-content:center;"
+                    onclick="clearItems()">
+              <i class="bi bi-arrow-counterclockwise"></i> Start Over
             </button>
           </div>
         </div>
+
       </div>
+      <!-- ═══ END RIGHT ═══ -->
 
-    </div>
+    </div><!-- /sale-layout -->
+
+    <!-- FOOTER — identical to dashboard -->
+    <footer class="dash-footer">
+      <div class="footer-main">
+        <div class="footer-copy">
+          <i class="bi bi-shield-check"></i>
+          <span>&copy; 2026 <strong>Mbogo Hardware</strong></span>
+          <span class="footer-copy-sep"></span>
+          <span>Nabiswera, Nakasongola District</span>
+          <span class="footer-copy-sep"></span>
+          <span>Powered by DukaSoft ERP</span>
+        </div>
+        <div class="footer-tagline">Your shop, fully in control.</div>
+      </div>
+    </footer>
+
   </div>
 </main>
 
-<!-- Confirm Sale Modal -->
+<!-- CONFIRM SALE MODAL -->
 <div class="modal-overlay" id="confirm-sale-modal">
   <div class="modal">
-    <div class="modal-header"><h3>Confirm Sale</h3><button class="modal-close" onclick="Modal.close('confirm-sale-modal')">✕</button></div>
-    <div class="modal-body">
-      <div style="background:var(--green-50);border-radius:var(--radius-lg);padding:16px;margin-bottom:16px;">
-        <div style="font-size:0.8rem;color:var(--green-700);font-weight:700;margin-bottom:4px;">TOTAL AMOUNT</div>
-        <div style="font-size:2rem;font-weight:800;color:var(--green-800);" id="modal-total">UGX 0</div>
+    <div class="modal-header">
+      <h3 style="display:flex;align-items:center;gap:8px;">
+        <i class="bi bi-receipt" style="color:var(--green-600);"></i> Confirm Sale
+      </h3>
+      <button class="modal-close" onclick="Modal.close('confirm-sale-modal')"><i class="bi bi-x-lg"></i></button>
+    </div>
+    <div class="modal-body" style="padding:24px;display:flex;flex-direction:column;gap:16px;">
+
+      <!-- Total highlight -->
+      <div style="background:linear-gradient(135deg,var(--green-50),var(--white));border:1.5px solid var(--green-200);border-radius:var(--radius-lg);padding:18px 20px;display:flex;align-items:center;justify-content:space-between;">
+        <div>
+          <div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--green-600);margin-bottom:4px;">Total Amount</div>
+          <div style="font-family:var(--outfit);font-size:2rem;font-weight:800;color:var(--green-800);letter-spacing:-.03em;" id="modal-total">UGX 0</div>
+        </div>
+        <div style="width:52px;height:52px;border-radius:50%;background:var(--green-100);display:flex;align-items:center;justify-content:center;color:var(--green-700);font-size:1.4rem;">
+          <i class="bi bi-cash-stack"></i>
+        </div>
       </div>
-      <div id="modal-items-preview" style="font-size:0.875rem;margin-bottom:16px;max-height:150px;overflow-y:auto;"></div>
-      <p style="font-size:0.9rem;color:var(--gray-600);">⚠ This will reduce stock for all items listed above. Please verify before confirming.</p>
+
+      <!-- Items preview -->
+      <div id="modal-items-preview" style="max-height:180px;overflow-y:auto;"></div>
+
+      <!-- Warning -->
+      <div style="display:flex;align-items:flex-start;gap:10px;background:var(--amber-50);border:1.5px solid var(--amber-200);border-radius:var(--radius-md);padding:12px 14px;font-size:.83rem;color:var(--amber-700);">
+        <i class="bi bi-exclamation-triangle-fill" style="flex-shrink:0;margin-top:1px;"></i>
+        <span>This will reduce stock for all items listed. Please verify quantities before confirming.</span>
+      </div>
     </div>
     <div class="modal-footer">
-      <button class="btn btn-outline btn-lg" onclick="Modal.close('confirm-sale-modal')">Go Back & Check</button>
-      <button class="btn btn-primary btn-lg" onclick="saveSale()">✅ Yes, Record Sale</button>
+      <button class="btn btn-outline btn-lg" onclick="Modal.close('confirm-sale-modal')">
+        <i class="bi bi-arrow-left"></i> Go Back
+      </button>
+      <button class="btn btn-primary btn-lg" onclick="saveSale()">
+        <i class="bi bi-check-circle"></i> Yes, Record Sale
+      </button>
     </div>
   </div>
 </div>
-<div class="toast-container" id="toast-container"></div>
 
+<div class="toast-container" id="toast-container"></div>
 <script src="../assets/js/app.js"></script>
 <script src="../assets/js/api.js"></script>
 <script>
-// saleItems: [{ item_id, name, category_name, price, qty, stock, total }]
-let saleItems = [];
+/* ── Clock ── */
+function updateClock(){const now=new Date(),h=now.getHours();const g=document.getElementById('topbar-greeting');if(g)g.textContent=h<12?'Good morning':h<17?'Good afternoon':'Good evening';const c=document.getElementById('clock-time');if(c)c.textContent=now.toLocaleTimeString('en-UG',{hour:'2-digit',minute:'2-digit'})}
+updateClock();setInterval(updateClock,30000);
 
-document.addEventListener('DOMContentLoaded', async () => {
+let saleItems=[];
+
+document.addEventListener('DOMContentLoaded',async()=>{
   await pageAuthGuard();
+  initSidebar(); loadUserInfo();
   await refreshLowStockBadge();
   await loadCategoryFilter();
 });
 
-document.addEventListener('click', e => {
-  if (!e.target.closest('#item-search-input') && !e.target.closest('#search-results') && !e.target.closest('#sale-cat-filter')) {
-    document.getElementById('search-results').style.display = 'none';
-  }
+function initSidebar(){
+  const sb=document.getElementById('sidebar'),tb=document.getElementById('topbar'),mc=document.getElementById('main-content'),bd=document.getElementById('sidebar-backdrop');
+  document.querySelectorAll('.sidebar-toggle').forEach(b=>{b.addEventListener('click',()=>{if(window.innerWidth<=768){sb.classList.toggle('mobile-open');bd.classList.toggle('open');}else{sb.classList.toggle('collapsed');tb.classList.toggle('sidebar-collapsed');mc?.classList.toggle('sidebar-collapsed');}});});
+  bd.addEventListener('click',()=>{sb.classList.remove('mobile-open');bd.classList.remove('open');});
+  document.querySelectorAll('.nav-parent[type=button]').forEach(btn=>{btn.addEventListener('click',()=>{const ch=btn.nextElementSibling;if(!ch)return;const open=ch.classList.contains('open');document.querySelectorAll('.nav-children.open').forEach(c=>{c.classList.remove('open');c.previousElementSibling?.classList.remove('open');});if(!open){ch.classList.add('open');btn.classList.add('open');}});});
+}
+
+function loadUserInfo(){
+  const u=localStorage.getItem('erp_username');if(!u)return;
+  const ini=u.substring(0,2).toUpperCase();
+  [['sidebar-username',u],['topbar-username',u.replace(/_/g,' ')]].forEach(([id,v])=>{const el=document.getElementById(id);if(el)el.textContent=v;});
+  ['sidebar-avatar-initials','topbar-avatar'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=ini;});
+}
+
+/* close search on outside click */
+document.addEventListener('click',e=>{
+  if(!e.target.closest('#item-search-input')&&!e.target.closest('#search-results')&&!e.target.closest('#sale-cat-filter'))
+    document.getElementById('search-results').style.display='none';
 });
 
-async function loadCategoryFilter() {
-  const res = await Categories.list();
-  if (!res.success) return;
-  const cats = res.data.categories || [];
-  const select = document.getElementById('sale-cat-filter');
-  cats.forEach(c => {
-    const opt = document.createElement('option');
-    opt.value = c.category_id;
-    opt.textContent = c.name;
-    select.appendChild(opt);
-  });
+async function loadCategoryFilter(){
+  const res=await Categories.list();if(!res.success)return;
+  const sel=document.getElementById('sale-cat-filter');
+  (res.data.categories||[]).forEach(c=>{const o=document.createElement('option');o.value=c.category_id;o.textContent=c.name;sel.appendChild(o);});
 }
 
-function onCategoryChange() {
-  const q = document.getElementById('item-search-input').value;
-  searchItems(q);
-}
+function onCategoryChange(){searchItems(document.getElementById('item-search-input').value)}
 
-async function searchItems(q) {
-  const results = document.getElementById('search-results');
-  const catId   = document.getElementById('sale-cat-filter').value;
-
-  const params = { per_page: 50 };
-  if (q.trim())  params.search      = q.trim();
-  if (catId)     params.category_id = catId;
-
-  const res = await Items.list(params);
-  if (!res.success) { results.style.display = 'none'; return; }
-  const matched = res.data.items || [];
-
-  if (matched.length === 0) {
-    results.innerHTML = `<div class="item-result"><span style="color:var(--gray-400);font-size:0.9rem;">No items found${q.trim() ? ` for "${esc(q)}"` : ''}.</span></div>`;
+async function searchItems(q){
+  const results=document.getElementById('search-results');
+  const catId=document.getElementById('sale-cat-filter').value;
+  const params={per_page:50};if(q.trim())params.search=q.trim();if(catId)params.category_id=catId;
+  const res=await Items.list(params);
+  if(!res.success){results.style.display='none';return;}
+  const matched=res.data.items||[];
+  if(matched.length===0){
+    results.innerHTML=`<div class="item-result" style="cursor:default;color:var(--gray-400);justify-content:center;font-size:.83rem;"><i class="bi bi-search" style="margin-right:6px;"></i>No items found.</div>`;
   } else {
-    results.innerHTML = matched.map(item => {
-      const qty = parseInt(item.stock_quantity) || 0;
-      const min = parseInt(item.restock_level) || 20;
-      const stockColor = qty === 0 ? 'var(--red-500)' : qty < min ? 'var(--amber-500)' : 'var(--green-600)';
-      return `<div class="item-result" onclick='addItem(${JSON.stringify(item)})'>
+    results.innerHTML=matched.map(item=>{
+      const qty=parseInt(item.stock_quantity)||0, min=parseInt(item.restock_level)||20;
+      const isOut=qty===0, isLow=qty<min;
+      const stockColor=isOut?'var(--red-500)':isLow?'var(--amber-500)':'var(--green-600)';
+      const stockIcon=isOut?'bi-x-circle-fill':isLow?'bi-exclamation-triangle-fill':'bi-check-circle-fill';
+      return `<div class="item-result" onclick='addItem(${JSON.stringify(item).replace(/"/g,"&quot;")})'>
         <div>
           <div class="item-result-name">${esc(item.name)}</div>
-          <div class="item-result-cat">${esc(item.category_name||'Uncategorised')}</div>
+          <div class="item-result-cat"><i class="bi bi-folder2" style="font-size:.65rem;"></i> ${esc(item.category_name||'—')}</div>
         </div>
-        <div>
+        <div style="text-align:right;">
           <div class="item-result-price">UGX ${parseInt(item.price||0).toLocaleString('en-UG')}</div>
-          <div class="item-result-stock" style="color:${stockColor};">${qty} in stock</div>
+          <div class="item-result-stock" style="color:${stockColor};"><i class="bi ${stockIcon}" style="font-size:.7rem;"></i> ${qty}</div>
         </div>
       </div>`;
     }).join('');
   }
-  results.style.display = 'block';
+  results.style.display='block';
 }
 
-function addItem(item) {
-  document.getElementById('search-results').style.display = 'none';
-  document.getElementById('item-search-input').value = '';
-
-  const existing = saleItems.find(s => s.item_id == item.item_id);
-  const stock    = parseInt(item.stock_quantity) || 0;
-
-  if (existing) {
-    if (stock <= existing.qty) { Toast.danger(`Not enough stock for "${item.name}".`); return; }
-    existing.qty++;
-    existing.total = existing.qty * existing.price;
-    renderSaleItems();
-    return;
+function addItem(item){
+  document.getElementById('search-results').style.display='none';
+  document.getElementById('item-search-input').value='';
+  const existing=saleItems.find(s=>s.item_id==item.item_id);
+  const stock=parseInt(item.stock_quantity)||0;
+  if(existing){
+    if(stock<=existing.qty){Toast.danger(`Only ${stock} in stock for "${item.name}".`);return;}
+    existing.qty++; existing.total=existing.qty*existing.price;
+    renderSaleItems(); return;
   }
-  if (stock <= 0) { Toast.danger(`"${item.name}" is out of stock.`); return; }
-  saleItems.push({
-    item_id:       item.item_id,
-    name:          item.name,
-    category_name: item.category_name || '',
-    price:         parseFloat(item.price) || 0,
-    qty:           1,
-    stock:         stock,
-    total:         parseFloat(item.price) || 0,
-  });
+  if(stock<=0){Toast.danger(`"${item.name}" is out of stock.`);return;}
+  saleItems.push({item_id:item.item_id,name:item.name,category_name:item.category_name||'',price:parseFloat(item.price)||0,qty:1,stock,total:parseFloat(item.price)||0});
   renderSaleItems();
-  Toast.info(`"${item.name}" added.`);
+  Toast.success(`"${item.name}" added to cart.`);
 }
 
-function renderSaleItems() {
-  const list  = document.getElementById('sale-items-list');
-  const msg   = document.getElementById('no-items-msg');
-  const badge = document.getElementById('item-count-badge');
-  badge.textContent = saleItems.length;
-
-  if (saleItems.length === 0) {
-    list.innerHTML = '';
-    list.appendChild(msg);
-    msg.style.display = 'block';
-    updateSummary();
-    return;
-  }
-  msg.style.display = 'none';
-
-  list.innerHTML = saleItems.map((si, i) => `
+function renderSaleItems(){
+  const list=document.getElementById('sale-items-list');
+  const msg=document.getElementById('no-items-msg');
+  document.getElementById('item-count-badge').textContent=saleItems.length;
+  if(saleItems.length===0){list.innerHTML='';list.appendChild(msg);msg.style.display='block';updateSummary();return;}
+  msg.style.display='none';
+  list.innerHTML=saleItems.map((si,i)=>`
     <div class="sale-item-row">
-      <div class="sale-item-name">
-        ${esc(si.name)}
-        <div style="font-size:0.75rem;color:var(--gray-400);">${esc(si.category_name)} · UGX ${si.price.toLocaleString('en-UG')} each</div>
+      <div class="si-icon"><i class="bi bi-box-seam"></i></div>
+      <div class="si-body">
+        <div class="si-name" title="${esc(si.name)}">${esc(si.name)}</div>
+        <div class="si-meta">
+          <span><i class="bi bi-folder2" style="font-size:.62rem;"></i> ${esc(si.category_name||'—')}</span>
+          <span>·</span>
+          <span>UGX ${si.price.toLocaleString('en-UG')} each</span>
+          <span style="color:var(--gray-300);">·</span>
+          <span style="color:var(--green-500);">${si.stock} in stock</span>
+        </div>
       </div>
-      <input type="number" class="sale-item-qty" value="${si.qty}" min="1" max="${si.stock}"
-             onchange="updateQty(${i}, this.value)" oninput="updateQty(${i}, this.value)"/>
-      <div class="sale-item-total">UGX ${si.total.toLocaleString('en-UG')}</div>
-      <button class="remove-btn" onclick="removeItem(${i})" title="Remove">✕</button>
-    </div>
-  `).join('');
+      <input type="number" class="si-qty" value="${si.qty}" min="1" max="${si.stock}"
+             onchange="updateQty(${i},this.value)" oninput="updateQty(${i},this.value)"/>
+      <div class="si-total">${formatUGX(si.total)}</div>
+      <button class="si-del" onclick="removeItem(${i})" title="Remove item"><i class="bi bi-x-lg"></i></button>
+    </div>`).join('');
   list.appendChild(msg);
   updateSummary();
 }
 
-function updateQty(i, val) {
-  const qty = parseInt(val) || 1;
-  if (qty < 1) { saleItems[i].qty = 1; }
-  else if (qty > saleItems[i].stock) {
-    Toast.danger(`Only ${saleItems[i].stock} in stock.`);
-    saleItems[i].qty = saleItems[i].stock;
-  } else {
-    saleItems[i].qty = qty;
-  }
-  saleItems[i].total = saleItems[i].qty * saleItems[i].price;
+function updateQty(i,val){
+  let qty=parseInt(val)||1;
+  if(qty<1)qty=1;
+  else if(qty>saleItems[i].stock){Toast.danger(`Only ${saleItems[i].stock} in stock for "${saleItems[i].name}".`);qty=saleItems[i].stock;}
+  saleItems[i].qty=qty; saleItems[i].total=qty*saleItems[i].price;
   renderSaleItems();
 }
 
-function removeItem(i) {
-  const removed = saleItems.splice(i, 1)[0];
+function removeItem(i){
+  const removed=saleItems.splice(i,1)[0];
   renderSaleItems();
-  Toast.info(`"${removed.name}" removed.`, () => { saleItems.splice(i, 0, removed); renderSaleItems(); });
+  Toast.info(`"${removed.name}" removed from cart.`);
 }
 
-function clearItems() {
-  if (saleItems.length === 0) return;
-  if (!confirm('Clear all items from this sale?')) return;
-  saleItems = [];
-  renderSaleItems();
+function clearItems(){
+  if(saleItems.length===0)return;
+  if(!confirm('Clear all items from this sale?'))return;
+  saleItems=[];renderSaleItems();
 }
 
-function updateSummary() {
-  const total = saleItems.reduce((s, i) => s + i.total, 0);
-  document.getElementById('summary-subtotal').textContent = formatUGX(total);
-  document.getElementById('summary-total').textContent    = formatUGX(total);
+function updateSummary(){
+  const total=saleItems.reduce((s,i)=>s+i.total,0);
+  const count=saleItems.reduce((s,i)=>s+i.qty,0);
+  document.getElementById('summary-subtotal').textContent=formatUGX(total);
+  document.getElementById('summary-total').textContent=formatUGX(total);
+  document.getElementById('summary-item-count').textContent=saleItems.length+' item'+(saleItems.length!==1?'s':'')+' ('+count+' units)';
+  /* animate total value */
+  const tv=document.getElementById('summary-total');
+  tv.style.transform='scale(1.06)'; setTimeout(()=>tv.style.transform='',250);
 }
 
-function confirmSale() {
-  if (saleItems.length === 0) { Toast.danger('Add at least one item before recording a sale.'); return; }
-  const total = saleItems.reduce((s, i) => s + i.total, 0);
-  document.getElementById('modal-total').textContent = formatUGX(total);
-  document.getElementById('modal-items-preview').innerHTML = saleItems.map(si =>
-    `<div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--gray-100);">
-      <span>${esc(si.name)} × ${si.qty}</span>
-      <span style="font-weight:700;">${formatUGX(si.total)}</span>
-    </div>`
-  ).join('');
+function selectPayment(el,val){
+  document.querySelectorAll('.pmt-opt').forEach(o=>o.classList.remove('selected'));
+  el.classList.add('selected');
+  document.getElementById('payment-method').value=val;
+}
+
+function confirmSale(){
+  if(saleItems.length===0){Toast.danger('Add at least one item before recording a sale.');return;}
+  const total=saleItems.reduce((s,i)=>s+i.total,0);
+  document.getElementById('modal-total').textContent=formatUGX(total);
+  document.getElementById('modal-items-preview').innerHTML=saleItems.map((si,idx)=>`
+    <div class="modal-preview-row" style="animation-delay:${idx*.04}s;">
+      <div style="display:flex;align-items:center;gap:10px;min-width:0;">
+        <div style="width:28px;height:28px;border-radius:var(--radius-sm);background:var(--green-100);color:var(--green-700);display:flex;align-items:center;justify-content:center;font-size:.75rem;flex-shrink:0;">
+          <i class="bi bi-box-seam"></i>
+        </div>
+        <span style="font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${esc(si.name)} <span style="color:var(--gray-400);font-weight:400;">× ${si.qty}</span></span>
+      </div>
+      <span style="font-family:var(--outfit);font-weight:800;color:var(--green-600);white-space:nowrap;flex-shrink:0;">${formatUGX(si.total)}</span>
+    </div>`).join('');
   Modal.open('confirm-sale-modal');
 }
 
-async function saveSale() {
-  const payload = {
-    customer_name:  document.getElementById('customer-name').value.trim() || null,
-    payment_method: document.getElementById('payment-method').value,
-    notes:          document.getElementById('sale-notes').value.trim(),
-    items: saleItems.map(si => ({
-      item_id:    si.item_id,
-      item_name:  si.name,
-      category:   si.category_name,
-      quantity:   si.qty,
-      unit_price: si.price,
-      subtotal:   si.total,
-    })),
+async function saveSale(){
+  const payload={
+    customer_name:document.getElementById('customer-name').value.trim()||null,
+    payment_method:document.getElementById('payment-method').value,
+    notes:document.getElementById('sale-notes').value.trim(),
+    items:saleItems.map(si=>({item_id:si.item_id,item_name:si.name,category:si.category_name,quantity:si.qty,unit_price:si.price,subtotal:si.total}))
   };
-
-  const res = await Sales.create(payload);
-  if (!res.success) { Toast.danger(res.message || 'Failed to record sale.'); return; }
-
-  const total = saleItems.reduce((s, i) => s + i.total, 0);
+  const res=await Sales.create(payload);
+  if(!res.success){Toast.danger(res.message||'Failed to record sale.');return;}
+  const total=saleItems.reduce((s,i)=>s+i.total,0);
   Modal.close('confirm-sale-modal');
   Toast.success(`Sale recorded! Total: ${formatUGX(total)}`);
-  saleItems = [];
-  renderSaleItems();
-  document.getElementById('customer-name').value = '';
-  document.getElementById('sale-notes').value    = '';
+  saleItems=[]; renderSaleItems();
+  document.getElementById('customer-name').value='';
+  document.getElementById('sale-notes').value='';
+  document.querySelectorAll('.pmt-opt').forEach(o=>o.classList.remove('selected'));
+  document.querySelector('.pmt-opt[data-val="cash"]').classList.add('selected');
+  document.getElementById('payment-method').value='cash';
   await refreshLowStockBadge();
-
-  setTimeout(() => {
-    if (confirm('Sale recorded! View sales history?')) window.location.href = 'sales-history.html';
-  }, 500);
+  setTimeout(()=>{if(confirm('Sale recorded! View sales history?'))window.location.href='sales-history.html';},500);
 }
 
-function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
 </script>
 </body>
 </html>
-
-
-

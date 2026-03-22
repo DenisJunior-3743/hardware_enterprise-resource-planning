@@ -3,139 +3,419 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>DukaSoft — Restock History</title>
+  <title>Mbogo Hardware — Restock History</title>
   <link rel="stylesheet" href="../assets/css/style.css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--spring:cubic-bezier(.22,1,.36,1);--bounce:cubic-bezier(.34,1.56,.64,1);--ease:cubic-bezier(.4,0,.2,1);--outfit:'Outfit',var(--font-display),sans-serif;--mono:'JetBrains Mono',monospace}
+
+    /* ██ GREEN TOPBAR — identical to dashboard ██ */
+    .topbar{background:linear-gradient(135deg,var(--green-800) 0%,var(--green-900) 100%)!important;border-bottom:none!important;box-shadow:0 2px 16px rgba(0,0,0,.22)!important;padding:0 24px!important}
+    .topbar-brand{display:flex;align-items:center;gap:14px}
+    .sidebar-toggle{color:rgba(255,255,255,.7)!important;border-radius:var(--radius-md);transition:background .15s,color .15s,transform .2s var(--bounce)!important}
+    .sidebar-toggle:hover{background:rgba(255,255,255,.1)!important;color:#fff!important;transform:scale(1.08)!important}
+    .topbar-divider{width:1px;height:28px;background:rgba(255,255,255,.15);flex-shrink:0}
+    .topbar-logo-icon{width:36px;height:36px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.18);border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;color:#fff;font-size:1rem;flex-shrink:0;transition:background .2s,transform .25s var(--bounce)}
+    .topbar-logo-icon:hover{background:rgba(255,255,255,.22);transform:rotate(-8deg) scale(1.1)}
+    .topbar-brand-text{display:flex;flex-direction:column;gap:1px}
+    .topbar-brand-name{font-family:var(--outfit);font-size:.95rem;font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1}
+    .topbar-brand-sub{font-size:.6rem;font-weight:600;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:.12em}
+    .page-breadcrumb{font-size:.8rem;color:rgba(255,255,255,.5)!important}
+    .page-breadcrumb strong{color:rgba(255,255,255,.9)!important}
+    .page-breadcrumb .bc-sep{color:rgba(255,255,255,.3)!important}
+    .topbar-right{gap:6px!important}
+    .topbar-clock-pill{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.12);border-radius:999px;padding:5px 12px;font-family:var(--mono);font-size:.7rem;color:rgba(255,255,255,.7);white-space:nowrap;transition:background .2s}
+    .topbar-clock-pill:hover{background:rgba(255,255,255,.14)}
+    .topbar-clock-pill i{color:rgba(255,255,255,.5);font-size:.72rem}
+    .topbar-search input{background:rgba(255,255,255,.1)!important;border-color:rgba(255,255,255,.15)!important;color:#fff!important;width:200px!important}
+    .topbar-search input::placeholder{color:rgba(255,255,255,.45)!important}
+    .topbar-search input:focus{background:rgba(255,255,255,.17)!important;border-color:rgba(255,255,255,.35)!important;box-shadow:0 0 0 3px rgba(255,255,255,.1)!important;width:240px!important}
+    .topbar-search .search-icon{color:rgba(255,255,255,.5)!important}
+    .notif-btn{color:rgba(255,255,255,.7)!important;transition:background .15s,color .15s,transform .2s var(--bounce)!important}
+    .notif-btn:hover{background:rgba(255,255,255,.1)!important;color:#fff!important;transform:scale(1.1)!important}
+    .topbar-user-pill{display:flex;align-items:center;gap:9px;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.14);border-radius:999px;padding:4px 14px 4px 4px;cursor:default;transition:background .2s,transform .25s var(--bounce)}
+    .topbar-user-pill:hover{background:rgba(255,255,255,.15);transform:scale(1.02)}
+    .topbar-avatar-circle{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--green-400),var(--green-600));border:2px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:800;color:#fff;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+    .topbar-user-info{display:flex;flex-direction:column;gap:1px}
+    .topbar-user-name{font-family:var(--outfit);font-size:.8rem;font-weight:700;color:rgba(255,255,255,.9);line-height:1}
+    .topbar-user-role{font-size:.6rem;font-weight:600;color:rgba(255,255,255,.42);text-transform:uppercase;letter-spacing:.1em}
+    .topbar-greeting-chip{display:flex;align-items:center;gap:5px;font-size:.72rem;font-weight:600;color:rgba(255,255,255,.55);padding:4px 8px;border-radius:999px;background:rgba(255,255,255,.07);white-space:nowrap}
+    .topbar-greeting-chip i{color:var(--green-300);font-size:.78rem}
+    /* ██ END TOPBAR ██ */
+
+    /* PAGE ENTRANCE */
+    .main-content{animation:mainIn .55s var(--spring) both}
+    @keyframes mainIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+    .page-header  {animation:rowUp .5s var(--spring) .04s both}
+    .stats-row    {animation:rowUp .5s var(--spring) .10s both}
+    .filter-card  {animation:rowUp .5s var(--spring) .16s both}
+    .table-card   {animation:rowUp .5s var(--spring) .22s both}
+    .dash-footer  {animation:rowUp .5s var(--spring) .28s both}
+    @keyframes rowUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+
+    /* PAGE HEADER */
+    .page-header-left .page-tag{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.14em;color:var(--green-600);display:flex;align-items:center;gap:5px;margin-bottom:5px}
+    .page-header-left h2{font-family:var(--outfit);font-size:1.75rem;font-weight:800;color:var(--gray-900);letter-spacing:-.03em;line-height:1}
+    .page-header-left p{font-size:.84rem;color:var(--gray-400);margin-top:4px}
+
+    /* STAT CARDS */
+    .stat-card{
+      cursor:default;position:relative;overflow:hidden;
+      transition:transform .28s var(--bounce),box-shadow .28s var(--ease);
+    }
+    .stat-card::before{content:'';position:absolute;top:-30px;right:-30px;width:110px;height:110px;border-radius:50%;background:radial-gradient(circle,rgba(60,189,94,.13) 0%,transparent 70%);opacity:0;transition:opacity .3s}
+    .stat-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--green-300),var(--green-600));transform:scaleX(0);transform-origin:left;transition:transform .35s var(--spring);border-radius:0 0 var(--radius-lg) var(--radius-lg)}
+    .stat-card.accent-amber::before{background:radial-gradient(circle,rgba(217,119,6,.12) 0%,transparent 70%)}
+    .stat-card.accent-amber::after{background:linear-gradient(90deg,var(--amber-300),var(--amber-500))}
+    .stat-card:hover{transform:translateY(-5px) scale(1.015);box-shadow:0 16px 40px rgba(0,0,0,.11)}
+    .stat-card:hover::before{opacity:1}
+    .stat-card:hover::after{transform:scaleX(1)}
+    .stat-card .stat-card-icon{transition:transform .3s var(--bounce)}
+    .stat-card:hover .stat-card-icon{transform:scale(1.15) rotate(-8deg)}
+    .stat-card-value{font-family:var(--outfit);font-variant-numeric:tabular-nums;letter-spacing:-.025em}
+    .stat-grid .stat-card:nth-child(1){animation:cardIn .5s var(--spring) .12s both}
+    .stat-grid .stat-card:nth-child(2){animation:cardIn .5s var(--spring) .20s both}
+    .stat-grid .stat-card:nth-child(3){animation:cardIn .5s var(--spring) .28s both}
+    @keyframes cardIn{from{opacity:0;transform:translateY(28px) scale(.93)}to{opacity:1;transform:translateY(0) scale(1)}}
+
+    /* CARD HOVER + ACCENT BAR */
+    .card{transition:box-shadow .25s var(--ease),transform .25s var(--bounce)!important}
+    .card:hover{box-shadow:0 10px 34px rgba(0,0,0,.09)!important;transform:translateY(-2px)!important}
+    .card-accent-bar{height:3px;background:linear-gradient(90deg,var(--green-300),var(--green-500),var(--green-800));background-size:200% 100%;animation:gradShift 4s linear infinite}
+    @keyframes gradShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+
+    /* FILTER LABELS */
+    .filter-label-text{font-size:.7rem;font-weight:700;color:var(--gray-500);display:block;margin-bottom:4px;text-transform:uppercase;letter-spacing:.08em;display:flex;align-items:center;gap:4px}
+    .filter-label-text i{color:var(--green-500);font-size:.72rem}
+
+    /* TABLE ROW ANIMATIONS */
+    tbody tr{animation:trIn .3s var(--spring) both;transition:background .12s}
+    tbody tr:nth-child(1){animation-delay:.02s} tbody tr:nth-child(2){animation-delay:.04s}
+    tbody tr:nth-child(3){animation-delay:.06s} tbody tr:nth-child(4){animation-delay:.08s}
+    tbody tr:nth-child(5){animation-delay:.10s} tbody tr:nth-child(6){animation-delay:.12s}
+    tbody tr:nth-child(7){animation-delay:.14s} tbody tr:nth-child(8){animation-delay:.16s}
+    tbody tr:nth-child(9){animation-delay:.18s} tbody tr:nth-child(10){animation-delay:.20s}
+    @keyframes trIn{from{opacity:0;transform:translateX(-12px)}to{opacity:1;transform:translateX(0)}}
+    tbody tr:hover td{background:var(--green-50)!important}
+
+    /* QTY COLUMN */
+    .td-qty{
+      font-family:var(--outfit);font-size:.95rem;font-weight:800;
+      color:var(--green-600);
+      transition:transform .2s var(--bounce);
+    }
+    tbody tr:hover .td-qty{transform:scale(1.1);display:inline-block}
+
+    /* SUPPLIER BADGE */
+    .supplier-badge{
+      display:inline-flex;align-items:center;gap:5px;
+      font-size:.72rem;font-weight:600;
+      background:var(--gray-100);color:var(--gray-600);
+      border-radius:999px;padding:3px 10px;
+      border:1px solid var(--gray-200);
+    }
+    .supplier-badge i{font-size:.7rem;color:var(--green-500)}
+
+    /* PO NUMBER */
+    .po-num{font-family:var(--mono);font-size:.75rem;color:var(--gray-400);background:var(--gray-100);border-radius:4px;padding:2px 7px;display:inline-block}
+
+    /* DATE CELL */
+    .td-date{font-family:var(--mono);font-size:.78rem;color:var(--gray-400)}
+
+    /* ROW NUMBER */
+    .td-num{font-family:var(--mono);font-size:.72rem;color:var(--gray-400);background:var(--gray-100);border-radius:4px;padding:2px 6px;display:inline-block}
+
+    /* PRICE CHANGE BADGE */
+    .price-tag{display:inline-flex;align-items:center;gap:3px;background:var(--green-50);color:var(--green-700);font-size:.68rem;font-weight:700;border-radius:999px;padding:2px 7px;border:1px solid var(--green-200);margin-top:3px}
+
+    /* DELETE BUTTON */
+    .del-btn{
+      width:32px;height:32px;border-radius:var(--radius-md);
+      border:none;background:none;cursor:pointer;
+      color:var(--red-400);font-size:.85rem;
+      display:flex;align-items:center;justify-content:center;
+      transition:background .15s,color .15s,transform .2s var(--bounce);
+    }
+    .del-btn:hover{background:var(--red-50);color:var(--red-600);transform:scale(1.15) rotate(6deg)}
+    .del-btn:active{transform:scale(.92)}
+
+    /* PAGINATION */
+    .page-btn{transition:background .15s,border-color .15s,color .15s,transform .2s var(--bounce),box-shadow .2s}
+    .page-btn:hover:not(:disabled):not(.active){transform:translateY(-2px);box-shadow:0 4px 10px rgba(0,0,0,.08)}
+    .page-btn.active{animation:pageActive .3s var(--bounce)}
+    @keyframes pageActive{0%{transform:scale(.8)}60%{transform:scale(1.1)}100%{transform:scale(1)}}
+
+    /* COUNT BADGE POP */
+    .badge.update-pop{animation:badgePop .35s var(--bounce)}
+    @keyframes badgePop{0%{transform:scale(.7)}60%{transform:scale(1.2)}100%{transform:scale(1)}}
+
+    /* BUTTONS */
+    .btn{transition:transform .22s var(--bounce),box-shadow .22s var(--ease),background .15s,border-color .15s,color .15s}
+    .btn:hover:not(:disabled){transform:translateY(-2px)}
+    .btn:active{transform:scale(.97)!important}
+    .btn-primary{position:relative;overflow:hidden}
+    .btn-primary::after{content:'';position:absolute;inset:0;left:-100%;width:50%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.2),transparent);transition:left .5s var(--ease)}
+    .btn-primary:hover::after{left:160%}
+    .btn-primary:hover{box-shadow:0 8px 24px rgba(26,138,58,.38)!important}
+    .btn-outline:hover{background:var(--green-50)!important;border-color:var(--green-400)!important;color:var(--green-700)!important}
+
+    /* EMPTY STATE */
+    .empty-state{padding:64px 20px;text-align:center;color:var(--gray-400)}
+    .empty-icon-wrap{width:68px;height:68px;border-radius:50%;background:var(--gray-100);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:1.6rem;color:var(--gray-400);animation:emptyFloat 3s ease infinite}
+    @keyframes emptyFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+
+    /* MODAL */
+    .modal{animation:modalBounce .3s var(--bounce) both}
+    @keyframes modalBounce{from{opacity:0;transform:scale(.88) translateY(20px)}to{opacity:1;transform:scale(1) translateY(0)}}
+
+    /* FOOTER — 64px same as dashboard */
+    .dash-footer{margin-top:40px}
+    .footer-main{background:linear-gradient(135deg,var(--green-800) 0%,var(--green-900) 100%);border-radius:var(--radius-xl);height:64px;padding:0 24px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+    .footer-copy{font-size:.73rem;color:rgba(255,255,255,.5);display:flex;align-items:center;gap:10px;flex-wrap:nowrap}
+    .footer-copy strong{color:rgba(255,255,255,.75);font-weight:700}
+    .footer-copy-sep{width:3px;height:3px;border-radius:50%;background:rgba(255,255,255,.3);flex-shrink:0}
+    .footer-copy i{color:var(--green-400);font-size:.78rem;flex-shrink:0}
+    .footer-tagline{font-size:.7rem;color:rgba(255,255,255,.3);font-style:italic;white-space:nowrap;flex-shrink:0}
+
+    /* RESPONSIVE */
+    @media(max-width:768px){.topbar-clock-pill,.topbar-greeting-chip,.topbar-user-info{display:none}.topbar-search input{width:160px!important}}
+    @media(max-width:600px){.topbar-search{display:none}.footer-main{height:auto;padding:14px 20px;flex-direction:column;text-align:center}.footer-tagline{display:none}}
+  </style>
 </head>
 <body>
+<div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+
+<!-- SIDEBAR -->
 <aside class="sidebar" id="sidebar">
-  <div class="sidebar-logo"><div class="sidebar-logo-icon">🔧</div><div class="sidebar-logo-text"><h1>DukaSoft</h1><span>Hardware ERP</span></div></div>
+  <div class="sidebar-logo">
+    <div class="sidebar-logo-icon"><i class="bi bi-tools"></i></div>
+    <div class="sidebar-logo-text"><h1>Mbogo Hardware</h1><span>ERP System</span></div>
+  </div>
   <nav class="sidebar-nav">
-    <div class="nav-group"><a href="dashboard.html" class="nav-parent"><span class="nav-icon">📊</span><span class="nav-label">Dashboard</span></a></div>
-    <div class="nav-group"><button class="nav-parent" type="button"><span class="nav-icon">📦</span><span class="nav-label">Inventory</span><span class="nav-chevron">›</span></button><div class="nav-children"><a href="inventory.html" class="nav-child"><span class="child-dot"></span> View All Items</a><a href="categories.html" class="nav-child"><span class="child-dot"></span> Manage Categories</a><a href="add-item.html" class="nav-child"><span class="child-dot"></span> Add New Item</a></div></div>
-    <div class="nav-group"><button class="nav-parent" type="button"><span class="nav-icon">💰</span><span class="nav-label">Sales</span><span class="nav-chevron">›</span></button><div class="nav-children"><a href="record-sale.html" class="nav-child"><span class="child-dot"></span> Record a Sale</a><a href="sales-history.html" class="nav-child"><span class="child-dot"></span> Sales History</a></div></div>
+    <div class="nav-section-label">Main</div>
+    <div class="nav-group"><a href="dashboard.html" class="nav-parent"><span class="nav-icon"><i class="bi bi-grid-1x2"></i></span><span class="nav-label">Dashboard</span></a></div>
     <div class="nav-group">
-      <button class="nav-parent open active" type="button"><span class="nav-icon">🚚</span><span class="nav-label">Restock</span><span class="nav-chevron">›</span></button>
+      <button class="nav-parent" type="button"><span class="nav-icon"><i class="bi bi-box-seam"></i></span><span class="nav-label">Inventory</span><i class="nav-chevron bi bi-chevron-right"></i></button>
+      <div class="nav-children"><a href="inventory.html" class="nav-child"><span class="child-dot"></span> View All Items</a><a href="categories.html" class="nav-child"><span class="child-dot"></span> Manage Categories</a><a href="add-item.html" class="nav-child"><span class="child-dot"></span> Add New Item</a></div>
+    </div>
+    <div class="nav-section-label">Transactions</div>
+    <div class="nav-group">
+      <button class="nav-parent" type="button"><span class="nav-icon"><i class="bi bi-receipt"></i></span><span class="nav-label">Sales</span><i class="nav-chevron bi bi-chevron-right"></i></button>
+      <div class="nav-children"><a href="record-sale.html" class="nav-child"><span class="child-dot"></span> Record a Sale</a><a href="sales-history.html" class="nav-child"><span class="child-dot"></span> Sales History</a></div>
+    </div>
+    <div class="nav-group">
+      <button class="nav-parent open active" type="button"><span class="nav-icon"><i class="bi bi-truck"></i></span><span class="nav-label">Restock</span><i class="nav-chevron bi bi-chevron-right"></i></button>
       <div class="nav-children open">
         <a href="record-restock.html" class="nav-child"><span class="child-dot"></span> Record Restock</a>
         <a href="restock-history.html" class="nav-child active"><span class="child-dot"></span> Restock History</a>
         <a href="low-stock.html" class="nav-child"><span class="child-dot"></span> Low Stock Alerts</a>
       </div>
     </div>
-    <div class="nav-group"><button class="nav-parent" type="button"><span class="nav-icon">📈</span><span class="nav-label">Reports</span><span class="nav-chevron">›</span></button><div class="nav-children"><a href="reports.html?tab=sales" class="nav-child"><span class="child-dot"></span> Sales Report</a><a href="reports.html?tab=inventory" class="nav-child"><span class="child-dot"></span> Inventory Report</a><a href="reports.html?tab=restock" class="nav-child"><span class="child-dot"></span> Restock Report</a></div></div>
+    <div class="nav-section-label">Analytics</div>
+    <div class="nav-group">
+      <button class="nav-parent" type="button"><span class="nav-icon"><i class="bi bi-bar-chart-line"></i></span><span class="nav-label">Reports</span><i class="nav-chevron bi bi-chevron-right"></i></button>
+      <div class="nav-children"><a href="reports.html?tab=sales" class="nav-child"><span class="child-dot"></span> Sales Report</a><a href="reports.html?tab=inventory" class="nav-child"><span class="child-dot"></span> Inventory Report</a><a href="reports.html?tab=restock" class="nav-child"><span class="child-dot"></span> Restock Report</a></div>
+    </div>
   </nav>
   <div class="sidebar-footer">
-    <a href="../index.html" class="nav-parent" onclick="return signOut(event)"><span class="nav-icon">🚪</span><span class="nav-label">Sign Out</span></a>
+    <a href="../index.html" class="nav-parent" onclick="return signOut(event)"><span class="nav-icon"><i class="bi bi-box-arrow-left"></i></span><span class="nav-label">Sign Out</span></a>
     <div class="sidebar-user"><div class="sidebar-avatar" id="sidebar-avatar-initials">--</div><div class="sidebar-user-info"><p id="sidebar-username">Loading...</p><span>Administrator</span></div></div>
   </div>
 </aside>
 
+<!-- ██ GREEN TOPBAR — identical to dashboard ██ -->
 <header class="topbar" id="topbar">
-  <div class="topbar-left"><button class="sidebar-toggle">☰</button><div class="page-breadcrumb">Restock / <strong>Restock History</strong></div></div>
-  <div class="topbar-right"><div class="topbar-search"><span class="search-icon">🔍</span><input type="text" placeholder="Search..."/></div><button class="notif-btn" onclick="window.location='low-stock.html'">🔔<span class="notif-badge" id="notif-badge"></span></button></div>
+  <div class="topbar-left" style="gap:10px;">
+    <button class="sidebar-toggle"><i class="bi bi-list"></i></button>
+    <div class="topbar-divider"></div>
+    <div class="topbar-brand">
+      <div class="topbar-logo-icon"><i class="bi bi-tools"></i></div>
+      <div class="topbar-brand-text">
+        <span class="topbar-brand-name">Mbogo Hardware</span>
+        <span class="topbar-brand-sub">ERP &middot; Nabiswera</span>
+      </div>
+    </div>
+    <div class="topbar-divider"></div>
+    <div class="page-breadcrumb">
+      Restock
+      <span class="bc-sep"><i class="bi bi-chevron-right"></i></span>
+      <strong>Restock History</strong>
+    </div>
+  </div>
+  <div class="topbar-right">
+    <div class="topbar-greeting-chip"><i class="bi bi-stars"></i><span id="topbar-greeting">Good morning</span></div>
+    <div class="topbar-clock-pill"><i class="bi bi-clock"></i><span id="clock-time">—</span></div>
+    <div class="topbar-search"><span class="search-icon"><i class="bi bi-search"></i></span><input type="text" placeholder="Search records..." id="global-search" autocomplete="off" oninput="handleSearch(this.value)"/></div>
+    <button class="notif-btn" onclick="window.location='low-stock.html'" title="Low stock alerts"><i class="bi bi-bell"></i><span class="notif-badge" id="notif-badge"></span></button>
+    <div class="topbar-user-pill">
+      <div class="topbar-avatar-circle" id="topbar-avatar">--</div>
+      <div class="topbar-user-info"><span class="topbar-user-name" id="topbar-username">Loading</span><span class="topbar-user-role">Admin</span></div>
+    </div>
+  </div>
 </header>
+<!-- ██ END TOPBAR ██ -->
 
 <main class="main-content" id="main-content">
   <div class="page-inner">
-    <div class="page-header">
+
+    <!-- PAGE HEADER -->
+    <div class="page-header" style="margin-bottom:24px;">
       <div class="page-header-left">
-        <span class="page-tag">Restock</span>
+        <span class="page-tag"><i class="bi bi-truck"></i> Restock</span>
         <h2>Restock History</h2>
+        <p>Full history of all stock received into inventory.</p>
       </div>
       <div class="page-header-actions">
-        <a href="record-restock.html" class="btn btn-primary">🚚 Record New Restock</a>
+        <a href="record-restock.html" class="btn btn-primary">
+          <i class="bi bi-truck"></i> Record New Restock
+        </a>
       </div>
     </div>
 
-    <!-- Stats -->
-    <div class="stat-grid stat-grid-3" style="margin-bottom:20px;">
-      <div class="stat-card">
-        <div class="stat-card-top"><span class="stat-card-label">Total Restocks</span><div class="stat-card-icon green">📋</div></div>
+    <!-- STAT CARDS -->
+    <div class="stat-grid stat-grid-3 stats-row" style="margin-bottom:22px;">
+
+      <div class="stat-card accent-green">
+        <div class="stat-card-top">
+          <span class="stat-card-label">Total Restocks</span>
+          <div class="stat-card-icon green"><i class="bi bi-clipboard-check"></i></div>
+        </div>
         <div class="stat-card-value" id="rh-total">0</div>
-        <div class="stat-card-sub">All time records</div>
+        <div class="stat-card-sub green">
+          <i class="bi bi-clock-history"></i>
+          <span>All time records</span>
+        </div>
       </div>
-      <div class="stat-card">
-        <div class="stat-card-top"><span class="stat-card-label">This Month</span><div class="stat-card-icon green">📅</div></div>
+
+      <div class="stat-card accent-amber">
+        <div class="stat-card-top">
+          <span class="stat-card-label">This Month</span>
+          <div class="stat-card-icon amber"><i class="bi bi-calendar3"></i></div>
+        </div>
         <div class="stat-card-value" id="rh-month">0</div>
-        <div class="stat-card-sub" id="rh-month-label">records this month</div>
+        <div class="stat-card-sub amber">
+          <i class="bi bi-receipt"></i>
+          <span id="rh-month-label">Restocks this month</span>
+        </div>
       </div>
-      <div class="stat-card">
-        <div class="stat-card-top"><span class="stat-card-label">Units Received</span><div class="stat-card-icon green">📦</div></div>
+
+      <div class="stat-card accent-green">
+        <div class="stat-card-top">
+          <span class="stat-card-label">Total Units Received</span>
+          <div class="stat-card-icon green"><i class="bi bi-boxes"></i></div>
+        </div>
         <div class="stat-card-value" id="rh-units">0</div>
-        <div class="stat-card-sub">Total units restocked (all time)</div>
+        <div class="stat-card-sub green">
+          <i class="bi bi-stack"></i>
+          <span>Cumulative stock added</span>
+        </div>
       </div>
+
     </div>
 
-    <!-- Filters -->
-    <div class="card" style="margin-bottom:20px;">
-      <div class="card-body" style="padding:16px 20px;">
-        <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;">
+    <!-- FILTER CARD -->
+    <div class="card filter-card" style="margin-bottom:20px;overflow:hidden;">
+      <div class="card-accent-bar"></div>
+      <div class="card-body" style="padding:18px 22px;">
+        <div style="display:flex;flex-wrap:wrap;gap:14px;align-items:flex-end;">
+
           <div>
-            <label style="font-size:0.78rem;font-weight:600;color:var(--gray-500);display:block;margin-bottom:4px;">From Date</label>
-            <input type="date" class="form-input" id="filter-from" style="padding:8px 12px;width:auto;" onchange="applyFilters()"/>
+            <label class="filter-label-text"><i class="bi bi-calendar-event"></i> From Date</label>
+            <input type="date" class="form-input" id="filter-from" style="padding:7px 12px;width:auto;" onchange="applyFilters()"/>
           </div>
           <div>
-            <label style="font-size:0.78rem;font-weight:600;color:var(--gray-500);display:block;margin-bottom:4px;">To Date</label>
-            <input type="date" class="form-input" id="filter-to" style="padding:8px 12px;width:auto;" onchange="applyFilters()"/>
+            <label class="filter-label-text"><i class="bi bi-calendar-event"></i> To Date</label>
+            <input type="date" class="form-input" id="filter-to" style="padding:7px 12px;width:auto;" onchange="applyFilters()"/>
           </div>
           <div>
-            <label style="font-size:0.78rem;font-weight:600;color:var(--gray-500);display:block;margin-bottom:4px;">Supplier</label>
-            <input type="text" class="form-input" id="filter-supplier" style="padding:8px 12px;width:200px;" placeholder="Filter by supplier..." oninput="applyFilters()"/>
+            <label class="filter-label-text"><i class="bi bi-building"></i> Supplier</label>
+            <input type="text" class="form-input" id="filter-supplier" style="padding:7px 12px;width:180px;" placeholder="Filter by supplier…" oninput="applyFilters()"/>
           </div>
           <div>
-            <label style="font-size:0.78rem;font-weight:600;color:var(--gray-500);display:block;margin-bottom:4px;">Category</label>
-            <select class="form-select" id="filter-cat" style="padding:8px 12px;width:auto;" onchange="applyFilters()">
+            <label class="filter-label-text"><i class="bi bi-folder2"></i> Category</label>
+            <select class="form-select" id="filter-cat" style="padding:7px 12px;width:auto;" onchange="applyFilters()">
               <option value="">All Categories</option>
             </select>
           </div>
-          <button class="btn btn-outline btn-sm" onclick="resetFilters()" style="align-self:flex-end;">Reset Filters</button>
+          <button class="btn btn-outline btn-sm" onclick="resetFilters()" style="align-self:flex-end;">
+            <i class="bi bi-arrow-counterclockwise"></i> Reset
+          </button>
         </div>
       </div>
     </div>
 
-    <!-- Table -->
-    <div class="card">
+    <!-- TABLE CARD -->
+    <div class="card table-card" style="overflow:hidden;">
+      <div class="card-accent-bar"></div>
       <div class="card-header">
-        <h3>Restock Records <span class="badge badge-green" id="result-count">0</span></h3>
-        <span class="text-muted" id="filter-label">Showing all</span>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <h3 style="display:flex;align-items:center;gap:8px;">
+            <i class="bi bi-table" style="color:var(--green-600);"></i>
+            Restock Records
+          </h3>
+          <span class="badge badge-green" id="result-count" style="font-size:.75rem;">0</span>
+        </div>
+        <span class="text-muted" id="filter-label" style="font-size:.8rem;">Showing all</span>
       </div>
       <div class="table-wrap">
         <table>
           <thead>
             <tr>
-              <th>#</th>
+              <th style="width:44px;">#</th>
               <th>Item</th>
               <th>Category</th>
-              <th class="td-center">Qty Added</th>
-              <th class="td-center">Stock Before → After</th>
+              <th class="td-center" style="width:90px;">Qty Added</th>
               <th>Supplier</th>
               <th>PO / Invoice</th>
               <th>Date</th>
-              <th class="td-center">Action</th>
+              <th class="td-center" style="width:52px;"></th>
             </tr>
           </thead>
           <tbody id="restock-tbody"></tbody>
         </table>
       </div>
       <div class="card-footer" style="display:flex;align-items:center;justify-content:space-between;">
-        <span class="text-muted" id="pagination-info"></span>
+        <span class="text-muted" id="pagination-info" style="font-size:.82rem;"></span>
         <div class="pagination" id="pagination"></div>
       </div>
     </div>
 
-  </div>
+    <!-- FOOTER — identical to dashboard -->
+    <footer class="dash-footer">
+      <div class="footer-main">
+        <div class="footer-copy">
+          <i class="bi bi-shield-check"></i>
+          <span>&copy; 2026 <strong>Mbogo Hardware</strong></span>
+          <span class="footer-copy-sep"></span>
+          <span>Nabiswera, Nakasongola District</span>
+          <span class="footer-copy-sep"></span>
+          <span>Powered by DukaSoft ERP</span>
+        </div>
+        <div class="footer-tagline">Your shop, fully in control.</div>
+      </div>
+    </footer>
+
+  </div><!-- /page-inner -->
 </main>
 
-<!-- Confirm Dialog -->
+<!-- CONFIRM DELETE MODAL -->
 <div class="modal-overlay" id="confirm-overlay">
   <div class="modal confirm-modal">
-    <div class="modal-body" style="text-align:center;padding:32px 28px 24px;">
-      <div class="confirm-icon danger">🗑</div>
-      <h3 id="confirm-title">Delete this restock record?</h3>
-      <p id="confirm-message" class="mt-8"></p>
+    <div class="modal-body" style="text-align:center;padding:36px 28px 20px;">
+      <div class="confirm-icon danger" style="margin-bottom:18px;"><i class="bi bi-trash3"></i></div>
+      <h3 id="confirm-title" style="margin-bottom:8px;">Delete this restock record?</h3>
+      <p id="confirm-message" class="mt-8" style="font-size:.875rem;color:var(--gray-500);"></p>
     </div>
-    <div class="modal-footer" style="justify-content:center;gap:16px;padding-bottom:28px;">
-      <button class="btn btn-outline btn-lg" onclick="Modal.close('confirm-overlay')">Cancel</button>
-      <button class="btn btn-danger btn-lg" id="confirm-btn" onclick="Confirm.confirm()">Delete Record</button>
+    <div class="modal-footer" style="justify-content:center;gap:12px;padding-bottom:28px;border-top:1px solid var(--gray-100);">
+      <button class="btn btn-outline btn-lg" onclick="Modal.close('confirm-overlay')">
+        <i class="bi bi-x-lg"></i> Cancel
+      </button>
+      <button class="btn btn-danger btn-lg" id="confirm-btn" onclick="Confirm.confirm()">
+        <i class="bi bi-trash3"></i> Delete Record
+      </button>
     </div>
   </div>
 </div>
@@ -144,175 +424,181 @@
 <script src="../assets/js/app.js"></script>
 <script src="../assets/js/api.js"></script>
 <script>
-let allRestocks = [];
-let filtered    = [];
-let currentPage = 1;
-const PER_PAGE  = 20;
+/* ── Clock ── */
+function updateClock(){const now=new Date(),h=now.getHours();const g=document.getElementById('topbar-greeting');if(g)g.textContent=h<12?'Good morning':h<17?'Good afternoon':'Good evening';const c=document.getElementById('clock-time');if(c)c.textContent=now.toLocaleTimeString('en-UG',{hour:'2-digit',minute:'2-digit'})}
+updateClock();setInterval(updateClock,30000);
 
-document.addEventListener('DOMContentLoaded', async () => {
+let allRestocks=[],filtered=[],currentPage=1;
+const PER_PAGE=20;
+
+document.addEventListener('DOMContentLoaded',async()=>{
   await pageAuthGuard();
+  initSidebar(); loadUserInfo();
   await loadCategoryFilter();
   await loadData();
   await refreshLowStockBadge();
 });
 
-async function loadCategoryFilter() {
-  const res = await Categories.list();
-  if (!res.success) return;
-  const sel = document.getElementById('filter-cat');
-  (res.data.categories || []).forEach(c =>
-    sel.innerHTML += `<option value="${esc(c.name)}">${esc(c.name)}</option>`
-  );
+function initSidebar(){
+  const sb=document.getElementById('sidebar'),tb=document.getElementById('topbar'),mc=document.getElementById('main-content'),bd=document.getElementById('sidebar-backdrop');
+  document.querySelectorAll('.sidebar-toggle').forEach(b=>{b.addEventListener('click',()=>{if(window.innerWidth<=768){sb.classList.toggle('mobile-open');bd.classList.toggle('open');}else{sb.classList.toggle('collapsed');tb.classList.toggle('sidebar-collapsed');mc?.classList.toggle('sidebar-collapsed');}});});
+  bd.addEventListener('click',()=>{sb.classList.remove('mobile-open');bd.classList.remove('open');});
+  document.querySelectorAll('.nav-parent[type=button]').forEach(btn=>{btn.addEventListener('click',()=>{const ch=btn.nextElementSibling;if(!ch)return;const open=ch.classList.contains('open');document.querySelectorAll('.nav-children.open').forEach(c=>{c.classList.remove('open');c.previousElementSibling?.classList.remove('open');});if(!open){ch.classList.add('open');btn.classList.add('open');}});});
 }
 
-async function loadData() {
-  const res = await Restock.list({ per_page: 500 });
-  if (!res.success) { Toast.danger('Failed to load restock records.'); return; }
-  allRestocks = res.data.restocks || [];
+function loadUserInfo(){
+  const u=localStorage.getItem('erp_username');if(!u)return;
+  const ini=u.substring(0,2).toUpperCase();
+  [['sidebar-username',u],['topbar-username',u.replace(/_/g,' ')]].forEach(([id,v])=>{const el=document.getElementById(id);if(el)el.textContent=v;});
+  ['sidebar-avatar-initials','topbar-avatar'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=ini;});
+}
 
-  // Stats
-  const now        = new Date();
-  const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
-  const monthRecs  = allRestocks.filter(r => new Date(r.restock_date) >= monthStart);
-  const totalUnits = allRestocks.reduce((s, r) =>
-    s + (r.items||[]).reduce((t, li) => t + (parseInt(li.quantity)||0), 0), 0);
+/* ── Animated counter ── */
+function animCount(id,target){
+  const el=document.getElementById(id);if(!el)return;
+  const t0=performance.now();
+  (function step(now){const p=Math.min((now-t0)/800,1),e=1-Math.pow(1-p,3),v=Math.round(e*target);
+    el.textContent=v.toLocaleString('en-UG');if(p<1)requestAnimationFrame(step);else el.textContent=target.toLocaleString('en-UG');
+  })(t0);
+}
 
-  document.getElementById('rh-total').textContent       = allRestocks.length;
-  document.getElementById('rh-month').textContent       = monthRecs.length;
-  document.getElementById('rh-month-label').textContent = 'records this month';
-  document.getElementById('rh-units').textContent       = totalUnits.toLocaleString('en-UG');
+async function loadCategoryFilter(){
+  const res=await Categories.list();if(!res.success)return;
+  const sel=document.getElementById('filter-cat');
+  (res.data.categories||[]).forEach(c=>sel.innerHTML+=`<option value="${esc(c.name)}">${esc(c.name)}</option>`);
+}
 
+async function loadData(){
+  const res=await Restock.list({per_page:500});
+  if(!res.success){Toast.danger('Failed to load restock records.');return;}
+  allRestocks=res.data.restocks||[];
+  const now=new Date(),monthStart=new Date(now.getFullYear(),now.getMonth(),1);
+  const monthRecs=allRestocks.filter(r=>new Date(r.restock_date)>=monthStart);
+  const totalUnits=allRestocks.reduce((s,r)=>s+(r.items||[]).reduce((t,li)=>t+(parseInt(li.quantity)||0),0),0);
+  animCount('rh-total',allRestocks.length);
+  animCount('rh-month',monthRecs.length);
+  animCount('rh-units',totalUnits);
   applyFilters();
 }
 
-function applyFilters() {
-  const from     = document.getElementById('filter-from').value;
-  const to       = document.getElementById('filter-to').value;
-  const supplier = document.getElementById('filter-supplier').value.toLowerCase();
-  const catName  = document.getElementById('filter-cat').value.toLowerCase();
-
-  filtered = allRestocks.filter(r => {
-    const d = r.restock_date ? r.restock_date.substring(0, 10) : '';
-    if (from && d < from) return false;
-    if (to   && d > to)   return false;
-    if (supplier && !(r.supplier||'').toLowerCase().includes(supplier)) return false;
-    if (catName) {
-      const items = r.items || [];
-      if (!items.some(li => (li.category||'').toLowerCase() === catName)) return false;
-    }
+function applyFilters(){
+  const from=document.getElementById('filter-from').value;
+  const to=document.getElementById('filter-to').value;
+  const supplier=document.getElementById('filter-supplier').value.toLowerCase();
+  const catName=document.getElementById('filter-cat').value.toLowerCase();
+  filtered=allRestocks.filter(r=>{
+    const d=r.restock_date?r.restock_date.substring(0,10):'';
+    if(from&&d<from)return false; if(to&&d>to)return false;
+    if(supplier&&!(r.supplier||'').toLowerCase().includes(supplier))return false;
+    if(catName){const items=r.items||[];if(!items.some(li=>(li.category||'').toLowerCase()===catName))return false;}
     return true;
   });
-
-  document.getElementById('filter-label').textContent = filtered.length === allRestocks.length
-    ? 'Showing all' : `Filtered: ${filtered.length} of ${allRestocks.length}`;
-  currentPage = 1;
-  renderTable();
+  const lbl=document.getElementById('filter-label');
+  lbl.textContent=filtered.length===allRestocks.length?'Showing all':`Filtered: ${filtered.length} of ${allRestocks.length}`;
+  currentPage=1; renderTable();
 }
 
-function resetFilters() {
-  document.getElementById('filter-from').value     = '';
-  document.getElementById('filter-to').value       = '';
-  document.getElementById('filter-supplier').value = '';
-  document.getElementById('filter-cat').value      = '';
+function resetFilters(){
+  ['filter-from','filter-to','filter-supplier'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('filter-cat').value='';
+  const gs=document.getElementById('global-search');if(gs)gs.value='';
   applyFilters();
 }
 
-function renderTable() {
-  const total = filtered.length;
-  const start = (currentPage-1) * PER_PAGE;
-  const page  = filtered.slice(start, start + PER_PAGE);
-  const tbody = document.getElementById('restock-tbody');
+function handleSearch(q){
+  if(!q.trim()){applyFilters();return;}
+  const ql=q.toLowerCase();
+  filtered=allRestocks.filter(r=>{
+    const items=(r.items||[]).map(li=>li.item_name||'').join(' ').toLowerCase();
+    return items.includes(ql)||(r.supplier||'').toLowerCase().includes(ql)||(r.po_number||'').toLowerCase().includes(ql);
+  });
+  currentPage=1; renderTable();
+}
 
-  document.getElementById('result-count').textContent    = total;
-  document.getElementById('pagination-info').textContent = total > 0
-    ? `Showing ${start+1}–${Math.min(start+PER_PAGE,total)} of ${total}` : '';
+function renderTable(){
+  const total=filtered.length, start=(currentPage-1)*PER_PAGE, page=filtered.slice(start,start+PER_PAGE);
+  const tbody=document.getElementById('restock-tbody');
 
-  if (total === 0) {
-    tbody.innerHTML = `<tr><td colspan="9"><div class="empty-state"><div class="empty-icon">🚚</div><p>No restock records found. <a href="record-restock.html" class="text-green">Record a restock</a></p></div></td></tr>`;
-    document.getElementById('pagination').innerHTML = '';
+  /* badge pop */
+  const badge=document.getElementById('result-count');
+  badge.textContent=total; badge.classList.remove('update-pop');
+  void badge.offsetWidth; badge.classList.add('update-pop');
+  document.getElementById('pagination-info').textContent=total>0?`Showing ${start+1}–${Math.min(start+PER_PAGE,total)} of ${total} records`:'';
+
+  if(total===0){
+    tbody.innerHTML=`<tr><td colspan="8"><div class="empty-state">
+      <div class="empty-icon-wrap"><i class="bi bi-truck"></i></div>
+      <h4 style="font-size:.95rem;font-weight:700;color:var(--gray-600);margin-bottom:4px;">No restock records found</h4>
+      <p style="font-size:.83rem;">Try adjusting your filters or <a href="record-restock.html" class="text-green fw-700">record a new restock</a>.</p>
+    </div></td></tr>`;
+    document.getElementById('pagination').innerHTML='';
     return;
   }
 
-  // Flatten: one row per line item, showing restock-level info on each row
-  const rows = [];
-  page.forEach((r, ri) => {
-    const items = r.items || [];
-    if (items.length === 0) {
-      rows.push({ r, li: null, ri, liIdx: 0, isFirst: true, rowNum: start + ri + 1 });
-    } else {
-      items.forEach((li, liIdx) =>
-        rows.push({ r, li, ri, liIdx, isFirst: liIdx === 0, rowNum: liIdx === 0 ? start + ri + 1 : '' })
-      );
-    }
+  /* flatten records × line items */
+  const rows=[];
+  page.forEach((r,ri)=>{
+    const items=r.items||[];
+    if(items.length===0){rows.push({r,li:null,ri,isFirst:true,rowNum:start+ri+1});}
+    else{items.forEach((li,liIdx)=>rows.push({r,li,ri,liIdx,isFirst:liIdx===0,rowNum:liIdx===0?start+ri+1:''}));}
   });
 
-  tbody.innerHTML = rows.map(({ r, li, isFirst, rowNum }) => {
-    const itemName    = li ? esc(li.item_name) : '—';
-    const category    = li ? esc(li.category||'—') : '—';
-    const qtyAdded    = li ? `<span style="font-weight:800;color:var(--green-700);font-size:1rem;">+${li.quantity}</span>` : '—';
-    const priceChange = li && li.new_price
-      ? `<div style="font-size:0.75rem;color:var(--green-600);">→ UGX ${parseInt(li.new_price).toLocaleString('en-UG')}/unit</div>` : '';
-    const deleteBtn   = `<button class="btn btn-ghost btn-sm" onclick="confirmDeleteRestock(${r.restock_id},'${esc(r.supplier||'').replace(/'/g,"\\'")}')"
-             style="color:var(--red-500);padding:6px 10px;" title="Delete whole batch">🗑</button>`;
-    return `<tr>
-      <td class="td-mono text-muted">${rowNum}</td>
-      <td>
-        <div class="td-primary">${itemName}</div>
-        ${priceChange}
-      </td>
-      <td class="text-muted">${category}</td>
+  tbody.innerHTML=rows.map(({r,li,isFirst,rowNum},idx)=>{
+    const itemName=li?esc(li.item_name):'—';
+    const category=li?esc(li.category||'—'):'—';
+    const qtyAdded=li?`<span class="td-qty">+${li.quantity}</span>`:'—';
+    const priceChange=li&&li.new_price?`<div class="price-tag"><i class="bi bi-tag"></i> UGX ${parseInt(li.new_price).toLocaleString('en-UG')}/unit</div>`:'';
+    const supplierHtml=isFirst&&r.supplier?`<span class="supplier-badge"><i class="bi bi-building"></i>${esc(r.supplier)}</span>`:(isFirst?`<span style="color:var(--gray-400);font-size:.8rem;">—</span>`:'');
+    const poHtml=isFirst&&r.po_number?`<span class="po-num">${esc(r.po_number)}</span>`:(isFirst?`<span style="color:var(--gray-400);font-size:.8rem;">—</span>`:'');
+    const dateHtml=isFirst?`<span class="td-date">${r.restock_date?shortDate(r.restock_date):'—'}</span>`:'';
+    const delBtn=isFirst?`<button class="del-btn" onclick="confirmDeleteRestock(${r.restock_id},'${esc((r.supplier||'').replace(/'/g,"\\'"))}')" title="Delete this record"><i class="bi bi-trash3"></i></button>`:'';
+    return`<tr style="animation-delay:${idx*.025}s;">
+      <td>${rowNum?`<span class="td-num">${rowNum}</span>`:''}</td>
+      <td><div style="font-weight:600;font-size:.875rem;color:var(--gray-900);">${itemName}</div>${priceChange}</td>
+      <td><span class="badge badge-gray" style="font-size:.7rem;">${category}</span></td>
       <td class="td-center">${qtyAdded}</td>
-      <td class="td-center text-muted">—</td>
-      <td class="text-muted">${isFirst ? esc(r.supplier||'—') : ''}</td>
-      <td class="td-mono text-muted" style="font-size:0.8rem;">${isFirst ? esc(r.po_number||'—') : ''}</td>
-      <td class="text-muted">${isFirst ? shortDate(r.restock_date) : ''}</td>
-      <td class="td-center">${deleteBtn}</td>
+      <td>${supplierHtml}</td>
+      <td>${poHtml}</td>
+      <td>${dateHtml}</td>
+      <td class="td-center">${delBtn}</td>
     </tr>`;
   }).join('');
 
   renderPagination(total);
 }
 
-function renderPagination(total) {
-  const pages = Math.ceil(total / PER_PAGE);
-  const el    = document.getElementById('pagination');
-  if (pages <= 1) { el.innerHTML = ''; return; }
-  let html = `<button class="page-btn" onclick="goPage(${currentPage-1})" ${currentPage===1?'disabled':''}>‹</button>`;
-  for (let p=1; p<=pages; p++) html += `<button class="page-btn ${p===currentPage?'active':''}" onclick="goPage(${p})">${p}</button>`;
-  html += `<button class="page-btn" onclick="goPage(${currentPage+1})" ${currentPage===pages?'disabled':''}>›</button>`;
-  el.innerHTML = html;
+function renderPagination(total){
+  const pages=Math.ceil(total/PER_PAGE),el=document.getElementById('pagination');
+  if(pages<=1){el.innerHTML='';return;}
+  let html=`<button class="page-btn" onclick="goPage(${currentPage-1})" ${currentPage===1?'disabled':''}><i class="bi bi-chevron-left"></i></button>`;
+  for(let p=1;p<=pages;p++){
+    if(pages>8&&Math.abs(p-currentPage)>2&&p!==1&&p!==pages){if(p===2||p===pages-1)html+=`<span style="padding:0 3px;color:var(--gray-400);">…</span>`;continue;}
+    html+=`<button class="page-btn ${p===currentPage?'active':''}" onclick="goPage(${p})">${p}</button>`;
+  }
+  html+=`<button class="page-btn" onclick="goPage(${currentPage+1})" ${currentPage===pages?'disabled':''}><i class="bi bi-chevron-right"></i></button>`;
+  el.innerHTML=html;
 }
 
-function goPage(p) {
-  const pages = Math.ceil(filtered.length / PER_PAGE);
-  if (p < 1 || p > pages) return;
-  currentPage = p;
-  renderTable();
-  window.scrollTo({top:0,behavior:'smooth'});
-}
+function goPage(p){const pages=Math.ceil(filtered.length/PER_PAGE);if(p<1||p>pages)return;currentPage=p;renderTable();window.scrollTo({top:0,behavior:'smooth'});}
 
-function confirmDeleteRestock(restockId, supplier) {
+function confirmDeleteRestock(restockId,supplier){
   Confirm.show({
-    title:       'Delete this restock record?',
-    message:     `Restock from "${supplier||'unknown supplier'}" will be removed. Stock quantities will be reduced back.`,
-    confirmText: 'Delete Record',
-    type:        'danger',
-    onConfirm:   () => deleteRestock(restockId)
+    title:'Delete this restock record?',
+    message:`Restock from "${supplier||'unknown supplier'}" will be removed. Stock quantities will be reduced back.`,
+    confirmText:'Delete Record',type:'danger',
+    onConfirm:()=>deleteRestock(restockId),
   });
 }
 
-async function deleteRestock(restockId) {
-  const res = await Restock.delete(restockId);
-  if (!res.success) { Toast.danger(res.message || 'Failed to delete restock.'); return; }
+async function deleteRestock(restockId){
+  const res=await Restock.delete(restockId);
+  if(!res.success){Toast.danger(res.message||'Failed to delete restock.');return;}
   Toast.success('Restock record deleted. Stock reversed.');
   await loadData();
   await refreshLowStockBadge();
 }
 
-function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
 </script>
 </body>
 </html>
-
-
-

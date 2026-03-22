@@ -13,6 +13,9 @@ function initSidebar() {
   const backdrop   = document.getElementById('sidebar-backdrop');
   const isMobile   = () => window.innerWidth <= 768;
 
+  // Exit if sidebar doesn't exist
+  if (!sidebar || toggleBtns.length === 0) return;
+
   function openSidebar() {
     if (isMobile()) {
       sidebar.classList.add('mobile-open');
@@ -45,10 +48,15 @@ function initSidebar() {
     }
   }
 
+  // Attach click handlers to all toggle buttons
   toggleBtns.forEach(btn => btn.addEventListener('click', toggleSidebar));
-  backdrop && backdrop.addEventListener('click', closeSidebar);
+  
+  // Close sidebar when backdrop is clicked (mobile only)
+  if (backdrop) {
+    backdrop.addEventListener('click', closeSidebar);
+  }
 
-  // Restore state on desktop
+  // Restore saved sidebar state on desktop
   if (!isMobile()) {
     const saved = localStorage.getItem('sidebarOpen');
     if (saved === '0') {

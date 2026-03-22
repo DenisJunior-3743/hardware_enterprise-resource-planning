@@ -5,130 +5,532 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>DukaSoft — Add New Item</title>
   <link rel="stylesheet" href="../assets/css/style.css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root{
+      --spring:cubic-bezier(.22,1,.36,1);
+      --bounce:cubic-bezier(.34,1.56,.64,1);
+      --ease:cubic-bezier(.4,0,.2,1);
+      --outfit:'Outfit',var(--font-display),sans-serif;
+      --mono:'JetBrains Mono',monospace;
+    }
+
+    /* ██ GREEN TOPBAR — UNTOUCHED ██ */
+    .topbar{background:linear-gradient(135deg,var(--green-800) 0%,var(--green-900) 100%)!important;border-bottom:none!important;box-shadow:0 2px 16px rgba(0,0,0,.22)!important;padding:0 24px!important}
+    .topbar-brand{display:flex;align-items:center;gap:14px}
+    .sidebar-toggle{color:rgba(255,255,255,.7)!important;border-radius:var(--radius-md);transition:background .15s,color .15s,transform .2s var(--bounce)!important}
+    .sidebar-toggle:hover{background:rgba(255,255,255,.1)!important;color:#fff!important;transform:scale(1.08)!important}
+    .topbar-divider{width:1px;height:28px;background:rgba(255,255,255,.15);flex-shrink:0}
+    .topbar-logo-icon{width:36px;height:36px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.18);border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;color:#fff;font-size:1rem;flex-shrink:0;transition:background .2s,transform .25s var(--bounce)}
+    .topbar-logo-icon:hover{background:rgba(255,255,255,.22);transform:rotate(-8deg) scale(1.1)}
+    .topbar-brand-text{display:flex;flex-direction:column;gap:1px}
+    .topbar-brand-name{font-family:var(--outfit);font-size:.95rem;font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1}
+    .topbar-brand-sub{font-size:.6rem;font-weight:600;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:.12em}
+    .page-breadcrumb{font-size:.8rem;color:rgba(255,255,255,.5)!important}
+    .page-breadcrumb strong{color:rgba(255,255,255,.9)!important}
+    .page-breadcrumb .bc-sep{color:rgba(255,255,255,.3)!important}
+    .topbar-right{gap:6px!important}
+    .topbar-clock-pill{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.12);border-radius:999px;padding:5px 12px;font-family:var(--mono);font-size:.7rem;color:rgba(255,255,255,.7);white-space:nowrap;transition:background .2s}
+    .topbar-clock-pill:hover{background:rgba(255,255,255,.14)}
+    .topbar-clock-pill i{color:rgba(255,255,255,.5);font-size:.72rem}
+    .topbar-search input{background:rgba(255,255,255,.1)!important;border-color:rgba(255,255,255,.15)!important;color:#fff!important;width:200px!important}
+    .topbar-search input::placeholder{color:rgba(255,255,255,.45)!important}
+    .topbar-search input:focus{background:rgba(255,255,255,.17)!important;border-color:rgba(255,255,255,.35)!important;box-shadow:0 0 0 3px rgba(255,255,255,.1)!important;width:240px!important}
+    .topbar-search .search-icon{color:rgba(255,255,255,.5)!important}
+    .notif-btn{color:rgba(255,255,255,.7)!important;transition:background .15s,color .15s,transform .2s var(--bounce)!important}
+    .notif-btn:hover{background:rgba(255,255,255,.1)!important;color:#fff!important;transform:scale(1.1)!important}
+    .topbar-user-pill{display:flex;align-items:center;gap:9px;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.14);border-radius:999px;padding:4px 14px 4px 4px;cursor:default;transition:background .2s,transform .25s var(--bounce)}
+    .topbar-user-pill:hover{background:rgba(255,255,255,.15);transform:scale(1.02)}
+    .topbar-avatar-circle{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--green-400),var(--green-600));border:2px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:800;color:#fff;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+    .topbar-user-info{display:flex;flex-direction:column;gap:1px}
+    .topbar-user-name{font-family:var(--outfit);font-size:.8rem;font-weight:700;color:rgba(255,255,255,.9);line-height:1}
+    .topbar-user-role{font-size:.6rem;font-weight:600;color:rgba(255,255,255,.42);text-transform:uppercase;letter-spacing:.1em}
+    .topbar-greeting-chip{display:flex;align-items:center;gap:5px;font-size:.72rem;font-weight:600;color:rgba(255,255,255,.55);padding:4px 8px;border-radius:999px;background:rgba(255,255,255,.07);white-space:nowrap}
+    .topbar-greeting-chip i{color:var(--green-300);font-size:.78rem}
+    /* ██ END TOPBAR ██ */
+
+    /* ██ FOOTER — UNTOUCHED ██ */
+    .dash-footer{margin-top:40px}
+    .footer-main{background:linear-gradient(135deg,var(--green-800) 0%,var(--green-900) 100%);border-radius:var(--radius-xl);height:64px;padding:0 24px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+    .footer-copy{font-size:.73rem;color:rgba(255,255,255,.5);display:flex;align-items:center;gap:10px;flex-wrap:nowrap}
+    .footer-copy strong{color:rgba(255,255,255,.75);font-weight:700}
+    .footer-copy-sep{width:3px;height:3px;border-radius:50%;background:rgba(255,255,255,.3);flex-shrink:0}
+    .footer-copy i{color:var(--green-400);font-size:.78rem;flex-shrink:0}
+    .footer-tagline{font-size:.7rem;color:rgba(255,255,255,.3);font-style:italic;white-space:nowrap;flex-shrink:0}
+    /* ██ END FOOTER ██ */
+
+    /* ══ PAGE ENTRANCE ══ */
+    .main-content{animation:fadeUp .55s var(--spring) both}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+    .page-header{animation:fadeUp .5s var(--spring) .06s both}
+    .form-card-wrap{animation:fadeUp .55s var(--spring) .13s both}
+    .dash-footer{animation:fadeUp .5s var(--spring) .20s both}
+
+    /* ══ PAGE HEADER ══ */
+    .page-header{
+      display:flex;align-items:flex-start;justify-content:space-between;
+      gap:16px;margin-bottom:28px;
+    }
+    .page-tag{
+      display:inline-flex;align-items:center;gap:6px;
+      font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.14em;
+      color:var(--green-700);background:var(--green-50);
+      border:1px solid var(--green-200);border-radius:999px;
+      padding:3px 11px;margin-bottom:8px;
+    }
+    .page-header-left h2{
+      font-family:var(--outfit);font-size:1.65rem;font-weight:800;
+      color:var(--gray-900);letter-spacing:-.035em;line-height:1.05;margin:0 0 4px;
+    }
+    .page-header-left p{font-size:.83rem;color:var(--gray-400);margin:0}
+    .btn-back{
+      display:inline-flex;align-items:center;gap:7px;
+      padding:10px 20px;border-radius:9px;
+      border:none;background:linear-gradient(135deg,var(--green-600),var(--green-700));
+      font-size:.8rem;font-weight:600;color:#fff;
+      text-decoration:none;white-space:nowrap;cursor:pointer;
+      transition:transform .2s var(--bounce),box-shadow .2s;
+      box-shadow:0 4px 14px rgba(22,163,74,.28);
+    }
+    .btn-back:hover{
+      transform:translateX(-3px) translateY(-2px) scale(1.05);
+      box-shadow:0 12px 32px rgba(22,163,74,.35);
+      filter:brightness(1.1);
+    }
+
+    /* ══ THE HOVER FORM CARD ══ */
+    .form-card-wrap{max-width:700px}
+
+    .form-card{
+      background:#fff;
+      border-radius:18px;
+      border:1.5px solid var(--gray-150);
+      overflow:hidden;
+      box-shadow:0 2px 10px rgba(0,0,0,.05), 0 1px 3px rgba(0,0,0,.04);
+      transition:
+        box-shadow .35s var(--ease),
+        border-color .35s var(--ease),
+        transform .35s var(--bounce);
+      will-change:transform,box-shadow;
+    }
+    .form-card:hover{
+      box-shadow:
+        0 16px 48px rgba(0,0,0,.11),
+        0 4px 16px rgba(34,197,94,.08),
+        0 1px 4px rgba(0,0,0,.05);
+      border-color:var(--green-200);
+      transform:translateY(-3px);
+    }
+
+    /* animated accent bar */
+    .card-accent{
+      height:4px;
+      background:linear-gradient(90deg,#15803d,#22c55e,#86efac,#22c55e,#15803d);
+      background-size:250% 100%;
+      animation:bar 5s linear infinite;
+    }
+    @keyframes bar{0%{background-position:0% 50%}100%{background-position:250% 50%}}
+
+    /* card header */
+    .card-head{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:20px 28px 18px;
+      border-bottom:1px solid var(--gray-100);
+    }
+    .card-head-left{display:flex;align-items:center;gap:12px}
+    .card-head-icon{
+      width:42px;height:42px;border-radius:11px;flex-shrink:0;
+      background:linear-gradient(135deg,var(--green-100),var(--green-50));
+      border:1px solid var(--green-200);
+      display:flex;align-items:center;justify-content:center;
+      color:var(--green-600);font-size:1.05rem;
+      transition:transform .3s var(--bounce),background .2s;
+    }
+    .form-card:hover .card-head-icon{
+      transform:rotate(-6deg) scale(1.08);
+      background:linear-gradient(135deg,var(--green-200),var(--green-100));
+    }
+    .card-head-title{font-family:var(--outfit);font-size:1rem;font-weight:800;color:var(--gray-900);letter-spacing:-.02em}
+    .card-head-sub{font-size:.75rem;color:var(--gray-400);margin-top:2px}
+    .req-pill{
+      display:inline-flex;align-items:center;gap:5px;
+      font-size:.72rem;color:var(--gray-400);
+      background:var(--gray-50);border:1px solid var(--gray-150);
+      border-radius:999px;padding:3px 11px;
+    }
+    .req-pill b{color:#ef4444;font-size:.85rem;line-height:1}
+
+    /* ══ FORM SECTIONS ══ */
+    .card-body{padding:28px;display:flex;flex-direction:column;gap:28px}
+
+    .section{display:flex;flex-direction:column;gap:16px}
+    .section-head{
+      display:flex;align-items:center;gap:9px;
+      padding-bottom:11px;border-bottom:1.5px solid var(--gray-100);
+    }
+    .section-badge{
+      width:26px;height:26px;border-radius:7px;flex-shrink:0;
+      background:var(--green-50);border:1px solid var(--green-150);
+      display:flex;align-items:center;justify-content:center;
+      color:var(--green-600);font-size:.76rem;
+    }
+    .section-label{font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.14em;color:var(--green-700)}
+
+    /* ══ FIELDS ══ */
+    .form-group{display:flex;flex-direction:column}
+    .form-row-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+
+    .form-label{
+      font-size:.79rem;font-weight:700;color:var(--gray-700);
+      margin-bottom:6px;display:flex;align-items:center;gap:4px;
+    }
+    .req{color:#ef4444;font-weight:800}
+    .opt{color:var(--gray-350);font-weight:500;font-size:.72rem}
+
+    .form-input,.form-select,.form-textarea{
+      width:100%;padding:9px 13px;font-size:.84rem;color:var(--gray-800);
+      background:#fff;border:1.5px solid var(--gray-200);border-radius:9px;
+      font-family:inherit;
+      transition:border-color .2s,box-shadow .2s,background .15s;
+    }
+    .form-input:hover,.form-select:hover{border-color:var(--gray-300)}
+    .form-input:focus,.form-select:focus,.form-textarea:focus{
+      outline:none;
+      border-color:var(--green-400)!important;
+      box-shadow:0 0 0 3.5px rgba(34,197,94,.13)!important;
+      background:#fafffd;
+    }
+    .form-input.error,.form-select.error{
+      border-color:#f87171!important;
+      box-shadow:0 0 0 3px rgba(239,68,68,.09)!important;
+    }
+    .form-textarea{resize:vertical;min-height:86px;line-height:1.55}
+
+    .form-hint{
+      display:flex;align-items:center;gap:5px;
+      font-size:.73rem;color:var(--gray-400);margin-top:6px;
+    }
+    .form-hint i{color:var(--green-500);font-size:.74rem;flex-shrink:0}
+    .form-error{
+      display:none;align-items:center;gap:4px;
+      font-size:.73rem;color:#ef4444;margin-top:5px;
+    }
+    .form-error.show{display:flex}
+    .form-error i{font-size:.74rem}
+
+    /* UGX prefix */
+    .input-wrap{position:relative}
+    .ugx-prefix{
+      position:absolute;left:0;top:0;bottom:0;
+      padding:0 11px;display:flex;align-items:center;
+      font-size:.76rem;font-weight:700;color:var(--gray-500);
+      background:var(--gray-50);border-right:1.5px solid var(--gray-200);
+      border-radius:9px 0 0 9px;pointer-events:none;
+      font-family:var(--mono);transition:border-color .2s;
+    }
+    .input-wrap:focus-within .ugx-prefix{border-color:var(--green-400)}
+    .ugx-input{padding-left:58px!important}
+
+    /* category row */
+    .cat-row{display:flex;gap:8px;align-items:flex-start}
+    .cat-row .form-select{flex:1}
+    .btn-add-cat{
+      width:40px;height:40px;flex-shrink:0;border-radius:9px;
+      border:1.5px dashed var(--green-300);background:var(--green-50);
+      color:var(--green-600);font-size:1rem;cursor:pointer;
+      display:flex;align-items:center;justify-content:center;
+      transition:background .15s,border-color .15s,transform .2s var(--bounce),box-shadow .2s;
+    }
+    .btn-add-cat:hover{background:var(--green-100);border-color:var(--green-500);transform:scale(1.1);box-shadow:0 4px 14px rgba(34,197,94,.2)}
+
+    /* restock inline unit */
+    .restock-wrap{position:relative}
+    .restock-wrap .form-input{padding-right:62px}
+    .unit-badge{
+      position:absolute;right:10px;top:50%;transform:translateY(-50%);
+      font-size:.67rem;font-weight:700;color:var(--amber-700);
+      background:var(--amber-50);border:1px solid var(--amber-200);
+      border-radius:999px;padding:2px 9px;pointer-events:none;
+    }
+
+    /* ══ ACTIONS ══ */
+    .form-actions{
+      display:flex;gap:10px;padding-top:6px;
+      border-top:1px solid var(--gray-100);
+    }
+    .btn-clear{
+      display:inline-flex;align-items:center;gap:7px;
+      padding:10px 18px;border-radius:9px;
+      border:1.5px solid var(--gray-200);background:#fff;
+      font-size:.83rem;font-weight:600;color:var(--gray-500);
+      cursor:pointer;white-space:nowrap;
+      transition:border-color .2s,color .2s,background .2s,transform .2s var(--bounce);
+    }
+    .btn-clear:hover{border-color:var(--gray-300);color:var(--gray-700);background:var(--gray-50);transform:scale(.98)}
+
+    .btn-save{
+      flex:1;display:inline-flex;align-items:center;justify-content:center;gap:9px;
+      padding:11px 24px;border-radius:9px;border:none;cursor:pointer;
+      background:linear-gradient(135deg,var(--green-600),var(--green-700));
+      color:#fff;font-size:.88rem;font-weight:700;font-family:var(--outfit);
+      letter-spacing:-.01em;position:relative;overflow:hidden;
+      transition:transform .2s var(--bounce),box-shadow .2s;
+      box-shadow:0 4px 14px rgba(22,163,74,.28);
+    }
+    .btn-save::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.14),transparent 60%)}
+    .btn-save::after{content:'';position:absolute;inset:0;left:-100%;width:60%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.18),transparent);transition:left .55s var(--ease)}
+    .btn-save:hover::after{left:160%}
+    .btn-save:hover{transform:translateY(-2px);box-shadow:0 8px 26px rgba(22,163,74,.4)}
+    .btn-save:active{transform:scale(.97)}
+
+    /* ══ MODAL ══ */
+    .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;z-index:1000;padding:20px}
+    .modal-overlay.open{display:flex}
+    .modal{background:#fff;border-radius:16px;width:100%;max-width:420px;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,.18);animation:modalIn .3s var(--bounce) both}
+    @keyframes modalIn{from{opacity:0;transform:scale(.88) translateY(16px)}to{opacity:1;transform:scale(1) translateY(0)}}
+    .modal-header{padding:18px 22px;border-bottom:1px solid var(--gray-100);display:flex;align-items:center;justify-content:space-between}
+    .modal-header h3{font-family:var(--outfit);font-size:.98rem;font-weight:800;color:var(--gray-900);display:flex;align-items:center;gap:8px}
+    .modal-header h3 i{color:var(--green-600)}
+    .modal-close{width:30px;height:30px;border-radius:8px;border:none;background:var(--gray-100);color:var(--gray-500);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.88rem;transition:background .15s,color .15s,transform .2s var(--bounce)}
+    .modal-close:hover{background:var(--gray-200);color:var(--gray-800);transform:scale(1.08)}
+    .modal-body{padding:22px;display:flex;flex-direction:column;gap:16px}
+    .modal-footer{padding:14px 22px;border-top:1px solid var(--gray-100);display:flex;gap:10px;justify-content:flex-end}
+
+    .toast-container{position:fixed;bottom:24px;right:24px;display:flex;flex-direction:column;gap:8px;z-index:2000}
+
+    /* ══ RESPONSIVE ══ */
+    @media(max-width:600px){.form-row-2{grid-template-columns:1fr}}
+    @media(max-width:768px){.topbar-clock-pill,.topbar-greeting-chip,.topbar-user-info{display:none}.topbar-search input{width:160px!important}}
+    @media(max-width:600px){.topbar-search{display:none}.footer-main{height:auto;padding:14px 20px;flex-direction:column;text-align:center}.footer-tagline{display:none}}
+  </style>
 </head>
 <body>
+
 <!-- Sidebar -->
 <aside class="sidebar" id="sidebar">
-  <div class="sidebar-logo"><div class="sidebar-logo-icon">🔧</div><div class="sidebar-logo-text"><h1>DukaSoft</h1><span>Hardware ERP</span></div></div>
+  <div class="sidebar-logo"><div class="sidebar-logo-icon"><i class="bi bi-tools"></i></div><div class="sidebar-logo-text"><h1>DukaSoft</h1><span>Hardware ERP</span></div></div>
   <nav class="sidebar-nav">
-    <div class="nav-group"><a href="dashboard.html" class="nav-parent"><span class="nav-icon">📊</span><span class="nav-label">Dashboard</span></a></div>
+    <div class="nav-group"><a href="dashboard.html" class="nav-parent"><span class="nav-icon"><i class="bi bi-grid-1x2"></i></span><span class="nav-label">Dashboard</span></a></div>
     <div class="nav-group">
-      <button class="nav-parent open active" type="button"><span class="nav-icon">📦</span><span class="nav-label">Inventory</span><span class="nav-chevron">›</span></button>
+      <button class="nav-parent open active" type="button"><span class="nav-icon"><i class="bi bi-box-seam"></i></span><span class="nav-label">Inventory</span><span class="nav-chevron">›</span></button>
       <div class="nav-children open">
         <a href="inventory.html" class="nav-child"><span class="child-dot"></span> View All Items</a>
         <a href="categories.html" class="nav-child"><span class="child-dot"></span> Manage Categories</a>
         <a href="add-item.html" class="nav-child active"><span class="child-dot"></span> Add New Item</a>
       </div>
     </div>
-    <div class="nav-group"><button class="nav-parent" type="button"><span class="nav-icon">💰</span><span class="nav-label">Sales</span><span class="nav-chevron">›</span></button><div class="nav-children"><a href="record-sale.html" class="nav-child"><span class="child-dot"></span> Record a Sale</a><a href="sales-history.html" class="nav-child"><span class="child-dot"></span> Sales History</a></div></div>
-    <div class="nav-group"><button class="nav-parent" type="button"><span class="nav-icon">🚚</span><span class="nav-label">Restock</span><span class="nav-chevron">›</span></button><div class="nav-children"><a href="record-restock.html" class="nav-child"><span class="child-dot"></span> Record Restock</a><a href="restock-history.html" class="nav-child"><span class="child-dot"></span> Restock History</a><a href="low-stock.html" class="nav-child"><span class="child-dot"></span> Low Stock Alerts</a></div></div>
-    <div class="nav-group"><button class="nav-parent" type="button"><span class="nav-icon">📈</span><span class="nav-label">Reports</span><span class="nav-chevron">›</span></button><div class="nav-children"><a href="reports.html?tab=sales" class="nav-child"><span class="child-dot"></span> Sales Report</a><a href="reports.html?tab=inventory" class="nav-child"><span class="child-dot"></span> Inventory Report</a><a href="reports.html?tab=restock" class="nav-child"><span class="child-dot"></span> Restock Report</a></div></div>
+    <div class="nav-group"><button class="nav-parent" type="button"><span class="nav-icon"><i class="bi bi-receipt"></i></span><span class="nav-label">Sales</span><span class="nav-chevron">›</span></button><div class="nav-children"><a href="record-sale.html" class="nav-child"><span class="child-dot"></span> Record a Sale</a><a href="sales-history.html" class="nav-child"><span class="child-dot"></span> Sales History</a></div></div>
+    <div class="nav-group"><button class="nav-parent" type="button"><span class="nav-icon"><i class="bi bi-truck"></i></span><span class="nav-label">Restock</span><span class="nav-chevron">›</span></button><div class="nav-children"><a href="record-restock.html" class="nav-child"><span class="child-dot"></span> Record Restock</a><a href="restock-history.html" class="nav-child"><span class="child-dot"></span> Restock History</a><a href="low-stock.html" class="nav-child"><span class="child-dot"></span> Low Stock Alerts</a></div></div>
+    <div class="nav-group"><button class="nav-parent" type="button"><span class="nav-icon"><i class="bi bi-bar-chart-line"></i></span><span class="nav-label">Reports</span><span class="nav-chevron">›</span></button><div class="nav-children"><a href="reports.html?tab=sales" class="nav-child"><span class="child-dot"></span> Sales Report</a><a href="reports.html?tab=inventory" class="nav-child"><span class="child-dot"></span> Inventory Report</a><a href="reports.html?tab=restock" class="nav-child"><span class="child-dot"></span> Restock Report</a></div></div>
   </nav>
   <div class="sidebar-footer">
-    <a href="../index.html" class="nav-parent" onclick="return signOut(event)"><span class="nav-icon">🚪</span><span class="nav-label">Sign Out</span></a>
+    <a href="../index.html" class="nav-parent" onclick="return signOut(event)"><span class="nav-icon"><i class="bi bi-box-arrow-left"></i></span><span class="nav-label">Sign Out</span></a>
     <div class="sidebar-user"><div class="sidebar-avatar" id="sidebar-avatar-initials">--</div><div class="sidebar-user-info"><p id="sidebar-username">Loading...</p><span>Administrator</span></div></div>
   </div>
 </aside>
 
+<!-- ██ GREEN TOPBAR ██ -->
 <header class="topbar" id="topbar">
-  <div class="topbar-left"><button class="sidebar-toggle">☰</button><div class="page-breadcrumb">Inventory / <strong>Add New Item</strong></div></div>
-  <div class="topbar-right"><div class="topbar-search"><span class="search-icon">🔍</span><input type="text" placeholder="Search items..."/></div></div>
+  <div class="topbar-left" style="gap:10px;">
+    <button class="sidebar-toggle"><i class="bi bi-list"></i></button>
+    <div class="topbar-divider"></div>
+    <div class="topbar-brand">
+      <div class="topbar-logo-icon"><i class="bi bi-tools"></i></div>
+      <div class="topbar-brand-text">
+        <span class="topbar-brand-name">Mbogo Hardware</span>
+        <span class="topbar-brand-sub">Hardware ERP</span>
+      </div>
+    </div>
+    <div class="topbar-divider"></div>
+    <div class="page-breadcrumb">
+      Inventory
+      <span class="bc-sep"><i class="bi bi-chevron-right"></i></span>
+      <strong>Add New Item</strong>
+    </div>
+  </div>
+  <div class="topbar-right">
+    <div class="topbar-greeting-chip"><i class="bi bi-stars"></i><span id="topbar-greeting">Good morning</span></div>
+    <div class="topbar-clock-pill"><i class="bi bi-clock"></i><span id="clock-time">—</span></div>
+    <div class="topbar-search"><span class="search-icon"><i class="bi bi-search"></i></span><input type="text" placeholder="Search items..." autocomplete="off"/></div>
+    <button class="notif-btn" title="Notifications"><i class="bi bi-bell"></i></button>
+    <div class="topbar-user-pill">
+      <div class="topbar-avatar-circle" id="topbar-avatar">--</div>
+      <div class="topbar-user-info"><span class="topbar-user-name" id="topbar-username">Loading</span><span class="topbar-user-role">Admin</span></div>
+    </div>
+  </div>
 </header>
+<!-- ██ END TOPBAR ██ -->
 
 <main class="main-content" id="main-content">
-  <div class="page-inner" style="max-width:700px;">
+  <div class="page-inner">
+
+    <!-- PAGE HEADER -->
     <div class="page-header">
       <div class="page-header-left">
-        <span class="page-tag">Inventory</span>
+        <div class="page-tag"><i class="bi bi-box-seam"></i> Inventory</div>
         <h2>Add New Item</h2>
+        <p>Register a new product in your inventory.</p>
       </div>
       <div class="page-header-actions">
-        <a href="inventory.html" class="btn btn-outline">← Back to Inventory</a>
+        <a href="inventory.html" class=" btn-back">
+          <i class="bi bi-arrow-left"></i> Back to Inventory
+        </a>
       </div>
     </div>
 
-    <div class="card">
-      <div class="card-header"><h3>Item Details</h3></div>
-      <div class="card-body">
-        <form id="add-item-form" onsubmit="handleAddItem(event)">
-          <div style="display:flex;flex-direction:column;gap:20px;">
+    <!-- HOVERABLE FORM CARD -->
+    <div class="form-card-wrap">
+      <div class="form-card">
 
-            <div class="form-group">
-              <label class="form-label">Item Name <span class="req">*</span></label>
-              <input class="form-input" type="text" id="item-name"
-                     placeholder="e.g. Iron Sheet 28 Gauge" required/>
-              <span class="form-error">Item name is required.</span>
+        <div class="card-accent"></div>
+
+        <div class="card-head">
+          <div class="card-head-left">
+            <div class="card-head-icon"><i class="bi bi-pencil-square"></i></div>
+            <div>
+              <div class="card-head-title">Item Details</div>
+              <div class="card-head-sub">All fields marked <b style="color:#ef4444">*</b> are required</div>
             </div>
+          </div>
+          <div class="req-pill"><b>*</b> Required field</div>
+        </div>
 
-            <div class="form-row form-row-2">
+        <div class="card-body">
+          <form id="add-item-form" onsubmit="handleAddItem(event)">
+
+            <!-- SECTION 1 -->
+            <div class="section">
+              <div class="section-head">
+                <div class="section-badge"><i class="bi bi-tag-fill"></i></div>
+                <span class="section-label">Item Identity</span>
+              </div>
+
               <div class="form-group">
-                <label class="form-label">Category <span class="req">*</span></label>
-                <div style="display:flex;gap:8px;">
-                  <select class="form-select" id="item-category" required style="flex:1;">
-                    <option value="">— Select Category —</option>
-                  </select>
-                  <button type="button" class="btn btn-outline btn-icon-only" title="Add new category"
-                          onclick="Modal.open('add-cat-modal')" style="flex-shrink:0;">➕</button>
+                <label class="form-label" for="item-name">Item Name <span class="req">*</span></label>
+                <input class="form-input" type="text" id="item-name"
+                       placeholder="e.g. Iron Sheet 28 Gauge" required/>
+                <span class="form-error"><i class="bi bi-exclamation-circle"></i> Item name is required.</span>
+              </div>
+
+              <div class="form-row-2">
+                <div class="form-group">
+                  <label class="form-label" for="item-category">Category <span class="req">*</span></label>
+                  <div class="cat-row">
+                    <select class="form-select" id="item-category" required>
+                      <option value="">— Select Category —</option>
+                    </select>
+                    <button type="button" class="btn-add-cat" title="Add new category"
+                            onclick="Modal.open('add-cat-modal')">
+                      <i class="bi bi-plus-lg"></i>
+                    </button>
+                  </div>
+                  <span class="form-error"><i class="bi bi-exclamation-circle"></i> Select a category.</span>
                 </div>
-                <span class="form-error">Select a category.</span>
+                <div class="form-group">
+                  <label class="form-label" for="item-unit">Unit of Measure</label>
+                  <select class="form-select" id="item-unit">
+                    <option value="piece">Piece</option>
+                    <option value="sheet">Sheet</option>
+                    <option value="bag">Bag</option>
+                    <option value="roll">Roll</option>
+                    <option value="metre">Metre</option>
+                    <option value="kg">Kg</option>
+                    <option value="litre">Litre</option>
+                    <option value="box">Box</option>
+                    <option value="bundle">Bundle</option>
+                    <option value="pair">Pair</option>
+                  </select>
+                  <div class="form-hint"><i class="bi bi-info-circle-fill"></i> How this item is sold</div>
+                </div>
               </div>
+            </div>
+
+            <!-- SECTION 2 -->
+            <div class="section">
+              <div class="section-head">
+                <div class="section-badge"><i class="bi bi-cash-stack"></i></div>
+                <span class="section-label">Pricing &amp; Stock</span>
+              </div>
+
+              <div class="form-row-2">
+                <div class="form-group">
+                  <label class="form-label" for="item-price">Unit Price (UGX) <span class="req">*</span></label>
+                  <div class="input-wrap">
+                    <span class="ugx-prefix">UGX</span>
+                    <input class="form-input ugx-input" type="number" id="item-price"
+                           placeholder="e.g. 15000" min="0" step="50" required/>
+                  </div>
+                  <span class="form-error"><i class="bi bi-exclamation-circle"></i> Price is required.</span>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="item-qty">Opening Stock (Qty) <span class="req">*</span></label>
+                  <input class="form-input" type="number" id="item-qty"
+                         placeholder="e.g. 100" min="0" required/>
+                  <span class="form-error"><i class="bi bi-exclamation-circle"></i> Stock quantity is required.</span>
+                </div>
+              </div>
+
               <div class="form-group">
-                <label class="form-label">Unit of Measure</label>
-                <select class="form-select" id="item-unit">
-                  <option value="piece">Piece</option>
-                  <option value="sheet">Sheet</option>
-                  <option value="bag">Bag</option>
-                  <option value="roll">Roll</option>
-                  <option value="metre">Metre</option>
-                  <option value="kg">Kg</option>
-                  <option value="litre">Litre</option>
-                  <option value="box">Box</option>
-                  <option value="bundle">Bundle</option>
-                  <option value="pair">Pair</option>
-                </select>
+                <label class="form-label" for="item-restock">
+                  <i class="bi bi-exclamation-triangle-fill" style="color:var(--amber-500);font-size:.8rem;"></i>
+                  Restock Minimum Level
+                </label>
+                <div class="restock-wrap">
+                  <input class="form-input" type="number" id="item-restock"
+                         placeholder="Default is 20" min="1" value="20"/>
+                  <span class="unit-badge">units</span>
+                </div>
+                <div class="form-hint"><i class="bi bi-bell-fill"></i> System alerts you when stock falls below this number</div>
               </div>
             </div>
 
-            <div class="form-row form-row-2">
+            <!-- SECTION 3 -->
+            <div class="section">
+              <div class="section-head">
+                <div class="section-badge"><i class="bi bi-card-text"></i></div>
+                <span class="section-label">Description</span>
+              </div>
+
               <div class="form-group">
-                <label class="form-label">Unit Price (UGX) <span class="req">*</span></label>
-                <input class="form-input" type="number" id="item-price"
-                       placeholder="e.g. 15000" min="0" step="50" required/>
-                <span class="form-error">Price is required.</span>
-              </div>
-              <div class="form-group">
-                <label class="form-label">Opening Stock (Qty) <span class="req">*</span></label>
-                <input class="form-input" type="number" id="item-qty"
-                       placeholder="e.g. 100" min="0" required/>
-                <span class="form-error">Stock quantity is required.</span>
+                <label class="form-label" for="item-desc">Description <span class="opt">(optional)</span></label>
+                <textarea class="form-textarea" id="item-desc" rows="3"
+                          placeholder="e.g. Galvanised, 6 feet length, suitable for roofing..."></textarea>
               </div>
             </div>
 
-            <div class="form-group">
-              <label class="form-label">Restock Minimum Level</label>
-              <input class="form-input" type="number" id="item-restock"
-                     placeholder="Default is 20 units" min="1" value="20"/>
-              <span class="form-hint">System will alert you when stock falls below this number.</span>
-            </div>
-
-            <div class="form-group">
-              <label class="form-label">Description (optional)</label>
-              <textarea class="form-textarea" id="item-desc" rows="3"
-                        placeholder="e.g. Galvanised, 6 feet length, suitable for roofing..."
-                        style="resize:vertical;"></textarea>
-            </div>
-
-            <div style="display:flex;gap:12px;margin-top:8px;">
-              <button type="button" class="btn btn-outline" onclick="resetForm()">Clear Form</button>
-              <button type="submit" class="btn btn-primary btn-lg" style="flex:1;">
-                ✅ Save Item to Inventory
+            <!-- ACTIONS -->
+            <div class="form-actions">
+              <button type="button" class="btn-clear" onclick="resetForm()">
+                <i class="bi bi-arrow-counterclockwise"></i> Clear Form
+              </button>
+              <button type="submit" class="btn-save">
+                <i class="bi bi-box-seam"></i> Save Item to Inventory
               </button>
             </div>
 
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
     </div>
+
+    <!-- FOOTER -->
+    <footer class="dash-footer">
+      <div class="footer-main">
+        <div class="footer-copy">
+          <i class="bi bi-shield-check"></i>
+          <span>&copy; 2026 <strong>Mbogo Hardware</strong></span>
+          <span class="footer-copy-sep"></span>
+          <span>Hardware ERP</span>
+          <span class="footer-copy-sep"></span>
+          <span>Powered by DukaSoft ERP</span>
+        </div>
+        <div class="footer-tagline">Your shop, fully in control.</div>
+      </div>
+    </footer>
+
   </div>
 </main>
 
@@ -136,35 +538,88 @@
 <div class="modal-overlay" id="add-cat-modal">
   <div class="modal">
     <div class="modal-header">
-      <h3>Add New Category</h3>
-      <button class="modal-close" onclick="Modal.close('add-cat-modal')">✕</button>
+      <h3><i class="bi bi-tags"></i> Add New Category</h3>
+      <button class="modal-close" onclick="Modal.close('add-cat-modal')"><i class="bi bi-x-lg"></i></button>
     </div>
     <div class="modal-body">
       <div class="form-group">
-        <label class="form-label">Category Name <span class="req">*</span></label>
+        <label class="form-label" for="new-cat-name">Category Name <span class="req">*</span></label>
         <input class="form-input" type="text" id="new-cat-name"
-               placeholder="e.g. Iron Sheets, Roofing, Plumbing..." required/>
+               placeholder="e.g. Iron Sheets, Roofing, Plumbing..."/>
+        <div class="form-hint"><i class="bi bi-info-circle-fill"></i> Keep it short and descriptive</div>
       </div>
-      <div class="form-group mt-16">
-        <label class="form-label">Description (optional)</label>
+      <div class="form-group">
+        <label class="form-label" for="new-cat-desc">Description <span class="opt">(optional)</span></label>
         <textarea class="form-textarea" id="new-cat-desc" rows="2"
                   placeholder="What items fall under this category?"></textarea>
       </div>
     </div>
     <div class="modal-footer">
-      <button class="btn btn-outline" onclick="Modal.close('add-cat-modal')">Cancel</button>
-      <button class="btn btn-primary" onclick="saveCategory()">Save Category</button>
+      <button class="btn-clear" onclick="Modal.close('add-cat-modal')">Cancel</button>
+      <button class="btn-save" style="flex:unset;padding:9px 20px;font-size:.84rem;" onclick="saveCategory()">
+        <i class="bi bi-check-lg"></i> Save Category
+      </button>
     </div>
   </div>
 </div>
+
+<!-- Success Modal -->
+<div class="modal-overlay" id="success-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3><i class="bi bi-check-circle" style="color:#22a648;"></i> Item Saved Successfully</h3>
+      <button class="modal-close" onclick="closeSuccessModal()"><i class="bi bi-x-lg"></i></button>
+    </div>
+    <div class="modal-body" style="text-align:center;padding:32px 24px;">
+      <div style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,var(--green-100),var(--green-50));display:flex;align-items:center;justify-content:center;margin:0 auto 16px;animation:popIn .5s var(--bounce) both;">
+        <i class="bi bi-check-lg" style="font-size:2rem;color:var(--green-600);"></i>
+      </div>
+      <p style="font-size:.95rem;color:var(--gray-900);font-weight:600;margin-bottom:8px;" id="success-item-name"></p>
+      <p style="font-size:.85rem;color:var(--gray-400);margin:0;">has been added to your inventory</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-save" style="flex:1;" onclick="continueWithSuccess()">
+        <i class="bi bi-plus-lg"></i> Add Another Item
+      </button>
+      <button class="btn-clear" style="padding:10px 18px;" onclick="goToInventory()">
+        View All Items
+      </button>
+    </div>
+  </div>
+</div>
+
+<style>
+  @keyframes popIn{from{opacity:0;transform:scale(0.5)}to{opacity:1;transform:scale(1)}}
+</style>
 
 <div class="toast-container" id="toast-container"></div>
 
 <script src="../assets/js/app.js"></script>
 <script src="../assets/js/api.js"></script>
 <script>
+/* ── Clock & Greeting ── */
+function updateClock(){
+  const now=new Date(),h=now.getHours();
+  const g=document.getElementById('topbar-greeting');
+  if(g)g.textContent=h<12?'Good morning':h<17?'Good afternoon':'Good evening';
+  const c=document.getElementById('clock-time');
+  if(c)c.textContent=now.toLocaleTimeString('en-UG',{hour:'2-digit',minute:'2-digit'});
+}
+updateClock();setInterval(updateClock,30000);
+
+/* ── User Info ── */
+function loadUserInfo(){
+  const u=localStorage.getItem('erp_username');if(!u)return;
+  const ini=u.substring(0,2).toUpperCase();
+  const tu=document.getElementById('topbar-username');if(tu)tu.textContent=u.replace(/_/g,' ');
+  const ta=document.getElementById('topbar-avatar');if(ta)ta.textContent=ini;
+  const su=document.getElementById('sidebar-username');if(su)su.textContent=u;
+  const sa=document.getElementById('sidebar-avatar-initials');if(sa)sa.textContent=ini;
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
   await pageAuthGuard();
+  loadUserInfo();
   await loadCategories();
 });
 
@@ -196,25 +651,33 @@ async function saveCategory() {
 async function handleAddItem(e) {
   e.preventDefault();
   if (!validateForm(e.target)) return;
-
   const item = {
-    item_id:       0,
-    name:          document.getElementById('item-name').value.trim(),
-    category_id:   parseInt(document.getElementById('item-category').value) || 0,
-    unit:          document.getElementById('item-unit').value,
-    price:         parseFloat(document.getElementById('item-price').value) || 0,
+    item_id:        0,
+    name:           document.getElementById('item-name').value.trim(),
+    category_id:    parseInt(document.getElementById('item-category').value) || 0,
+    unit:           document.getElementById('item-unit').value,
+    price:          parseFloat(document.getElementById('item-price').value) || 0,
     stock_quantity: parseInt(document.getElementById('item-qty').value) || 0,
-    restock_level: parseInt(document.getElementById('item-restock').value) || 20,
-    description:   document.getElementById('item-desc').value.trim(),
+    restock_level:  parseInt(document.getElementById('item-restock').value) || 20,
+    description:    document.getElementById('item-desc').value.trim(),
   };
-
   const res = await Items.save(item);
   if (!res.success) { Toast.danger(res.message || 'Failed to add item.'); return; }
-  Toast.success(`"${item.name}" added to inventory!`);
-  setTimeout(() => {
-    if (confirm('Item saved! Add another item?')) { resetForm(); }
-    else { window.location.href = 'inventory.html'; }
-  }, 600);
+  document.getElementById('success-item-name').textContent = `"${item.name}"`;
+  document.getElementById('success-modal').classList.add('open');
+}
+
+function closeSuccessModal() {
+  document.getElementById('success-modal').classList.remove('open');
+}
+
+function continueWithSuccess() {
+  resetForm();
+  closeSuccessModal();
+}
+
+function goToInventory() {
+  window.location.href = 'inventory.html';
 }
 
 function resetForm() {
@@ -228,6 +691,3 @@ function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;'
 </script>
 </body>
 </html>
-
-
-

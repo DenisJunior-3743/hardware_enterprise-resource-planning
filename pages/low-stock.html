@@ -3,319 +3,665 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>DukaSoft — Low Stock Alerts</title>
+  <title>Mbogo Hardware — Low Stock Alerts</title>
   <link rel="stylesheet" href="../assets/css/style.css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
   <style>
-    .alert-card {
-      background: var(--white);
-      border-radius: var(--radius-lg);
-      border: 1px solid var(--gray-200);
-      padding: 18px 20px;
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      transition: box-shadow 0.15s;
+    :root{--spring:cubic-bezier(.22,1,.36,1);--bounce:cubic-bezier(.34,1.56,.64,1);--ease:cubic-bezier(.4,0,.2,1);--outfit:'Outfit',var(--font-display),sans-serif;--mono:'JetBrains Mono',monospace}
+
+    /* ██ GREEN TOPBAR — identical to dashboard ██ */
+    .topbar{background:linear-gradient(135deg,var(--green-800) 0%,var(--green-900) 100%)!important;border-bottom:none!important;box-shadow:0 2px 16px rgba(0,0,0,.22)!important;padding:0 24px!important}
+    .topbar-brand{display:flex;align-items:center;gap:14px}
+    .sidebar-toggle{color:rgba(255,255,255,.7)!important;border-radius:var(--radius-md);transition:background .15s,color .15s,transform .2s var(--bounce)!important}
+    .sidebar-toggle:hover{background:rgba(255,255,255,.1)!important;color:#fff!important;transform:scale(1.08)!important}
+    .topbar-divider{width:1px;height:28px;background:rgba(255,255,255,.15);flex-shrink:0}
+    .topbar-logo-icon{width:36px;height:36px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.18);border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;color:#fff;font-size:1rem;flex-shrink:0;transition:background .2s,transform .25s var(--bounce)}
+    .topbar-logo-icon:hover{background:rgba(255,255,255,.22);transform:rotate(-8deg) scale(1.1)}
+    .topbar-brand-text{display:flex;flex-direction:column;gap:1px}
+    .topbar-brand-name{font-family:var(--outfit);font-size:.95rem;font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1}
+    .topbar-brand-sub{font-size:.6rem;font-weight:600;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:.12em}
+    .page-breadcrumb{font-size:.8rem;color:rgba(255,255,255,.5)!important}
+    .page-breadcrumb strong{color:rgba(255,255,255,.9)!important}
+    .page-breadcrumb .bc-sep{color:rgba(255,255,255,.3)!important}
+    .topbar-right{gap:6px!important}
+    .topbar-clock-pill{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.12);border-radius:999px;padding:5px 12px;font-family:var(--mono);font-size:.7rem;color:rgba(255,255,255,.7);white-space:nowrap;transition:background .2s}
+    .topbar-clock-pill:hover{background:rgba(255,255,255,.14)}
+    .topbar-clock-pill i{color:rgba(255,255,255,.5);font-size:.72rem}
+    .topbar-search input{background:rgba(255,255,255,.1)!important;border-color:rgba(255,255,255,.15)!important;color:#fff!important;width:200px!important}
+    .topbar-search input::placeholder{color:rgba(255,255,255,.45)!important}
+    .topbar-search input:focus{background:rgba(255,255,255,.17)!important;border-color:rgba(255,255,255,.35)!important;box-shadow:0 0 0 3px rgba(255,255,255,.1)!important;width:240px!important}
+    .topbar-search .search-icon{color:rgba(255,255,255,.5)!important}
+    .notif-btn{color:rgba(255,255,255,.7)!important;transition:background .15s,color .15s,transform .2s var(--bounce)!important}
+    .notif-btn:hover{background:rgba(255,255,255,.1)!important;color:#fff!important;transform:scale(1.1)!important}
+    .topbar-user-pill{display:flex;align-items:center;gap:9px;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.14);border-radius:999px;padding:4px 14px 4px 4px;cursor:default;transition:background .2s,transform .25s var(--bounce)}
+    .topbar-user-pill:hover{background:rgba(255,255,255,.15);transform:scale(1.02)}
+    .topbar-avatar-circle{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--green-400),var(--green-600));border:2px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:800;color:#fff;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+    .topbar-user-info{display:flex;flex-direction:column;gap:1px}
+    .topbar-user-name{font-family:var(--outfit);font-size:.8rem;font-weight:700;color:rgba(255,255,255,.9);line-height:1}
+    .topbar-user-role{font-size:.6rem;font-weight:600;color:rgba(255,255,255,.42);text-transform:uppercase;letter-spacing:.1em}
+    .topbar-greeting-chip{display:flex;align-items:center;gap:5px;font-size:.72rem;font-weight:600;color:rgba(255,255,255,.55);padding:4px 8px;border-radius:999px;background:rgba(255,255,255,.07);white-space:nowrap}
+    .topbar-greeting-chip i{color:var(--green-300);font-size:.78rem}
+    /* ██ END TOPBAR ██ */
+
+    /* PAGE ENTRANCE */
+    .main-content{animation:mainIn .55s var(--spring) both}
+    @keyframes mainIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+    .page-header   {animation:rowUp .5s var(--spring) .04s both}
+    .stats-row     {animation:rowUp .5s var(--spring) .10s both}
+    .filter-row    {animation:rowUp .5s var(--spring) .16s both}
+    .alerts-section{animation:rowUp .5s var(--spring) .22s both}
+    .dash-footer   {animation:rowUp .5s var(--spring) .28s both}
+    @keyframes rowUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+
+    /* PAGE HEADER */
+    .page-header-left .page-tag{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.14em;color:var(--green-600);display:flex;align-items:center;gap:5px;margin-bottom:5px}
+    .page-header-left h2{font-family:var(--outfit);font-size:1.75rem;font-weight:800;color:var(--gray-900);letter-spacing:-.03em;line-height:1}
+    .page-header-left p{font-size:.84rem;color:var(--gray-400);margin-top:4px}
+
+    /* STAT CARDS */
+    .stat-card{
+      cursor:default;position:relative;overflow:hidden;
+      transition:transform .28s var(--bounce),box-shadow .28s var(--ease);
     }
-    .alert-card:hover { box-shadow: var(--shadow-md); }
-    .alert-card.critical { border-left: 4px solid var(--red-500); }
-    .alert-card.low      { border-left: 4px solid var(--amber-500); }
-    .alert-icon {
-      width: 48px; height: 48px; border-radius: var(--radius-lg);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.25rem; flex-shrink: 0;
+    .stat-card::before{content:'';position:absolute;top:-30px;right:-30px;width:110px;height:110px;border-radius:50%;background:radial-gradient(circle,rgba(60,189,94,.12) 0%,transparent 70%);opacity:0;transition:opacity .3s}
+    .stat-card.accent-red::before{background:radial-gradient(circle,rgba(224,53,36,.12) 0%,transparent 70%)}
+    .stat-card.accent-amber::before{background:radial-gradient(circle,rgba(217,119,6,.12) 0%,transparent 70%)}
+    .stat-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--green-300),var(--green-600));transform:scaleX(0);transform-origin:left;transition:transform .35s var(--spring);border-radius:0 0 var(--radius-lg) var(--radius-lg)}
+    .stat-card.accent-red::after{background:linear-gradient(90deg,var(--red-400),var(--red-500))}
+    .stat-card.accent-amber::after{background:linear-gradient(90deg,var(--amber-300),var(--amber-500))}
+    .stat-card:hover{transform:translateY(-5px) scale(1.01);box-shadow:0 16px 40px rgba(0,0,0,.11)}
+    .stat-card:hover::before{opacity:1}
+    .stat-card:hover::after{transform:scaleX(1)}
+    .stat-card-value{font-family:var(--outfit);font-variant-numeric:tabular-nums;letter-spacing:-.025em}
+    .stat-grid .stat-card:nth-child(1){animation:cardIn .5s var(--spring) .12s both}
+    .stat-grid .stat-card:nth-child(2){animation:cardIn .5s var(--spring) .20s both}
+    .stat-grid .stat-card:nth-child(3){animation:cardIn .5s var(--spring) .28s both}
+    @keyframes cardIn{from{opacity:0;transform:translateY(28px) scale(.93)}to{opacity:1;transform:translateY(0) scale(1)}}
+
+    /* FILTER ROW */
+    .filter-row{
+      display:flex;align-items:center;gap:12px;
+      margin-bottom:20px;flex-wrap:wrap;
     }
-    .alert-icon.critical { background: var(--red-100); }
-    .alert-icon.low      { background: var(--amber-100); }
-    .alert-info { flex: 1; }
-    .alert-name { font-weight: 700; font-size: 0.95rem; color: var(--gray-900); }
-    .alert-cat  { font-size: 0.78rem; color: var(--gray-400); margin-top: 2px; }
-    .alert-stock { text-align: right; }
-    .alert-qty  { font-size: 1.5rem; font-weight: 800; line-height: 1; }
-    .alert-qty.critical { color: var(--red-500); }
-    .alert-qty.low      { color: var(--amber-500); }
-    .alert-min  { font-size: 0.78rem; color: var(--gray-400); }
-    .alert-actions { display: flex; gap: 8px; flex-shrink: 0; }
-    .alert-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    @media (max-width: 700px) { .alert-grid { grid-template-columns: 1fr; } }
+    .tab-btn{position:relative;overflow:hidden;transition:all .2s var(--ease)}
+    .tab-btn.active{animation:tabPop .3s var(--bounce)}
+    @keyframes tabPop{0%{transform:scale(.86)}60%{transform:scale(1.07)}100%{transform:scale(1)}}
+
+    /* ALERT CARDS GRID */
+    .alert-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:14px;
+    }
+    @media(max-width:900px){.alert-grid{grid-template-columns:1fr}}
+
+    /* ALERT CARD — redesigned premium */
+    .alert-card{
+      background:var(--white);
+      border-radius:var(--radius-lg);
+      border:1px solid var(--gray-150);
+      overflow:hidden;
+      position:relative;
+      transition:transform .28s var(--bounce),box-shadow .28s var(--ease),border-color .2s;
+      animation:alertIn .35s var(--spring) both;
+    }
+    @keyframes alertIn{from{opacity:0;transform:translateY(16px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}
+    .alert-card:nth-child(1){animation-delay:.04s}.alert-card:nth-child(2){animation-delay:.08s}
+    .alert-card:nth-child(3){animation-delay:.12s}.alert-card:nth-child(4){animation-delay:.16s}
+    .alert-card:nth-child(5){animation-delay:.20s}.alert-card:nth-child(6){animation-delay:.24s}
+
+    /* left-edge accent bar */
+    .alert-card::before{
+      content:'';position:absolute;left:0;top:0;bottom:0;width:4px;
+      border-radius:var(--radius-lg) 0 0 var(--radius-lg);
+      transition:width .25s var(--spring);
+    }
+    .alert-card.critical::before{background:var(--red-500)}
+    .alert-card.low::before     {background:var(--amber-500)}
+    .alert-card:hover::before   {width:6px}
+    .alert-card:hover{
+      transform:translateY(-4px) scale(1.01);
+      box-shadow:0 14px 40px rgba(0,0,0,.10);
+      border-color:var(--gray-200);
+    }
+    .alert-card.critical:hover{border-color:var(--red-200);box-shadow:0 14px 40px rgba(224,53,36,.10)}
+    .alert-card.low:hover      {border-color:var(--amber-200);box-shadow:0 14px 40px rgba(217,119,6,.10)}
+
+    /* card body */
+    .alert-card-inner{padding:18px 20px 18px 22px;display:flex;align-items:flex-start;gap:14px}
+
+    /* icon badge */
+    .alert-icon-badge{
+      width:46px;height:46px;border-radius:var(--radius-lg);
+      display:flex;align-items:center;justify-content:center;
+      font-size:1.2rem;flex-shrink:0;
+      transition:transform .3s var(--bounce);
+    }
+    .alert-card:hover .alert-icon-badge{transform:scale(1.1) rotate(-6deg)}
+    .alert-icon-badge.critical{background:var(--red-100);color:var(--red-600)}
+    .alert-icon-badge.low     {background:var(--amber-100);color:var(--amber-600)}
+
+    /* info block */
+    .alert-info{flex:1;min-width:0}
+    .alert-name{font-weight:700;font-size:.9rem;color:var(--gray-900);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .alert-meta{display:flex;align-items:center;gap:8px;margin-top:3px;flex-wrap:wrap}
+    .alert-cat-badge{
+      display:inline-flex;align-items:center;gap:4px;
+      font-size:.68rem;font-weight:700;
+      background:var(--gray-100);color:var(--gray-500);
+      border-radius:999px;padding:2px 8px;
+    }
+    .alert-unit-badge{
+      font-size:.68rem;color:var(--gray-400);
+      display:inline-flex;align-items:center;gap:3px;
+    }
+
+    /* progress bar */
+    .alert-progress{margin-top:10px}
+    .alert-progress-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+    .alert-progress-label{font-size:.7rem;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:.07em}
+    .alert-progress-need{font-size:.7rem;font-weight:600;color:var(--gray-400)}
+    .alert-progress-track{height:6px;background:var(--gray-150);border-radius:999px;overflow:hidden}
+    .alert-progress-fill{height:100%;border-radius:999px;transition:width .6s var(--spring)}
+    .alert-progress-fill.critical{background:linear-gradient(90deg,var(--red-400),var(--red-500))}
+    .alert-progress-fill.low     {background:linear-gradient(90deg,var(--amber-400),var(--amber-500))}
+
+    /* stock numbers */
+    .alert-qty-block{text-align:right;flex-shrink:0;padding-left:8px}
+    .alert-qty-num{font-family:var(--outfit);font-size:2rem;font-weight:800;line-height:1;letter-spacing:-.03em}
+    .alert-qty-num.critical{color:var(--red-500)}
+    .alert-qty-num.low     {color:var(--amber-500)}
+    .alert-qty-min{font-size:.72rem;color:var(--gray-400);margin-top:2px;display:flex;align-items:center;gap:3px}
+    .alert-qty-min i{font-size:.7rem;color:var(--gray-400)}
+
+    /* card footer actions */
+    .alert-card-footer{
+      padding:10px 20px 10px 22px;
+      border-top:1px solid var(--gray-100);
+      display:flex;align-items:center;justify-content:space-between;
+      background:var(--gray-50);
+      gap:10px;
+    }
+    .alert-card.critical .alert-card-footer{background:var(--red-50)}
+    .alert-card.low      .alert-card-footer{background:var(--amber-50)}
+
+    /* STATUS CHIP */
+    .status-chip{
+      display:inline-flex;align-items:center;gap:5px;
+      font-size:.7rem;font-weight:700;
+      border-radius:999px;padding:3px 10px;
+    }
+    .status-chip.critical{background:var(--red-100);color:var(--red-700)}
+    .status-chip.low     {background:var(--amber-100);color:var(--amber-700)}
+    .status-chip-dot{width:6px;height:6px;border-radius:50%}
+    .status-chip.critical .status-chip-dot{background:var(--red-500);animation:chipPulse 2s ease infinite}
+    .status-chip.low      .status-chip-dot{background:var(--amber-500)}
+    @keyframes chipPulse{0%,100%{opacity:1}50%{opacity:.35}}
+
+    /* BUTTON ENHANCEMENTS */
+    .btn{transition:transform .22s var(--bounce),box-shadow .22s var(--ease),background .15s,border-color .15s,color .15s}
+    .btn:hover:not(:disabled){transform:translateY(-2px)}
+    .btn-primary{position:relative;overflow:hidden}
+    .btn-primary::after{content:'';position:absolute;inset:0;left:-100%;width:50%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.2),transparent);transition:left .5s var(--ease)}
+    .btn-primary:hover::after{left:160%}
+    .btn-primary:hover{box-shadow:0 6px 20px rgba(26,138,58,.38)!important}
+    .btn-primary:active{transform:scale(.97)!important}
+    .btn-outline:hover{background:var(--green-50)!important;border-color:var(--green-400)!important;color:var(--green-700)!important}
+    .btn-danger-outline{border:1.5px solid var(--red-300);color:var(--red-500);background:transparent;border-radius:var(--radius-md);padding:6px 14px;font-size:.8rem;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:background .15s,transform .22s var(--bounce),box-shadow .22s}
+    .btn-danger-outline:hover{background:var(--red-50);transform:translateY(-2px);box-shadow:0 4px 12px rgba(224,53,36,.15)}
+
+    /* EMPTY STATE */
+    .empty-state{padding:80px 24px;text-align:center;color:var(--gray-400)}
+    .empty-icon-wrap{
+      width:80px;height:80px;border-radius:50%;
+      background:var(--green-100);
+      display:flex;align-items:center;justify-content:center;
+      margin:0 auto 20px;
+      font-size:2rem;color:var(--green-600);
+      animation:emptyBob 3s ease infinite;
+    }
+    @keyframes emptyBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+
+    /* MODAL */
+    .modal{animation:modalBounce .3s var(--bounce) both}
+    @keyframes modalBounce{from{opacity:0;transform:scale(.88) translateY(20px)}to{opacity:1;transform:scale(1) translateY(0)}}
+
+    /* FOOTER — same 64px as dashboard */
+    .dash-footer{margin-top:40px}
+    .footer-main{background:linear-gradient(135deg,var(--green-800) 0%,var(--green-900) 100%);border-radius:var(--radius-xl);height:64px;padding:0 24px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+    .footer-copy{font-size:.73rem;color:rgba(255,255,255,.5);display:flex;align-items:center;gap:10px;flex-wrap:nowrap}
+    .footer-copy strong{color:rgba(255,255,255,.75);font-weight:700}
+    .footer-copy-sep{width:3px;height:3px;border-radius:50%;background:rgba(255,255,255,.3);flex-shrink:0}
+    .footer-copy i{color:var(--green-400);font-size:.78rem;flex-shrink:0}
+    .footer-tagline{font-size:.7rem;color:rgba(255,255,255,.3);font-style:italic;white-space:nowrap;flex-shrink:0}
+
+    /* RESPONSIVE */
+    @media(max-width:768px){.topbar-clock-pill,.topbar-greeting-chip,.topbar-user-info{display:none}.topbar-search input{width:160px!important}}
+    @media(max-width:600px){.topbar-search{display:none}.footer-main{height:auto;padding:14px 20px;flex-direction:column;text-align:center}.footer-tagline{display:none}}
   </style>
 </head>
 <body>
+<div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+
+<!-- SIDEBAR -->
 <aside class="sidebar" id="sidebar">
-  <div class="sidebar-logo"><div class="sidebar-logo-icon">🔧</div><div class="sidebar-logo-text"><h1>DukaSoft</h1><span>Hardware ERP</span></div></div>
+  <div class="sidebar-logo">
+    <div class="sidebar-logo-icon"><i class="bi bi-tools"></i></div>
+    <div class="sidebar-logo-text"><h1>Mbogo Hardware</h1><span>ERP System</span></div>
+  </div>
   <nav class="sidebar-nav">
-    <div class="nav-group"><a href="dashboard.html" class="nav-parent"><span class="nav-icon">📊</span><span class="nav-label">Dashboard</span></a></div>
-    <div class="nav-group"><button class="nav-parent" type="button"><span class="nav-icon">📦</span><span class="nav-label">Inventory</span><span class="nav-chevron">›</span></button><div class="nav-children"><a href="inventory.html" class="nav-child"><span class="child-dot"></span> View All Items</a><a href="categories.html" class="nav-child"><span class="child-dot"></span> Manage Categories</a><a href="add-item.html" class="nav-child"><span class="child-dot"></span> Add New Item</a></div></div>
-    <div class="nav-group"><button class="nav-parent" type="button"><span class="nav-icon">💰</span><span class="nav-label">Sales</span><span class="nav-chevron">›</span></button><div class="nav-children"><a href="record-sale.html" class="nav-child"><span class="child-dot"></span> Record a Sale</a><a href="sales-history.html" class="nav-child"><span class="child-dot"></span> Sales History</a></div></div>
+    <div class="nav-section-label">Main</div>
+    <div class="nav-group"><a href="dashboard.html" class="nav-parent"><span class="nav-icon"><i class="bi bi-grid-1x2"></i></span><span class="nav-label">Dashboard</span></a></div>
     <div class="nav-group">
-      <button class="nav-parent open active" type="button"><span class="nav-icon">🚚</span><span class="nav-label">Restock</span><span class="nav-chevron">›</span></button>
+      <button class="nav-parent" type="button"><span class="nav-icon"><i class="bi bi-box-seam"></i></span><span class="nav-label">Inventory</span><i class="nav-chevron bi bi-chevron-right"></i></button>
+      <div class="nav-children"><a href="inventory.html" class="nav-child"><span class="child-dot"></span> View All Items</a><a href="categories.html" class="nav-child"><span class="child-dot"></span> Manage Categories</a><a href="add-item.html" class="nav-child"><span class="child-dot"></span> Add New Item</a></div>
+    </div>
+    <div class="nav-section-label">Transactions</div>
+    <div class="nav-group">
+      <button class="nav-parent" type="button"><span class="nav-icon"><i class="bi bi-receipt"></i></span><span class="nav-label">Sales</span><i class="nav-chevron bi bi-chevron-right"></i></button>
+      <div class="nav-children"><a href="record-sale.html" class="nav-child"><span class="child-dot"></span> Record a Sale</a><a href="sales-history.html" class="nav-child"><span class="child-dot"></span> Sales History</a></div>
+    </div>
+    <div class="nav-group">
+      <button class="nav-parent open active" type="button"><span class="nav-icon"><i class="bi bi-truck"></i></span><span class="nav-label">Restock</span><i class="nav-chevron bi bi-chevron-right"></i></button>
       <div class="nav-children open">
         <a href="record-restock.html" class="nav-child"><span class="child-dot"></span> Record Restock</a>
         <a href="restock-history.html" class="nav-child"><span class="child-dot"></span> Restock History</a>
         <a href="low-stock.html" class="nav-child active"><span class="child-dot"></span> Low Stock Alerts</a>
       </div>
     </div>
-    <div class="nav-group"><button class="nav-parent" type="button"><span class="nav-icon">📈</span><span class="nav-label">Reports</span><span class="nav-chevron">›</span></button><div class="nav-children"><a href="reports.html?tab=sales" class="nav-child"><span class="child-dot"></span> Sales Report</a><a href="reports.html?tab=inventory" class="nav-child"><span class="child-dot"></span> Inventory Report</a><a href="reports.html?tab=restock" class="nav-child"><span class="child-dot"></span> Restock Report</a></div></div>
+    <div class="nav-section-label">Analytics</div>
+    <div class="nav-group">
+      <button class="nav-parent" type="button"><span class="nav-icon"><i class="bi bi-bar-chart-line"></i></span><span class="nav-label">Reports</span><i class="nav-chevron bi bi-chevron-right"></i></button>
+      <div class="nav-children"><a href="reports.html?tab=sales" class="nav-child"><span class="child-dot"></span> Sales Report</a><a href="reports.html?tab=inventory" class="nav-child"><span class="child-dot"></span> Inventory Report</a><a href="reports.html?tab=restock" class="nav-child"><span class="child-dot"></span> Restock Report</a></div>
+    </div>
   </nav>
   <div class="sidebar-footer">
-    <a href="../index.html" class="nav-parent" onclick="return signOut(event)"><span class="nav-icon">🚪</span><span class="nav-label">Sign Out</span></a>
+    <a href="../index.html" class="nav-parent" onclick="return signOut(event)"><span class="nav-icon"><i class="bi bi-box-arrow-left"></i></span><span class="nav-label">Sign Out</span></a>
     <div class="sidebar-user"><div class="sidebar-avatar" id="sidebar-avatar-initials">--</div><div class="sidebar-user-info"><p id="sidebar-username">Loading...</p><span>Administrator</span></div></div>
   </div>
 </aside>
 
+<!-- ██ GREEN TOPBAR — identical to dashboard ██ -->
 <header class="topbar" id="topbar">
-  <div class="topbar-left"><button class="sidebar-toggle">☰</button><div class="page-breadcrumb">Restock / <strong>Low Stock Alerts</strong></div></div>
-  <div class="topbar-right"><div class="topbar-search"><span class="search-icon">🔍</span><input type="text" placeholder="Search items..." oninput="filterAlerts(this.value)"/></div></div>
+  <div class="topbar-left" style="gap:10px;">
+    <button class="sidebar-toggle"><i class="bi bi-list"></i></button>
+    <div class="topbar-divider"></div>
+    <div class="topbar-brand">
+      <div class="topbar-logo-icon"><i class="bi bi-tools"></i></div>
+      <div class="topbar-brand-text">
+        <span class="topbar-brand-name">Mbogo Hardware</span>
+        <span class="topbar-brand-sub">ERP &middot; Nabiswera</span>
+      </div>
+    </div>
+    <div class="topbar-divider"></div>
+    <div class="page-breadcrumb">
+      Restock
+      <span class="bc-sep"><i class="bi bi-chevron-right"></i></span>
+      <strong>Low Stock Alerts</strong>
+    </div>
+  </div>
+  <div class="topbar-right">
+    <div class="topbar-greeting-chip"><i class="bi bi-stars"></i><span id="topbar-greeting">Good morning</span></div>
+    <div class="topbar-clock-pill"><i class="bi bi-clock"></i><span id="clock-time">—</span></div>
+    <div class="topbar-search">
+      <span class="search-icon"><i class="bi bi-search"></i></span>
+      <input type="text" placeholder="Search items..." id="global-search" autocomplete="off"
+             oninput="filterAlerts(this.value)"/>
+    </div>
+    <button class="notif-btn" title="Low stock alerts"><i class="bi bi-bell"></i><span class="notif-badge" id="notif-badge"></span></button>
+    <div class="topbar-user-pill">
+      <div class="topbar-avatar-circle" id="topbar-avatar">--</div>
+      <div class="topbar-user-info"><span class="topbar-user-name" id="topbar-username">Loading</span><span class="topbar-user-role">Admin</span></div>
+    </div>
+  </div>
 </header>
+<!-- ██ END TOPBAR ██ -->
 
 <main class="main-content" id="main-content">
   <div class="page-inner">
-    <div class="page-header">
+
+    <!-- PAGE HEADER -->
+    <div class="page-header" style="margin-bottom:24px;">
       <div class="page-header-left">
-        <span class="page-tag">Restock</span>
+        <span class="page-tag"><i class="bi bi-truck"></i> Restock</span>
         <h2>Low Stock Alerts</h2>
+        <p>Items that need restocking before they run out.</p>
       </div>
       <div class="page-header-actions">
-        <a href="record-restock.html" class="btn btn-primary">🚚 Record Restock</a>
+        <a href="record-restock.html" class="btn btn-primary">
+          <i class="bi bi-truck"></i> Record Restock
+        </a>
       </div>
     </div>
 
-    <!-- Stats -->
-    <div class="stat-grid stat-grid-3" style="margin-bottom:24px;">
-      <div class="stat-card">
-        <div class="stat-card-top"><span class="stat-card-label">Critical (0 stock)</span><div class="stat-card-icon red">🚫</div></div>
+    <!-- STAT CARDS -->
+    <div class="stat-grid stat-grid-3 stats-row" style="margin-bottom:24px;">
+      <div class="stat-card accent-red">
+        <div class="stat-card-top">
+          <span class="stat-card-label">Critical — Out of Stock</span>
+          <div class="stat-card-icon red"><i class="bi bi-x-circle-fill"></i></div>
+        </div>
         <div class="stat-card-value red-val" id="ls-critical">0</div>
-        <div class="stat-card-sub red">Out of stock completely</div>
+        <div class="stat-card-sub red">
+          <i class="bi bi-exclamation-circle"></i>
+          <span>Zero units remaining</span>
+        </div>
       </div>
-      <div class="stat-card">
-        <div class="stat-card-top"><span class="stat-card-label">Low Stock</span><div class="stat-card-icon amber">⚠</div></div>
+      <div class="stat-card accent-amber">
+        <div class="stat-card-top">
+          <span class="stat-card-label">Low Stock</span>
+          <div class="stat-card-icon amber"><i class="bi bi-exclamation-triangle-fill"></i></div>
+        </div>
         <div class="stat-card-value amber-val" id="ls-low">0</div>
-        <div class="stat-card-sub text-amber">Below restock minimum</div>
+        <div class="stat-card-sub amber">
+          <i class="bi bi-arrow-down-circle"></i>
+          <span>Below restock minimum</span>
+        </div>
       </div>
-      <div class="stat-card">
-        <div class="stat-card-top"><span class="stat-card-label">All OK</span><div class="stat-card-icon green">✅</div></div>
+      <div class="stat-card accent-green">
+        <div class="stat-card-top">
+          <span class="stat-card-label">Well Stocked</span>
+          <div class="stat-card-icon green"><i class="bi bi-check-circle-fill"></i></div>
+        </div>
         <div class="stat-card-value" id="ls-ok">0</div>
-        <div class="stat-card-sub green">Items well stocked</div>
+        <div class="stat-card-sub green">
+          <i class="bi bi-shield-check"></i>
+          <span>Items above minimum</span>
+        </div>
       </div>
     </div>
 
-    <!-- Filter tabs -->
-    <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
-      <div class="tabs">
-        <button class="tab-btn active" onclick="setFilter('all',this)">All Alerts</button>
-        <button class="tab-btn" onclick="setFilter('critical',this)">Critical (0 stock)</button>
-        <button class="tab-btn" onclick="setFilter('low',this)">Low Stock</button>
+    <!-- FILTER ROW -->
+    <div class="filter-row">
+      <div class="tabs" id="filter-tabs">
+        <button class="tab-btn active" onclick="setFilter('all',this)">
+          <i class="bi bi-list-ul" style="margin-right:5px;font-size:.8rem;"></i>All Alerts
+        </button>
+        <button class="tab-btn" onclick="setFilter('critical',this)">
+          <i class="bi bi-x-circle" style="margin-right:5px;font-size:.8rem;color:var(--red-500);"></i>Critical
+        </button>
+        <button class="tab-btn" onclick="setFilter('low',this)">
+          <i class="bi bi-exclamation-triangle" style="margin-right:5px;font-size:.8rem;color:var(--amber-500);"></i>Low Stock
+        </button>
       </div>
-      <select class="form-select" id="cat-filter" style="padding:8px 14px;width:auto;margin-left:auto;" onchange="filterAlerts('')">
+      <select class="form-select" id="cat-filter"
+              style="padding:8px 14px;width:auto;margin-left:auto;"
+              onchange="filterAlerts('')">
         <option value="">All Categories</option>
       </select>
+      <span class="badge badge-red" id="alert-count-badge" style="font-size:.78rem;"></span>
     </div>
 
-    <!-- Alert cards -->
-    <div class="alert-grid" id="alerts-grid"></div>
-    <div id="alerts-empty" class="empty-state" style="display:none;">
-      <div class="empty-icon">✅</div>
-      <p id="alerts-empty-msg">All items are well stocked! No alerts at this time.</p>
+    <!-- ALERTS SECTION -->
+    <div class="alerts-section">
+      <div class="alert-grid" id="alerts-grid"></div>
+      <div id="alerts-empty" class="empty-state" style="display:none;">
+        <div class="empty-icon-wrap"><i class="bi bi-check2-circle"></i></div>
+        <h4 style="font-family:var(--outfit);font-size:1.1rem;font-weight:800;color:var(--green-700);margin-bottom:8px;" id="alerts-empty-title">All Items Well Stocked!</h4>
+        <p id="alerts-empty-msg" style="font-size:.875rem;">No stock alerts at this time. Your inventory is in good shape.</p>
+        <a href="inventory.html" class="btn btn-outline" style="margin-top:16px;display:inline-flex;">
+          <i class="bi bi-box-seam"></i> View Inventory
+        </a>
+      </div>
     </div>
+
+    <!-- FOOTER — identical to dashboard -->
+    <footer class="dash-footer">
+      <div class="footer-main">
+        <div class="footer-copy">
+          <i class="bi bi-shield-check"></i>
+          <span>&copy; 2026 <strong>Mbogo Hardware</strong></span>
+          <span class="footer-copy-sep"></span>
+          <span>Nabiswera, Nakasongola District</span>
+          <span class="footer-copy-sep"></span>
+          <span>Powered by DukaSoft ERP</span>
+        </div>
+        <div class="footer-tagline">Your shop, fully in control.</div>
+      </div>
+    </footer>
 
   </div>
 </main>
 
-<!-- Quick Restock Modal -->
+<!-- QUICK RESTOCK MODAL -->
 <div class="modal-overlay" id="quick-restock-modal">
   <div class="modal">
     <div class="modal-header">
-      <h3>Quick Restock</h3>
-      <button class="modal-close" onclick="Modal.close('quick-restock-modal')">✕</button>
+      <h3 style="display:flex;align-items:center;gap:8px;">
+        <i class="bi bi-truck" style="color:var(--green-600);"></i> Quick Restock
+      </h3>
+      <button class="modal-close" onclick="Modal.close('quick-restock-modal')">
+        <i class="bi bi-x-lg"></i>
+      </button>
     </div>
-    <div class="modal-body" style="display:flex;flex-direction:column;gap:16px;">
-      <div style="background:var(--amber-100);border-radius:var(--radius-lg);padding:14px 16px;">
-        <div style="font-weight:700;font-size:0.9rem;color:var(--amber-700);" id="qr-item-name">Item Name</div>
-        <div style="font-size:0.8rem;color:var(--amber-700);margin-top:4px;" id="qr-item-info">Current stock: 0</div>
+    <div class="modal-body" style="padding:24px;display:flex;flex-direction:column;gap:18px;">
+
+      <!-- Item info banner -->
+      <div style="background:var(--amber-50);border:1.5px solid var(--amber-200);border-radius:var(--radius-lg);padding:14px 16px;display:flex;align-items:flex-start;gap:12px;">
+        <div style="width:40px;height:40px;border-radius:var(--radius-md);background:var(--amber-100);color:var(--amber-600);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;">
+          <i class="bi bi-exclamation-triangle-fill"></i>
+        </div>
+        <div>
+          <div style="font-weight:800;font-size:.95rem;color:var(--amber-800);" id="qr-item-name">Item Name</div>
+          <div style="font-size:.78rem;color:var(--amber-700);margin-top:3px;" id="qr-item-info">Current stock: 0</div>
+        </div>
       </div>
+
       <input type="hidden" id="qr-item-idx"/>
       <div class="form-group">
-        <label class="form-label">Quantity to Add <span class="req">*</span></label>
-        <input class="form-input" type="number" id="qr-qty" min="1" placeholder="e.g. 50" style="font-size:1.1rem;"/>
+        <label class="form-label" style="font-weight:700;font-size:.8rem;color:var(--gray-700);margin-bottom:5px;display:flex;align-items:center;gap:5px;">
+          <i class="bi bi-plus-circle" style="color:var(--green-500);"></i>
+          Quantity to Add <span style="color:var(--red-500);font-weight:800;">*</span>
+        </label>
+        <input class="form-input" type="number" id="qr-qty" min="1" placeholder="e.g. 50"
+               style="font-size:1.05rem;font-family:var(--outfit);"/>
       </div>
       <div class="form-group">
-        <label class="form-label">Supplier (optional)</label>
-        <input class="form-input" type="text" id="qr-supplier" placeholder="e.g. Nile Hardware Suppliers"/>
+        <label class="form-label" style="font-weight:700;font-size:.8rem;color:var(--gray-700);margin-bottom:5px;display:flex;align-items:center;gap:5px;">
+          <i class="bi bi-building" style="color:var(--green-500);"></i>
+          Supplier <span style="color:var(--gray-400);font-weight:500;">(optional)</span>
+        </label>
+        <input class="form-input" type="text" id="qr-supplier"
+               placeholder="e.g. Nile Hardware Suppliers"/>
       </div>
     </div>
     <div class="modal-footer">
-      <button class="btn btn-outline btn-lg" onclick="Modal.close('quick-restock-modal')">Cancel</button>
-      <button class="btn btn-primary btn-lg" onclick="saveQuickRestock()">✅ Add Stock</button>
+      <button class="btn btn-outline btn-lg" onclick="Modal.close('quick-restock-modal')">
+        <i class="bi bi-x-lg"></i> Cancel
+      </button>
+      <button class="btn btn-primary btn-lg" onclick="saveQuickRestock()">
+        <i class="bi bi-check-lg"></i> Add Stock
+      </button>
     </div>
   </div>
 </div>
 
 <div class="toast-container" id="toast-container"></div>
-
 <script src="../assets/js/app.js"></script>
 <script src="../assets/js/api.js"></script>
 <script>
-let allItems      = [];
-let activeFilter  = 'all';
-let _quickItem    = null;
+/* ── Clock ── */
+function updateClock(){const now=new Date(),h=now.getHours();const g=document.getElementById('topbar-greeting');if(g)g.textContent=h<12?'Good morning':h<17?'Good afternoon':'Good evening';const c=document.getElementById('clock-time');if(c)c.textContent=now.toLocaleTimeString('en-UG',{hour:'2-digit',minute:'2-digit'})}
+updateClock();setInterval(updateClock,30000);
 
-document.addEventListener('DOMContentLoaded', async () => {
+let allItems=[], activeFilter='all', _quickItem=null;
+
+document.addEventListener('DOMContentLoaded',async()=>{
   await pageAuthGuard();
+  initSidebar(); loadUserInfo();
   await loadCatFilter();
   await loadAlerts();
 });
 
-async function loadCatFilter() {
-  const res = await Categories.list();
-  if (!res.success) return;
-  const sel = document.getElementById('cat-filter');
-  (res.data.categories || []).forEach(c =>
-    sel.innerHTML += `<option value="${c.category_id}">${esc(c.name)}</option>`
-  );
+function initSidebar(){
+  const sb=document.getElementById('sidebar'),tb=document.getElementById('topbar'),mc=document.getElementById('main-content'),bd=document.getElementById('sidebar-backdrop');
+  document.querySelectorAll('.sidebar-toggle').forEach(b=>{b.addEventListener('click',()=>{if(window.innerWidth<=768){sb.classList.toggle('mobile-open');bd.classList.toggle('open');}else{sb.classList.toggle('collapsed');tb.classList.toggle('sidebar-collapsed');mc?.classList.toggle('sidebar-collapsed');}});});
+  bd.addEventListener('click',()=>{sb.classList.remove('mobile-open');bd.classList.remove('open');});
+  document.querySelectorAll('.nav-parent[type=button]').forEach(btn=>{btn.addEventListener('click',()=>{const ch=btn.nextElementSibling;if(!ch)return;const open=ch.classList.contains('open');document.querySelectorAll('.nav-children.open').forEach(c=>{c.classList.remove('open');c.previousElementSibling?.classList.remove('open');});if(!open){ch.classList.add('open');btn.classList.add('open');}});});
 }
 
-async function loadAlerts() {
-  const res = await Items.list({ low_stock: '1', per_page: 200 });
-  if (!res.success) { Toast.danger('Failed to load inventory.'); return; }
-  allItems = res.data.items || [];
+function loadUserInfo(){
+  const u=localStorage.getItem('erp_username');if(!u)return;
+  const ini=u.substring(0,2).toUpperCase();
+  [['sidebar-username',u],['topbar-username',u.replace(/_/g,' ')]].forEach(([id,v])=>{const el=document.getElementById(id);if(el)el.textContent=v;});
+  ['sidebar-avatar-initials','topbar-avatar'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=ini;});
+}
 
-  const critical = allItems.filter(i => parseInt(i.stock_quantity) === 0);
-  const low      = allItems.filter(i => parseInt(i.stock_quantity) > 0 && parseInt(i.stock_quantity) < (parseInt(i.restock_level)||20));
-  const ok       = allItems.filter(i => parseInt(i.stock_quantity) >= (parseInt(i.restock_level)||20));
+async function loadCatFilter(){
+  const res=await Categories.list();if(!res.success)return;
+  const sel=document.getElementById('cat-filter');
+  (res.data.categories||[]).forEach(c=>sel.innerHTML+=`<option value="${c.category_id}">${esc(c.name)}</option>`);
+}
 
-  document.getElementById('ls-critical').textContent = critical.length;
-  document.getElementById('ls-low').textContent      = low.length;
-  document.getElementById('ls-ok').textContent       = ok.length;
-
+async function loadAlerts(){
+  const res=await Items.list({low_stock:'1',per_page:200});
+  if(!res.success){Toast.danger('Failed to load inventory.');return;}
+  allItems=res.data.items||[];
+  const critical=allItems.filter(i=>parseInt(i.stock_quantity)===0);
+  const low=allItems.filter(i=>parseInt(i.stock_quantity)>0&&parseInt(i.stock_quantity)<(parseInt(i.restock_level)||20));
+  const ok=allItems.filter(i=>parseInt(i.stock_quantity)>=(parseInt(i.restock_level)||20));
+  /* animate counters */
+  animCount('ls-critical',critical.length);
+  animCount('ls-low',low.length);
+  animCount('ls-ok',ok.length);
+  /* notification badge */
+  const nb=document.getElementById('notif-badge');
+  if(nb)(critical.length+low.length)>0?nb.style.display='block':nb.style.display='none';
   filterAlerts('');
 }
 
-function setFilter(f, btn) {
-  activeFilter = f;
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+function animCount(id,target){
+  const el=document.getElementById(id);if(!el)return;
+  const t0=performance.now();
+  (function step(now){const p=Math.min((now-t0)/700,1),e=1-Math.pow(1-p,3);el.textContent=Math.round(e*target);if(p<1)requestAnimationFrame(step);else el.textContent=target;})(t0);
+}
+
+function setFilter(f,btn){
+  activeFilter=f;
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
-  filterAlerts('');
+  filterAlerts(document.getElementById('global-search')?.value||'');
 }
 
-function filterAlerts(q) {
-  const catFilter = document.getElementById('cat-filter').value;
-  let items = allItems.filter(i => {
-    const qty = parseInt(i.stock_quantity) || 0;
-    const min = parseInt(i.restock_level) || 20;
-    if (activeFilter === 'critical') return qty === 0;
-    if (activeFilter === 'low')      return qty > 0 && qty < min;
-    return qty < min;
+function filterAlerts(q){
+  const catFilter=document.getElementById('cat-filter').value;
+  let items=allItems.filter(i=>{
+    const qty=parseInt(i.stock_quantity)||0, min=parseInt(i.restock_level)||20;
+    if(activeFilter==='critical')return qty===0;
+    if(activeFilter==='low')return qty>0&&qty<min;
+    return qty<min;
   });
-
-  if (catFilter) items = items.filter(i => String(i.category_id) === String(catFilter));
-  if (q) items = items.filter(i => (i.name||'').toLowerCase().includes(q.toLowerCase()));
-
-  items.sort((a, b) => {
-    const aqty = parseInt(a.stock_quantity) || 0;
-    const bqty = parseInt(b.stock_quantity) || 0;
-    if (aqty === 0 && bqty > 0) return -1;
-    if (bqty === 0 && aqty > 0) return 1;
-    return aqty - bqty;
+  if(catFilter)items=items.filter(i=>String(i.category_id)===String(catFilter));
+  if(q)items=items.filter(i=>(i.name||'').toLowerCase().includes(q.toLowerCase()));
+  items.sort((a,b)=>{
+    const aq=parseInt(a.stock_quantity)||0, bq=parseInt(b.stock_quantity)||0;
+    if(aq===0&&bq>0)return -1; if(bq===0&&aq>0)return 1; return aq-bq;
   });
-
+  /* update badge */
+  const bdg=document.getElementById('alert-count-badge');
+  bdg.textContent=items.length+' alert'+(items.length!==1?'s':'');
+  bdg.style.display=items.length>0?'inline-flex':'none';
   renderAlerts(items);
 }
 
-function renderAlerts(items) {
-  const grid  = document.getElementById('alerts-grid');
-  const empty = document.getElementById('alerts-empty');
-
-  if (items.length === 0) {
-    grid.innerHTML = '';
-    empty.style.display = 'block';
-    const msg = activeFilter === 'critical' ? 'No items are completely out of stock.'
-      : activeFilter === 'low' ? 'No items are in the low stock zone right now.'
-      : 'All items are well stocked! No alerts at this time.';
-    document.getElementById('alerts-empty-msg').textContent = msg;
+function renderAlerts(items){
+  const grid=document.getElementById('alerts-grid');
+  const empty=document.getElementById('alerts-empty');
+  if(items.length===0){
+    grid.innerHTML=''; empty.style.display='block';
+    const titles={critical:'No Critical Alerts!',low:'No Low Stock Items!',all:'All Items Well Stocked!'};
+    const msgs={critical:'No items are completely out of stock right now.',low:'No items are below their restock minimum.',all:'Your inventory is in great shape. No stock alerts at this time.'};
+    document.getElementById('alerts-empty-title').textContent=titles[activeFilter]||titles.all;
+    document.getElementById('alerts-empty-msg').textContent=msgs[activeFilter]||msgs.all;
     return;
   }
-  empty.style.display = 'none';
+  empty.style.display='none';
 
-  grid.innerHTML = items.map(item => {
-    const qty    = parseInt(item.stock_quantity) || 0;
-    const min    = parseInt(item.restock_level) || 20;
-    const isCrit = qty === 0;
-    const pct    = isCrit ? 0 : Math.min(100, Math.round((qty / (min * 2)) * 100));
-    const barColor = isCrit ? 'red' : 'amber';
-    const level  = isCrit ? 'critical' : 'low';
-    const needed = Math.max(0, min - qty);
-    const encoded = JSON.stringify(item).replace(/'/g, "&#39;").replace(/"/g, '&quot;');
-
-    return `<div class="alert-card ${level}">
-      <div class="alert-icon ${level}">${isCrit ? '🚫' : '⚠'}</div>
-      <div class="alert-info">
-        <div class="alert-name">${esc(item.name)}</div>
-        <div class="alert-cat">${esc(item.category_name||'Uncategorised')}</div>
-        <div style="margin-top:8px;">
-          <div class="stock-bar-label">
-            <span></span>
-            <span class="text-muted" style="font-size:0.75rem;">Need ~${needed} to reach min</span>
+  grid.innerHTML=items.map((item,idx)=>{
+    const qty=parseInt(item.stock_quantity)||0;
+    const min=parseInt(item.restock_level)||20;
+    const isCrit=qty===0;
+    const level=isCrit?'critical':'low';
+    const pct=isCrit?0:Math.min(100,Math.round((qty/(min*2))*100));
+    const needed=Math.max(0,min-qty);
+    const statusLabel=isCrit?'Out of Stock':'Low Stock';
+    const itemJson=JSON.stringify(item).replace(/"/g,'&quot;');
+    return `<div class="alert-card ${level}" style="animation-delay:${idx*0.05}s;">
+      <div class="alert-card-inner">
+        <div class="alert-icon-badge ${level}">
+          <i class="bi bi-${isCrit?'x-circle-fill':'exclamation-triangle-fill'}"></i>
+        </div>
+        <div class="alert-info">
+          <div class="alert-name" title="${esc(item.name)}">${esc(item.name)}</div>
+          <div class="alert-meta">
+            <span class="alert-cat-badge"><i class="bi bi-tag" style="font-size:.62rem;"></i>${esc(item.category_name||'Uncategorised')}</span>
+            <span class="alert-unit-badge"><i class="bi bi-rulers"></i>${esc(item.unit||'piece')}</span>
           </div>
-          <div class="progress-bar" style="margin-top:4px;"><div class="progress-fill ${barColor}" style="width:${pct}%"></div></div>
+          <div class="alert-progress">
+            <div class="alert-progress-header">
+              <span class="alert-progress-label">Stock level</span>
+              <span class="alert-progress-need"><i class="bi bi-arrow-up" style="font-size:.62rem;"></i> Need ${needed} to reach min</span>
+            </div>
+            <div class="alert-progress-track">
+              <div class="alert-progress-fill ${level}" style="width:${pct}%;"></div>
+            </div>
+          </div>
+        </div>
+        <div class="alert-qty-block">
+          <div class="alert-qty-num ${level}">${qty}</div>
+          <div class="alert-qty-min"><i class="bi bi-arrow-down-short"></i>min ${min}</div>
         </div>
       </div>
-      <div class="alert-stock">
-        <div class="alert-qty ${level}">${qty}</div>
-        <div class="alert-min">Min: ${min}</div>
-      </div>
-      <div class="alert-actions">
-        <button class="btn btn-primary btn-sm" onclick='openQuickRestock(${JSON.stringify(item).replace(/'/g,"&#39;")})' title="Quick restock">+ Restock</button>
-        <button class="btn btn-outline btn-sm" onclick="window.location='inventory.html'" title="View in inventory">✏</button>
+      <div class="alert-card-footer">
+        <span class="status-chip ${level}">
+          <span class="status-chip-dot"></span>
+          ${statusLabel}
+        </span>
+        <div style="display:flex;gap:8px;">
+          <button class="btn btn-outline btn-sm" onclick="window.location='record-restock.html'" title="Record full restock">
+            <i class="bi bi-journal-plus"></i> Restock
+          </button>
+          <button class="btn btn-primary btn-sm" onclick='openQuickRestock(JSON.parse(decodeURIComponent("${encodeURIComponent(JSON.stringify(item))}")))' title="Quick add stock">
+            <i class="bi bi-plus-lg"></i> Quick Add
+          </button>
+        </div>
       </div>
     </div>`;
   }).join('');
 }
 
-function openQuickRestock(item) {
-  _quickItem = item;
-  const min  = parseInt(item.restock_level) || 20;
-  const qty  = parseInt(item.stock_quantity) || 0;
-  document.getElementById('qr-item-idx').value        = item.item_id;
-  document.getElementById('qr-item-name').textContent = item.name;
-  document.getElementById('qr-item-info').textContent = `Current stock: ${qty} | Minimum: ${min} | Suggested restock: ${Math.max(min - qty, min)}`;
-  document.getElementById('qr-qty').value             = Math.max(min - qty, min);
-  document.getElementById('qr-supplier').value        = '';
+function openQuickRestock(item){
+  _quickItem=item;
+  const min=parseInt(item.restock_level)||20;
+  const qty=parseInt(item.stock_quantity)||0;
+  document.getElementById('qr-item-idx').value=item.item_id;
+  document.getElementById('qr-item-name').textContent=item.name;
+  document.getElementById('qr-item-info').textContent=`Current stock: ${qty} unit${qty!==1?'s':''} · Minimum: ${min} · Suggested: ${Math.max(min-qty,min)}`;
+  document.getElementById('qr-qty').value=Math.max(min-qty,min);
+  document.getElementById('qr-supplier').value='';
   Modal.open('quick-restock-modal');
 }
 
-async function saveQuickRestock() {
-  if (!_quickItem) return;
-  const qty = parseInt(document.getElementById('qr-qty').value);
-  if (!qty || qty < 1) { Toast.danger('Enter a valid quantity.'); return; }
-
-  const supplier = document.getElementById('qr-supplier').value.trim() || 'Quick restock';
-  const payload  = {
-    supplier,
-    po_number:    '',
-    notes:        'Quick restock from Low Stock Alerts page',
-    restock_date: new Date().toISOString().split('T')[0],
-    items: [{
-      item_id:   _quickItem.item_id,
-      item_name: _quickItem.name,
-      category:  _quickItem.category_name || '',
-      quantity:  qty,
-      new_price: 0
-    }]
-  };
-
-  const res = await Restock.create(payload);
-  if (!res.success) { Toast.danger(res.message || 'Failed to save restock.'); return; }
-
+async function saveQuickRestock(){
+  if(!_quickItem)return;
+  const qty=parseInt(document.getElementById('qr-qty').value);
+  if(!qty||qty<1){Toast.danger('Enter a valid quantity.');return;}
+  const supplier=document.getElementById('qr-supplier').value.trim()||'Quick restock';
+  const payload={supplier,po_number:'',notes:'Quick restock from Low Stock Alerts',restock_date:new Date().toISOString().split('T')[0],
+    items:[{item_id:_quickItem.item_id,item_name:_quickItem.name,category:_quickItem.category_name||'',quantity:qty,new_price:0}]};
+  const res=await Restock.create(payload);
+  if(!res.success){Toast.danger(res.message||'Failed to save restock.');return;}
   Modal.close('quick-restock-modal');
   Toast.success(`+${qty} units added to "${_quickItem.name}"!`);
-  _quickItem = null;
+  _quickItem=null;
   await loadAlerts();
-  await refreshLowStockBadge();
+  if(typeof refreshLowStockBadge==='function')await refreshLowStockBadge();
 }
 
-function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
 </script>
 </body>
 </html>
-
-
-
