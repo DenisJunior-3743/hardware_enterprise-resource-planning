@@ -331,6 +331,53 @@
       .inv-layout { grid-template-columns: 1fr; }
       .cat-sidebar { position: static; }
     }
+
+    /* ══ SEARCHABLE DROPDOWN ══ */
+    .search-wrap{position:relative}
+    .search-dropdown{
+      position:absolute;top:calc(100% + 5px);left:0;right:0;z-index:999;
+      background:#fff;border:1.5px solid var(--green-300);border-radius:10px;
+      box-shadow:0 8px 28px rgba(0,0,0,.13),0 2px 8px rgba(34,197,94,.08);
+      overflow:hidden;max-height:280px;display:none;flex-direction:column;
+    }
+    .search-dropdown.open{display:flex}
+    .sd-header{
+      padding:7px 12px 5px;font-size:.67rem;font-weight:800;text-transform:uppercase;
+      letter-spacing:.1em;color:var(--green-700);background:var(--green-50);
+      border-bottom:1px solid var(--green-100);flex-shrink:0;
+    }
+    .sd-list{overflow-y:auto;flex:1}
+    .sd-item{
+      display:flex;align-items:center;gap:10px;
+      padding:9px 13px;cursor:pointer;
+      border-bottom:1px solid var(--gray-75,#f7f8f9);
+      transition:background .12s;
+    }
+    .sd-item:last-child{border-bottom:none}
+    .sd-item:hover,.sd-item.active{background:var(--green-50)}
+    .sd-item-icon{
+      width:26px;height:26px;border-radius:7px;flex-shrink:0;
+      background:var(--green-50);border:1px solid var(--green-150,#d1fae5);
+      display:flex;align-items:center;justify-content:center;
+      color:var(--green-600);font-size:.72rem;
+    }
+    .sd-item-body{flex:1;min-width:0}
+    .sd-item-name{font-size:.82rem;font-weight:700;color:var(--gray-800);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .sd-item-name mark{background:var(--green-100);color:var(--green-800);border-radius:3px;padding:0 2px}
+    .sd-item-meta{font-size:.7rem;color:var(--gray-400);margin-top:1px}
+    .sd-item-badge{
+      flex-shrink:0;font-size:.65rem;font-weight:700;border-radius:999px;
+      padding:2px 8px;white-space:nowrap;
+    }
+    .sd-item-badge.green{background:var(--green-50);color:var(--green-700);border:1px solid var(--green-200)}
+    .sd-item-badge.amber{background:var(--amber-50);color:var(--amber-700);border:1px solid var(--amber-200)}
+    .sd-item-badge.red{background:#fef2f2;color:#b91c1c;border:1px solid #fecaca}
+    .sd-more{
+      padding:8px 13px;font-size:.74rem;font-weight:600;color:var(--green-600);
+      text-align:center;border-top:1px solid var(--green-100);background:var(--green-50,.5);
+      flex-shrink:0;
+    }
+    .sd-empty{padding:18px 13px;font-size:.8rem;color:var(--gray-400);text-align:center}
   </style>
 </head>
 <body>
@@ -455,9 +502,12 @@
 
         <div class="table-toolbar">
           <div class="table-toolbar-left">
-            <div class="search-wrap">
+            <div class="search-wrap" id="search-wrap">
               <span class="si"><i class="bi bi-search"></i></span>
-              <input type="text" id="item-search" placeholder="Search items…" oninput="filterItems()"/>
+              <input type="text" id="item-search" placeholder="Search items…"
+                     oninput="onSearchInput()" onkeydown="onSearchKey(event)"
+                     onfocus="openSearchDropdown()" autocomplete="off"/>
+              <div class="search-dropdown" id="search-dropdown"></div>
             </div>
             <span class="item-count-chip" id="item-count-label">0 items</span>
           </div>
@@ -652,7 +702,121 @@ function buildCatList(){
   catList.innerHTML=html;
 }
 
-function selectCat(cat){selectedCat=cat;currentPage=1;buildCatList();filterItems();}
+function selectCat(cat){selectedCat=cat;currentPage=1;buildCatList();filterItems();closeSearchDropdown();}
+
+/* ── Search dropdown ── */
+const SD_MAX=8;
+let sdActiveIdx=-1;
+
+function getCatItems(){
+  return selectedCat==='all'?[...allItems]:allItems.filter(i=>String(i.category_id)===String(selectedCat));
+}
+
+function openSearchDropdown(){
+  const q=(document.getElementById('item-search').value||'').trim();
+  if(q.length===0&&getCatItems().length===0)return;
+  renderSearchDropdown(q);
+}
+
+function onSearchInput(){
+  filterItems();
+  sdActiveIdx=-1;
+  renderSearchDropdown((document.getElementById('item-search').value||'').trim());
+}
+
+function renderSearchDropdown(q){
+  const dd=document.getElementById('search-dropdown');
+  const pool=getCatItems();
+  let matches;
+  if(q===''){
+    // show all items in current category (up to SD_MAX)
+    matches=pool.slice(0,SD_MAX+1);
+  } else {
+    const ql=q.toLowerCase();
+    matches=pool.filter(i=>(i.name||'').toLowerCase().includes(ql));
+  }
+  if(matches.length===0){
+    dd.innerHTML=`<div class="sd-empty"><i class="bi bi-search" style="opacity:.35;margin-right:5px;"></i>No items found</div>`;
+    dd.classList.add('open');return;
+  }
+  const catLabel=selectedCat==='all'?'All Categories':
+    (allCategories.find(c=>String(c.category_id)===String(selectedCat))||{}).name||'';
+  const shown=matches.slice(0,SD_MAX);
+  const extra=matches.length-SD_MAX;
+  let html=`<div class="sd-header"><i class="bi bi-funnel" style="margin-right:4px;"></i>${catLabel?esc(catLabel):'All Items'} &mdash; ${matches.length} item${matches.length!==1?'s':''}</div><div class="sd-list">`;
+  shown.forEach((item,i)=>{
+    const qty=parseInt(item.stock_quantity)||0,min=parseInt(item.restock_level)||20;
+    const bClass=qty===0?'red':qty<min?'amber':'green';
+    const bLabel=qty===0?'Out':'Low';
+    const stockBadge=(qty===0||qty<min)?`<span class="sd-item-badge ${bClass}">${bLabel}</span>`:'';
+    const hl=q?highlightMatch(esc(item.name),q):esc(item.name);
+    html+=`<div class="sd-item${i===sdActiveIdx?' active':''}" data-id="${item.item_id}" onmousedown="pickSearchItem(${item.item_id})">
+      <div class="sd-item-icon"><i class="bi bi-box-seam"></i></div>
+      <div class="sd-item-body">
+        <div class="sd-item-name">${hl}</div>
+        <div class="sd-item-meta">${esc(item.category_name||'—')} &middot; UGX ${parseInt(item.price||0).toLocaleString('en-UG')}</div>
+      </div>
+      ${stockBadge}
+    </div>`;
+  });
+  html+='</div>';
+  if(extra>0)html+=`<div class="sd-more">+${extra} more &mdash; keep typing to narrow results</div>`;
+  dd.innerHTML=html;
+  dd.classList.add('open');
+}
+
+function highlightMatch(str,q){
+  // str is already HTML-escaped; do a case-insensitive replacement
+  const re=new RegExp('('+q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi');
+  return str.replace(re,'<mark>$1</mark>');
+}
+
+function pickSearchItem(itemId){
+  const item=allItems.find(i=>i.item_id==itemId);if(!item)return;
+  const inp=document.getElementById('item-search');
+  inp.value=item.name;
+  closeSearchDropdown();
+  filterItems();
+  // scroll to the row after render
+  requestAnimationFrame(()=>{
+    const rows=document.querySelectorAll('#items-body tr');
+    rows.forEach(r=>{
+      const cell=r.querySelector('.td-primary');
+      if(cell&&cell.textContent.trim()===item.name){
+        r.scrollIntoView({behavior:'smooth',block:'center'});
+        r.style.transition='background .2s';
+        r.style.background='var(--green-100)';
+        setTimeout(()=>{r.style.background='';},1200);
+      }
+    });
+  });
+}
+
+function onSearchKey(e){
+  const dd=document.getElementById('search-dropdown');
+  if(!dd.classList.contains('open'))return;
+  const items=dd.querySelectorAll('.sd-item');
+  if(e.key==='ArrowDown'){e.preventDefault();sdActiveIdx=Math.min(sdActiveIdx+1,items.length-1);refreshActiveClass(items);}
+  else if(e.key==='ArrowUp'){e.preventDefault();sdActiveIdx=Math.max(sdActiveIdx-1,0);refreshActiveClass(items);}
+  else if(e.key==='Enter'){
+    e.preventDefault();
+    if(sdActiveIdx>=0&&items[sdActiveIdx]){items[sdActiveIdx].dispatchEvent(new MouseEvent('mousedown'));}
+    else{closeSearchDropdown();}
+  }
+  else if(e.key==='Escape'){closeSearchDropdown();}
+}
+
+function refreshActiveClass(items){items.forEach((el,i)=>el.classList.toggle('active',i===sdActiveIdx));}
+
+function closeSearchDropdown(){
+  document.getElementById('search-dropdown').classList.remove('open');
+  sdActiveIdx=-1;
+}
+
+// close on outside click
+document.addEventListener('click',e=>{
+  if(!document.getElementById('search-wrap').contains(e.target))closeSearchDropdown();
+});
 
 function filterItems(){
   const q=(document.getElementById('item-search').value||'').toLowerCase();
