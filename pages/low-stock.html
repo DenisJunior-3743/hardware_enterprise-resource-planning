@@ -491,17 +491,10 @@ let allItems=[], activeFilter='all', _quickItem=null;
 
 document.addEventListener('DOMContentLoaded',async()=>{
   await pageAuthGuard();
-  initSidebar(); loadUserInfo();
+  loadUserInfo();
   await loadCatFilter();
   await loadAlerts();
 });
-
-function initSidebar(){
-  const sb=document.getElementById('sidebar'),tb=document.getElementById('topbar'),mc=document.getElementById('main-content'),bd=document.getElementById('sidebar-backdrop');
-  document.querySelectorAll('.sidebar-toggle').forEach(b=>{b.addEventListener('click',()=>{if(window.innerWidth<=768){sb.classList.toggle('mobile-open');bd.classList.toggle('open');}else{sb.classList.toggle('collapsed');tb.classList.toggle('sidebar-collapsed');mc?.classList.toggle('sidebar-collapsed');}});});
-  bd.addEventListener('click',()=>{sb.classList.remove('mobile-open');bd.classList.remove('open');});
-  document.querySelectorAll('.nav-parent[type=button]').forEach(btn=>{btn.addEventListener('click',()=>{const ch=btn.nextElementSibling;if(!ch)return;const open=ch.classList.contains('open');document.querySelectorAll('.nav-children.open').forEach(c=>{c.classList.remove('open');c.previousElementSibling?.classList.remove('open');});if(!open){ch.classList.add('open');btn.classList.add('open');}});});
-}
 
 function loadUserInfo(){
   const u=localStorage.getItem('erp_username');if(!u)return;
