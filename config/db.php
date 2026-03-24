@@ -8,7 +8,7 @@ define('DB_HOST',    'localhost');
 define('DB_PORT',    '3306');
 define('DB_NAME',    'hardware_erp');
 define('DB_USER',    'root');
-define('DB_PASS',    'Peacebewithyouall@2023!!');          // change in production
+define('DB_PASS',    '');          // change in production
 define('DB_CHARSET', 'utf8mb4');
 
 /**
