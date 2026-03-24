@@ -645,24 +645,6 @@ updateClock();setInterval(updateClock,30000);
 document.addEventListener('DOMContentLoaded', async () => {
   await pageAuthGuard();
 
-  /* sidebar toggle */
-  const sb=document.getElementById('sidebar'),tb=document.getElementById('topbar'),mc=document.getElementById('main-content'),bd=document.getElementById('sidebar-backdrop');
-  document.querySelectorAll('.sidebar-toggle').forEach(btn=>{
-    btn.addEventListener('click',()=>{
-      if(window.innerWidth<=768){sb.classList.toggle('mobile-open');bd.classList.toggle('open');}
-      else{sb.classList.toggle('collapsed');tb.classList.toggle('sidebar-collapsed');mc.classList.toggle('sidebar-collapsed');}
-    });
-  });
-  bd.addEventListener('click',()=>{sb.classList.remove('mobile-open');bd.classList.remove('open');});
-  document.querySelectorAll('.nav-parent[type=button]').forEach(btn=>{
-    btn.addEventListener('click',()=>{
-      const ch=btn.nextElementSibling;if(!ch)return;
-      const isOpen=ch.classList.contains('open');
-      document.querySelectorAll('.nav-children.open').forEach(c=>{c.classList.remove('open');c.previousElementSibling?.classList.remove('open');});
-      if(!isOpen){ch.classList.add('open');btn.classList.add('open');}
-    });
-  });
-
   /* user info */
   const uname=localStorage.getItem('erp_username');
   if(uname){
